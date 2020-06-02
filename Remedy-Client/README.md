@@ -1,6 +1,6 @@
-# Remedy-Client
+# remedy-client
 
-> My gnarly Nuxt.js project
+> 
 
 ## Build Setup
 
