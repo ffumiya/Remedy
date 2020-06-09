@@ -3,26 +3,40 @@
     <div>
       <div>
         <h2>オンライン診療(ルーム)</h2>
+
         <div>
-          <video
-            class="secondary"
-            id="my-video"
-            muted="true"
-            height="150"
-            width="200"
-            autoplay
-            playsinline
-          ></video>
-          <div id="remoteVideos"></div>
+          <canvas id="concat" v-bind:style="videoStyle"></canvas>
+          <canvas id="canvas" v-bind:style="videoStyle"></canvas>
         </div>
+        <div id="remoteVideos"></div>
 
         <div>
           <v-switch v-model="mute" :label="`ミュート：${mute}`"></v-switch>
           <v-btn @click="joinToRoom" class="success">Join</v-btn>
           <v-btn @click="closeRoom" class="error">Exit</v-btn>
-          <v-btn outlined color="red">
+        </div>
+        <div style="margin-top: 20px;">
+          <!-- <v-btn outlined color="red">
             <v-icon>mdi-record-circle-outline</v-icon>
             録画する
+          </v-btn> -->
+          <!-- <v-btn class="primary">
+            <v-icon>mdi-monitor-share</v-icon>
+            画面共有
+          </v-btn> -->
+        </div>
+        <div style="margin-top: 20px;">
+          <v-btn outlined @click="switchDrawable">
+            <v-icon>mdi-grease-pencil</v-icon>
+            書き込む
+          </v-btn>
+          <!-- <v-btn>
+            <v-icon>mdi-undo-variant</v-icon>
+            戻す
+          </v-btn> -->
+          <v-btn @click="clearPath">
+            <v-icon>mdi-delete</v-icon>
+            クリア
           </v-btn>
         </div>
 
@@ -51,7 +65,14 @@
     </div>
   </section>
 </template>
-
+<style>
+#canvas {
+  position: relative;
+}
+#concat {
+  position: absolute;
+}
+</style>
 <script>
 let Peer;
 
@@ -71,7 +92,23 @@ export default {
       videos: [],
       selectedVideo: "",
       localStream: null,
-      mute: false
+      mute: false,
+      ctx: null,
+      canvas: null,
+      isDrawing: false,
+      x: 0,
+      y: 0,
+      color: "red",
+      canvasWidth: 270,
+      canvasHeight: 200,
+      canvasVisibility: false,
+      videoStyle: {
+        width: "270px",
+        height: "200px"
+      },
+      framerate: 1000 / 10,
+      drawable: false,
+      videoIntarvalList: {}
     };
   },
   mounted: function() {
@@ -99,22 +136,33 @@ export default {
         }
       }
     });
+    this.canvas = document.getElementById("canvas");
+    [this.canvas.width, this.canvas.height] = [
+      this.canvasWidth,
+      this.canvasHeight
+    ];
+    this.ctx = this.canvas.getContext("2d");
+    this.canvas.addEventListener("mousedown", this.beginPath);
+    this.canvas.addEventListener("mousemove", this.strokePath);
+    this.canvas.addEventListener("mouseup", this.endPath);
   },
   methods: {
-    // SkyWayのAPIキーを取得
+    // SkyWayAPIキー取得
     getAPIKey: function() {
       this.APIKey = "75a90790-44e1-48f3-bb81-6c8667867b98";
       console.log(`APIKEY = ${this.APIKey}`);
     },
-    // ルーム名の取得
+    // ルーム名取得
     getRoomName: function() {
       this.roomName = "Remedy";
     },
+    // カメラ選択
     onChange: function() {
       if (this.selectedAudio != "" || this.selectedVideo != "") {
         this.connectLocalCamera();
       }
     },
+    // MediaStream取得
     connectLocalCamera: async function() {
       const constraints = {
         audio: this.selectedAudio
@@ -129,8 +177,35 @@ export default {
         .catch(err => {
           console.error(`getUserMedia() has failed ${err}`);
         });
-      document.getElementById("my-video").srcObject = stream;
-      this.localStream = stream;
+
+      let localVideo = document.createElement("video");
+      localVideo.srcObject = stream;
+      localVideo.autoplay = true;
+      localVideo.playsinline = true;
+      // localVideo.muted = true;
+      let framerate = this.framerate;
+      let [canvasWidth, canvasHeight] = [this.canvasWidth, this.canvasHeight];
+
+      setInterval(async function() {
+        //重ねたいvideo映像
+        const canvasAsset = document.getElementById("canvas");
+        const whiteCanvas = document.getElementById("concat");
+
+        //canvas要素群のサイズを揃える
+        [localVideo.width, localVideo.height] = [
+          whiteCanvas.width,
+          whiteCanvas.height
+        ] = [canvasWidth, canvasHeight];
+
+        // 出力先コンテキスト取得
+        const whiteCtx = whiteCanvas.getContext("2d");
+
+        whiteCtx.drawImage(localVideo, 0, 0, canvasWidth, canvasHeight);
+        whiteCtx.drawImage(canvasAsset, 0, 0, canvasWidth, canvasHeight);
+      }, framerate);
+      this.localStream = document
+        .getElementById("concat")
+        .captureStream(this.framerate);
     },
     // ルームへの参加
     joinToRoom: function() {
@@ -165,10 +240,9 @@ export default {
         if (remoteVideo == null) {
           return;
         }
-        remoteVideo.srcObject.getTracks().forEach(track => track.stop());
         remoteVideo.srcObject = null;
         remoteVideo.remove();
-        console.table(remoteVideos);
+        clearInterval(this.videoIntarvalList[peerId]);
       });
       // データ取得
       this.room.on("data", ({ data, src }) => {
@@ -180,7 +254,6 @@ export default {
       this.room.on("close", () => {
         alert("退室しました。");
         Array.from(remoteVideos.children).forEach(remoteVideo => {
-          remoteVideo.srcObject.getTracks().forEach(track => track.stop());
           remoteVideo.srcObject = null;
           remoteVideo.remove();
         });
@@ -196,6 +269,7 @@ export default {
         return;
       }
       this.room.close();
+      this.room = null;
     },
     // データの送信
     send: function(arg) {
@@ -210,12 +284,71 @@ export default {
       const newVideo = document.createElement("video");
       newVideo.srcObject = stream;
       newVideo.playsInline = true;
-      newVideo.height = 150;
-      newVideo.width = 200;
+      newVideo.height = this.canvasHeight;
+      newVideo.width = this.canvasWidth;
       newVideo.autoplay = true;
-      newVideo.setAttribute("streem-peer-id", stream.peerId);
-      document.getElementById("remoteVideos").appendChild(newVideo);
+      const whiteCanvas = document.createElement("canvas");
+      whiteCanvas.setAttribute("streem-peer-id", stream.peerId);
+      let [canvasWidth, canvasHeight] = [this.canvasWidth, this.canvasHeight];
+      let framerate = this.framerate;
+      let videoIntarval = setInterval(async function() {
+        //canvas要素群のサイズを揃える
+        [whiteCanvas.width, whiteCanvas.height] = [canvasWidth, canvasHeight];
+
+        // 出力先コンテキスト取得
+        const whiteCtx = whiteCanvas.getContext("2d");
+
+        whiteCtx.drawImage(newVideo, 0, 0, canvasWidth, canvasHeight);
+      }, framerate);
+      document.getElementById("remoteVideos").appendChild(whiteCanvas);
+      this.videoIntarvalList[stream.peerId] = videoIntarval;
       console.log("Videoを追加しました。");
+    },
+    beginPath(e) {
+      console.log("mouse down");
+      if (!this.drawable) {
+        return;
+      }
+      this.ctx.strokeStyle = this.color;
+      this.ctx.lineWidth = 3;
+      this.ctx.beginPath();
+      this.isDrawing = true;
+      let { x, y } = this.calcPos(e);
+      this.ctx.moveTo(x, y);
+    },
+    strokePath(e) {
+      if (!this.isDrawing) {
+        return;
+      }
+      let { x, y } = this.calcPos(e);
+      this.ctx.lineTo(x, y);
+      // this.ctx.lineTo(e.clientX, e.clientY);
+      this.ctx.stroke();
+    },
+    endPath(e) {
+      console.log("mouse up");
+      if (!this.drawable || !this.isDrawing) {
+        return;
+      }
+      this.isDrawing = false;
+      let { x, y } = this.calcPos(e);
+      this.ctx.lineTo(x, y);
+      this.ctx.stroke();
+      this.ctx.closePath();
+    },
+    calcPos(e) {
+      let rect = e.target.getBoundingClientRect();
+      let x = e.clientX - rect.left;
+      let y = e.clientY - rect.top;
+      this.x = x;
+      this.y = y;
+      return { x, y };
+    },
+    clearPath() {
+      this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    },
+    switchDrawable() {
+      this.drawable = !this.drawable;
     }
   },
 
