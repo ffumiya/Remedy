@@ -19,6 +19,10 @@ Route::get('/', function () {
 
 Route::get('/video', 'Video\VideoController@show')->name('video.show');
 
+Route::middleware('can:admin')->group(function () {
+    Route::get('/schedule', 'Schedule\ScheduleController@index')->name('schedule.index');
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

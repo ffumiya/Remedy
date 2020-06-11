@@ -10,6 +10,7 @@ window.Vue = require("vue");
 
 // import ExampleComponent from "./components/ExampleComponent.vue";
 import SkywayRoom from "./components/SkywayRoom.vue";
+import FullCalendarComponent from "./components/CalendarComponent.vue";
 
 /**
  * The following block of code may be used to automatically register your
@@ -24,6 +25,7 @@ import SkywayRoom from "./components/SkywayRoom.vue";
 
 // Vue.component("example-component", ExampleComponent);
 Vue.component("video-component", SkywayRoom);
+Vue.component("calendar-component", FullCalendarComponent);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

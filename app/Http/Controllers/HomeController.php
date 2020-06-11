@@ -23,6 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $userId = \Auth::id();
+        $reservationList = null;
         return view('home');
     }
 }

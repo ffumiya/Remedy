@@ -13,13 +13,42 @@ class UserSeeder extends Seeder
     public function run()
     {
         factory(User::class, 10)->create();
-        User::create([
-            'name' => 'remedy',
-            'email' => 'remedy@example.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-            'api_token' => 'remedy_token',
-            'remember_token' => Str::random(10),
+
+        $now = new DateTIme();
+        User::insert([
+            [
+                'name' => 'm-tanaka',
+                'email' => 'm-tanaka@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'role' => config('role.admin'),
+                'api_token' => 'token',
+                'remember_token' => Str::random(10),
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'name' => 'patient',
+                'email' => 'patient@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'role' => config('role.patient'),
+                'api_token' => null,
+                'remember_token' => Str::random(10),
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'name' => 'doctor',
+                'email' => 'doctor@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'role' => config('role.doctor'),
+                'api_token' => null,
+                'remember_token' => Str::random(10),
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
         ]);
     }
 }

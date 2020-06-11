@@ -10,6 +10,11 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@fullcalendar/core": "^4.4.2",
+        "@fullcalendar/daygrid": "^4.4.2",
+        "@fullcalendar/interaction": "^4.4.2",
+        "@fullcalendar/timegrid": "^4.4.2",
+        "@fullcalendar/vue": "^4.4.2",
         "@mdi/font": "^5.3.45",
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
