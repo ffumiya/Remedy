@@ -17,12 +17,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/video', 'Video\VideoController@show')->name('video.show');
-
-Route::middleware('can:admin')->group(function () {
-    Route::get('/schedule', 'Schedule\ScheduleController@index')->name('schedule.index');
-});
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/video', 'Video\VideoController@show')->name('video.show');
+});
+
+Route::middleware('can:doctor')->group(function () {
+    Route::get('/schedule', 'Schedule\ScheduleController@index')->name('schedule.index');
+    Route::resource('/user', 'UserController');
+});

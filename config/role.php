@@ -1,6 +1,15 @@
 <?php
 return [
-    'patient' => 10,
-    'doctor' => 100,
-    'admin' => 999
+    'patient' => [
+        'value' => 10,
+        'name' => '患者'
+    ],
+    'doctor' => [
+        'value' => 100,
+        'name' => '医者'
+    ],
+    'admin' => [
+        'value' => 999,
+        'name' => '管理者'
+    ]
 ];

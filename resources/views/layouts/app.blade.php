@@ -53,9 +53,17 @@
                         @endif
                         @else
                         <!-- User nav menu -->
-                        @if (Auth::user()->role >= config('role.doctor'))
+                        @if (Auth::user()->role >= config('role.doctor.value'))
                         <li>
                             <a class="nav-link" href="{{ route('schedule.index') }}">スケジュール</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" v-pre>ユーザー管理</a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('user.index') }}">ユーザー一覧</a>
+                                <a class="dropdown-item" href="{{ route('user.create') }}">ユーザー追加</a>
+                            </div>
                         </li>
                         @endif
                         <li class="nav-item dropdown">

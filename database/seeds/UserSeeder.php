@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        factory(User::class, 10)->create();
+        factory(User::class, 20)->create();
 
         $now = new DateTIme();
         User::insert([
@@ -21,9 +21,10 @@ class UserSeeder extends Seeder
                 'email' => 'm-tanaka@example.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
-                'role' => config('role.admin'),
+                'role' => config('role.admin.value'),
                 'api_token' => 'token',
                 'remember_token' => Str::random(10),
+                'clinic_id' => 0,
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -32,9 +33,10 @@ class UserSeeder extends Seeder
                 'email' => 'patient@example.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
-                'role' => config('role.patient'),
+                'role' => config('role.patient.value'),
                 'api_token' => null,
                 'remember_token' => Str::random(10),
+                'clinic_id' => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -43,9 +45,10 @@ class UserSeeder extends Seeder
                 'email' => 'doctor@example.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
-                'role' => config('role.doctor'),
+                'role' => config('role.doctor.value'),
                 'api_token' => null,
                 'remember_token' => Str::random(10),
+                'clinic_id' => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],
