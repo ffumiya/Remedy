@@ -1,8 +1,15 @@
 <?php
 
+use App\Logging\DebugLogger;
+use App\Logging\TraceLogger;
+use App\Logging\ErrorLogger;
+use App\Logging\SqlLogger;
+use App\Logging\StripeLogger;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
+
+use function PHPSTORM_META\map;
 
 return [
 
@@ -39,6 +46,46 @@ return [
             'driver' => 'stack',
             'channels' => ['single'],
             'ignore_exceptions' => false,
+        ],
+
+        'debug' => [
+            'driver' => 'custom',
+            'via' => DebugLogger::class,
+            'path' => storage_path('logs/debug/debug.log'),
+            'level' => 'debug',
+            'days' => 7,
+        ],
+
+        'trace' => [
+            'driver' => 'custom',
+            'via' => TraceLogger::class,
+            'path' => storage_path('logs/trace/trace.log'),
+            'level' => 'info',
+            'days' => 14,
+        ],
+
+        'error' => [
+            'driver' => 'custom',
+            'via' => ErrorLogger::class,
+            'path' => storage_path('logs/error/error.log'),
+            'level' => 'error',
+            'days' => 60,
+        ],
+
+        'sql' => [
+            'driver' => 'custom',
+            'via' => SqlLogger::class,
+            'path' => storage_path('logs/sql/sql.log'),
+            'level' => 'info',
+            'days' => 30,
+        ],
+
+        'stripe' => [
+            'driver' => 'custom',
+            'via' => StripeLogger::class,
+            'path' => storage_path('logs/stripe/stripe.log'),
+            'level' => 'info',
+            'days' => 365,
         ],
 
         'single' => [
