@@ -13,19 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// 公開ページ
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
-
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/video', 'Video\VideoController@show')->name('video.show');
-});
+    // 一般ユーザー
+    Route::get('/home/{any?}', function () {
+        return view('home');
+    })->where('any', '.+');
 
-Route::middleware('can:doctor')->group(function () {
-    Route::get('/schedule', 'Schedule\ScheduleController@index')->name('schedule.index');
-    Route::resource('/user', 'UserController');
+    // 医師ユーザー
+    Route::middleware('can:doctor')->group(function () {
+        Route::get('/schedule', 'Schedule\ScheduleController@index')->name('schedule.index');
+        Route::resource('/user', 'UserController');
+    });
 });

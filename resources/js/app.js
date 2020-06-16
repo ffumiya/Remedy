@@ -12,6 +12,10 @@ window.Vue = require("vue");
 import SkywayRoom from "./components/SkywayRoom.vue";
 import FullCalendarComponent from "./components/CalendarComponent.vue";
 
+// import Vue from "vue";
+// import VueRouter from "vue-router";
+import router from "./router";
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -27,6 +31,8 @@ import FullCalendarComponent from "./components/CalendarComponent.vue";
 Vue.component("video-component", SkywayRoom);
 Vue.component("calendar-component", FullCalendarComponent);
 
+// Vue.use(VueRouter);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -34,5 +40,6 @@ Vue.component("calendar-component", FullCalendarComponent);
  */
 
 const app = new Vue({
-    el: "#app"
+    el: "#app",
+    router
 });
