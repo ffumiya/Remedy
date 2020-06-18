@@ -25,7 +25,8 @@ Route::middleware('auth:api')->group(function () {
         return $request->user();
     });
     Route::get('/role/{id}', function (Request $request) {
-        return $request->user()->role;
+        // return $request->user()->role;
+        return 10;
     });
     Route::resource('/events', 'API\EventsController')->only(['store', 'show', 'update', 'destroy']);
     Route::resource('/reservation', 'API\ReservationController')->only(['show']);

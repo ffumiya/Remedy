@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Event;
-use Carbon\Carbon;
+use App\Services\EventService;
 use Illuminate\Http\Request;
 
 class EventsController extends Controller
@@ -40,15 +39,18 @@ class EventsController extends Controller
     public function show($id)
     {
         \Log::channel('trace')->info("Request GET /events/{$id}.");
-        $thisMonthFirst = Carbon::now()->firstOfMonth()->toDateString();
-        $eventCount = Event::where('host_id', $id)
-            ->where('start', '>', $thisMonthFirst)->count();
-        $events = Event::where('host_id', $id)
-            ->where('start', '>', $thisMonthFirst)
-            ->orWhere('start', null)
-            ->get();
+        $role = \Auth::user()->role;
+
+        $events = null;
+
+        if ($role >= config('role.doctor.value')) {
+            $events = EventService::getDoctorEvents($id);
+        }
+        if ($role < config('role.doctor.value')) {
+            $events = EventService::getPatientEvents($id);
+        }
+
         $json = json_encode($events);
-        \Log::channel('trace')->info("Return {$eventCount} evemts.");
         \Log::channel('debug')->info($json);
         return $json;
     }

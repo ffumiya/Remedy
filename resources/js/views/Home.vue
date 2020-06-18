@@ -1,10 +1,11 @@
 <template>
     <div id="view" class="container-fluid">
-        <div v-if="role < 100">
-            <patient-home-component />
+        <div v-if="role == 0">Now loading...</div>
+        <div v-else-if="role >= 100">
+            <doctor-home-component />
         </div>
         <div v-else>
-            <doctor-home-component />
+            <patient-home-component />
         </div>
     </div>
 </template>
@@ -14,7 +15,7 @@ export default {
     components: {},
     data() {
         return {
-            role: null
+            role: 0
         };
     },
     methods: {
@@ -22,7 +23,7 @@ export default {
             axios
                 .get(`api/role/${userID}`)
                 .then(res => {
-                    this.role = res.data.role;
+                    this.role = res.data;
                 })
                 .catch(error => console.error(error));
         },
