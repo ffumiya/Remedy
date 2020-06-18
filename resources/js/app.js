@@ -11,6 +11,7 @@ window.Vue = require("vue");
 // import ExampleComponent from "./components/ExampleComponent.vue";
 import SkywayRoom from "./components/SkywayRoom.vue";
 import FullCalendarComponent from "./components/CalendarComponent.vue";
+import ReservationComponent from "./components/ReservationComponent.vue";
 
 // import Vue from "vue";
 // import VueRouter from "vue-router";
@@ -30,7 +31,7 @@ import router from "./router";
 // Vue.component("example-component", ExampleComponent);
 Vue.component("video-component", SkywayRoom);
 Vue.component("calendar-component", FullCalendarComponent);
-
+Vue.component("reservation-component", ReservationComponent);
 // Vue.use(VueRouter);
 
 /**

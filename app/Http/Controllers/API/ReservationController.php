@@ -4,10 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class EventsController extends Controller
+class ReservationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,6 +19,16 @@ class EventsController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -27,8 +36,7 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        \Log::channel("trace")->info("Request POST /events.");
-        \Log::channel("debug")->debug($request);
+        //
     }
 
     /**
@@ -39,18 +47,17 @@ class EventsController extends Controller
      */
     public function show($id)
     {
-        \Log::channel('trace')->info("Request GET /events/{$id}.");
-        $thisMonthFirst = Carbon::now()->firstOfMonth()->toDateString();
-        $eventCount = Event::where('host_id', $id)
-            ->where('start', '>', $thisMonthFirst)->count();
-        $events = Event::where('host_id', $id)
-            ->where('start', '>', $thisMonthFirst)
-            ->orWhere('start', null)
-            ->get();
-        $json = json_encode($events);
-        \Log::channel('trace')->info("Return {$eventCount} evemts.");
-        \Log::channel('debug')->info($json);
-        return $json;
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
