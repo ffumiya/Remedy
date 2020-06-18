@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 import Home from "./views/Home.vue";
+import Payment from "./views/Payment.vue";
 import NotFound from "./views/NotFound.vue";
 
 const router = new VueRouter({
@@ -12,6 +13,10 @@ const router = new VueRouter({
         {
             path: "/home",
             component: Home
+        },
+        {
+            path: "/payment",
+            component: Payment
         },
         {
             path: "*",
