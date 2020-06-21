@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'role' => config('role.admin.value'),
-                'api_token' => 'token',
+                'api_token' => str_random(60),
                 'remember_token' => Str::random(10),
                 'clinic_id' => 0,
                 'created_at' => $now,
@@ -36,6 +36,7 @@ class UserSeeder extends Seeder
                 'role' => config('role.patient.value'),
                 'api_token' => null,
                 'remember_token' => Str::random(10),
+                'api_token' => str_random(60),
                 'clinic_id' => 1,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -48,6 +49,7 @@ class UserSeeder extends Seeder
                 'role' => config('role.doctor.value'),
                 'api_token' => null,
                 'remember_token' => Str::random(10),
+                'api_token' => str_random(60),
                 'clinic_id' => 1,
                 'created_at' => $now,
                 'updated_at' => $now
