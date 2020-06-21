@@ -16621,8 +16621,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fullcalendar_core_locales_ja__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_fullcalendar_core_locales_ja__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_6__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -16754,6 +16781,7 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
 
 
 
+
 var Event = function Event() {
   _classCallCheck(this, Event);
 };
@@ -16763,15 +16791,18 @@ var Event = function Event() {
     events: null
   },
   components: {
-    FullCalendar: _fullcalendar_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    FullCalendar: _fullcalendar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    moment: moment__WEBPACK_IMPORTED_MODULE_6___default.a
   },
   data: function data() {
     return {
+      userID: null,
       options: {
         animation: 200
       },
       calendarPlugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__["default"], _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_2__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_3__["default"]],
       locale: _fullcalendar_core_locales_ja__WEBPACK_IMPORTED_MODULE_4___default.a,
+      timeZone: "Asia/Tokyo",
       eventTimeFormat: {
         hour: "numeric",
         minute: "2-digit"
@@ -16781,48 +16812,102 @@ var Event = function Event() {
       selectedEvent: null,
       height: 0,
       firstDay: 1,
-      scrollTime: ""
+      scrollTime: "",
+      guestInfo: null
     };
   },
   methods: {
     handleSelect: function handleSelect(arg) {
       this.selectedEvent = arg;
-      console.table(this.selectedEvent);
       jQuery("#modalForSelect").modal("show");
     },
     handleDateClick: function handleDateClick(arg) {},
-    handleEventClick: function handleEventClick(calEvent, jsEvent, view) {
-      this.selectedEvent = arg;
-      console.table(this.selectedEvent);
+    handleEventClick: function handleEventClick(arg) {
+      var _this = this;
+
+      this.selectedEvent = arg.event;
+      axios__WEBPACK_IMPORTED_MODULE_5___default.a.get("/api/patient/".concat(this.selectedEvent.extendedProps.guest_id)).then(function (res) {
+        _this.guestInfo = res.data;
+        console.log("Get patient data");
+      })["catch"](function (err) {
+        _this.guestInfo = null;
+        console.error(err);
+        console.error("failed to get patient data");
+      });
       jQuery("#modalForClick").modal("show");
     },
     handleEventResize: function handleEventResize(arg) {
-      alert("handleEventResize");
+      this.selectedEvent = arg.event;
+      this.updateEvent();
     },
     handleEventDrop: function handleEventDrop(arg) {
-      alert("handleEventDrop");
+      this.selectedEvent = arg.event;
+      this.updateEvent();
     },
     resize: function resize() {
       this.height = innerHeight - 150;
     },
     getConfig: function getConfig(userID) {},
-    getScrollTime: function getScrollTime(userID) {
+    getScrollTime: function getScrollTime() {
       this.scrollTime = "7:00:00";
     },
     createEvent: function createEvent() {
-      this.events.push({
-        title: this.selectedEvent.title,
-        start: this.selectedEvent.start,
-        selectable: true,
-        editable: true
-      });
+      var _this2 = this;
+
+      var event = this.buildEvent();
+
+      if (!event.title) {
+        return;
+      }
+
+      console.log(event.start);
       jQuery("#modalForSelect").modal("hide");
-      console.log(this.selectedEvent);
-      axios__WEBPACK_IMPORTED_MODULE_5___default.a.post("/api/events", Object.assign({}, this.selectedEvent)).then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_5___default.a.post("/api/events", Object.assign({}, event)).then(function (res) {
+        _this2.events.push(event);
+
         console.log("completed post event");
       })["catch"](function (err) {
         console.error(err);
-        console.error("failed posting event");
+        alert("予定の作成に失敗しました。");
+        console.error("failed to post event");
+      });
+    },
+    getOnetime_token: function getOnetime_token() {
+      if (this.selectedEvent.id) {
+        return this.selectedEvent.id;
+      } else {
+        return moment__WEBPACK_IMPORTED_MODULE_6___default()(new Date()).unix().toString();
+      }
+    },
+    buildEvent: function buildEvent() {
+      return {
+        id: this.getOnetime_token(),
+        host_id: this.userID,
+        guest_id: 1,
+        title: this.selectedEvent.title,
+        start: this.selectedEvent.start,
+        end: this.selectedEvent.end,
+        selectable: true,
+        editable: true
+      };
+    },
+    updateEvent: function updateEvent() {
+      var _this3 = this;
+
+      var newEvent = this.buildEvent();
+      jQuery("#modalForSelect").modal("hide");
+      axios__WEBPACK_IMPORTED_MODULE_5___default.a.put("/api/events/".concat(this.userID), Object.assign({}, newEvent)).then(function (res) {
+        _this3.events.forEach(function (event) {
+          if (event.id == newEvent) {
+            event = newEvent;
+          }
+        });
+
+        console.log("completed move event");
+      })["catch"](function (err) {
+        console.error(err);
+        alert("予定の変更に失敗しました。");
+        console.error("failed to post event");
       });
     }
   },
@@ -16831,8 +16916,8 @@ var Event = function Event() {
       this.resize();
       this.getScrollTime();
       addEventListener("resize", this.resize);
-      var userID = document.querySelector("meta[name='user-id']").getAttribute("content");
-      this.getConfig(userID);
+      this.userID = document.querySelector("meta[name='user-id']").getAttribute("content");
+      this.getConfig(this.userID);
     } catch (err) {
       console.log(err);
     }
@@ -16846,6 +16931,21 @@ var Event = function Event() {
       set: function set(value) {
         this.$emit("update:events", value);
       }
+    }
+  },
+  filters: {
+    moment: function moment(value, format) {
+      var time = "";
+      time = moment__WEBPACK_IMPORTED_MODULE_6___default()(value).format(format);
+
+      if (time.toString() === "Invalid date") {
+        return "";
+      }
+
+      return time;
+    },
+    exceptUserID: function exceptUserID(value) {
+      return value.replace("/\([0-9].*\)/g");
     }
   }
 });
@@ -16911,10 +17011,11 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get("api/events/".concat(userID)).then(function (res) {
-        console.table(res.data);
         _this.allEvents = res.data;
 
         _this.allEvents.forEach(function (event) {
+          console.log(event.start);
+
           if (event.start != null) {
             _this.bookedEvents.push(event);
           }
@@ -16923,9 +17024,6 @@ __webpack_require__.r(__webpack_exports__);
             _this.bookingEvents.push(event);
           }
         });
-
-        console.table(_this.bookedEvents);
-        console.table(_this.bookingEvents);
       })["catch"](function (error) {
         return console.error(error);
       });
@@ -17014,11 +17112,10 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("api/events/".concat(userID)).then(function (res) {
         console.table(res.data);
-        _this.allEvents = res.data;
-
-        _this.allEvents.forEach(function (event) {
-          _this.events.push(event);
-        });
+        _this.events = res.data; // this.allEvents = res.data;
+        // this.allEvents.forEach(event => {
+        //     this.events.push(event);
+        // });
       })["catch"](function (error) {
         return console.error(error);
       });
@@ -17674,7 +17771,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {};
   },
-  methods: {},
+  methods: {
+    setAPIToken: function setAPIToken() {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + Laravel.apiToken;
+    }
+  },
   beforeCreate: function beforeCreate() {},
   created: function created() {
     var userID = document.querySelector("meta[name='user-id']").getAttribute("content");
@@ -95353,7 +95454,89 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _vm._m(0),
+      _c(
+        "div",
+        {
+          staticClass: "modal",
+          attrs: { id: "modalForClick", tabindex: "-1", role: "dialog" }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog", attrs: { role: "document" } },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _vm.selectedEvent != null
+                  ? _c("div", { staticClass: "modal-body" }, [
+                      _c("div", { staticClass: "card" }, [
+                        _c("p", [_vm._v("診察日程")]),
+                        _vm._v(" "),
+                        _c("p", [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(
+                                _vm._f("moment")(
+                                  _vm.selectedEvent.start,
+                                  "YYYY.MM.DD HH:mm"
+                                )
+                              ) +
+                              "\n                            ～\n                            " +
+                              _vm._s(
+                                _vm._f("moment")(_vm.selectedEvent.end, "HH:mm")
+                              ) +
+                              "\n                        "
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm.guestInfo
+                        ? _c("div", [
+                            _c("div", { staticClass: "card" }, [
+                              _c("p", [_vm._v("患者名")]),
+                              _vm._v(" "),
+                              _c("p", [_vm._v(_vm._s(_vm.guestInfo.name))])
+                            ])
+                          ])
+                        : _c("div", [_vm._m(1)])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _vm.guestInfo
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        ビデオ診療開始\n                    "
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                        閉じる\n                    "
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ]
+          )
+        ]
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -95367,37 +95550,11 @@ var render = function() {
             { staticClass: "modal-dialog", attrs: { role: "document" } },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _vm._m(1),
+                _vm._m(2),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _vm.selectedEvent != null
                     ? _c("form", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.selectedEvent.start,
-                              expression: "selectedEvent.start"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { name: "start", type: "text" },
-                          domProps: { value: _vm.selectedEvent.start },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.selectedEvent,
-                                "start",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
                         _c("input", {
                           directives: [
                             {
@@ -95473,74 +95630,30 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "modal",
-        attrs: { id: "modalForClick", tabindex: "-1", role: "dialog" }
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c("h5", { staticClass: "modal-title" }, [
-                  _vm._v("予定の編集")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: {
-                      type: "button",
-                      "data-dismiss": "modal",
-                      "aria-label": "Close"
-                    }
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("×")
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("p", [_vm._v("Modal body text goes here.")])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  { staticClass: "btn btn-primary", attrs: { type: "button" } },
-                  [
-                    _vm._v(
-                      "\n                        保存\n                    "
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                        キャンセル\n                    "
-                    )
-                  ]
-                )
-              ])
-            ])
-          ]
-        )
-      ]
-    )
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("予定の詳細")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card" }, [
+      _c("p", [_vm._v("患者情報を取得できませんでした。")])
+    ])
   },
   function() {
     var _vm = this

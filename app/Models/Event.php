@@ -6,12 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    protected $guarded = [
-        'id'
-    ];
+    protected $primaryKey = 'event_id';
 
-    protected $casts = [
-        'start' => 'datetime',
-        'end' => 'datetime',
+    protected $guarded = [
+        'event_id'
     ];
 }

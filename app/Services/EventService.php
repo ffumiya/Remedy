@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Event;
 use Carbon\Carbon;
+use Exception;
 
 class EventService extends BaseService
 {
@@ -13,7 +14,7 @@ class EventService extends BaseService
         $thisMonthFirst = Carbon::now()->firstOfMonth()->toDateString();
         $eventCount = Event::where('guest_id', $id)
             ->where('start', '>', $thisMonthFirst)->count();
-        $events = Event::where('host_id', $id)
+        $events = Event::where('guest_id', $id)
             ->where('start', '>', $thisMonthFirst)
             ->get();
         \Log::channel('trace')->info("Return {$eventCount} evemts.");
@@ -32,7 +33,31 @@ class EventService extends BaseService
             ->where('start', '>', $thisMonthFirst)
             ->orWhere('start', null)
             ->get();
-        \Log::channel('trace')->info("Return {$eventCount} evemts.");
+        \Log::channel('debug')->info($events);
+        \Log::channel('trace')->info("Return {$eventCount} events.");
         return $events;
+    }
+
+    public static function storeEvent($request)
+    {
+        \Log::channel("debug")->debug($request);
+        Event::create([
+            "id" => $request->id,
+            "host_id" => $request->host_id,
+            "guest_id" => $request->guest_id,
+            "start" => $request->start,
+            "end" => $request->end,
+            "title" => $request->title,
+        ]);
+        \Log::channel('trace')->info("Completed store event");
+    }
+
+    public static function updateEvent($request)
+    {
+        \Log::channel("debug")->debug($request);
+        Event::updateOrCreate(
+            ["id" => $request->id],
+            ["start" => $request->start, "end" => $request->end]
+        );
     }
 }

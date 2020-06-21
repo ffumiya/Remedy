@@ -10,7 +10,12 @@ export default {
     data() {
         return {};
     },
-    methods: {},
+    methods: {
+        setAPIToken() {
+            axios.defaults.headers.common["Authorization"] =
+                "Bearer " + Laravel.apiToken;
+        }
+    },
     beforeCreate() {},
     created() {
         const userID = document

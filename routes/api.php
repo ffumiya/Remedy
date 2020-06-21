@@ -28,6 +28,7 @@ Route::middleware('auth:api')->group(function () {
         // return $request->user()->role;
         return 10;
     });
+    Route::resource('/patient', 'API\PatientController')->only(['show']);
     Route::resource('/events', 'API\EventsController')->only(['store', 'show', 'update', 'destroy']);
     Route::resource('/reservation', 'API\ReservationController')->only(['show']);
 });

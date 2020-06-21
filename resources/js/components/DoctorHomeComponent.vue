@@ -47,9 +47,9 @@ export default {
             axios
                 .get(`api/events/${userID}`)
                 .then(res => {
-                    console.table(res.data);
                     this.allEvents = res.data;
                     this.allEvents.forEach(event => {
+                        console.log(event.start);
                         if (event.start != null) {
                             this.bookedEvents.push(event);
                         }
@@ -57,8 +57,6 @@ export default {
                             this.bookingEvents.push(event);
                         }
                     });
-                    console.table(this.bookedEvents);
-                    console.table(this.bookingEvents);
                 })
                 .catch(error => console.error(error));
         },

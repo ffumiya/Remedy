@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Services\EventService;
+use App\Services\PatientService;
 use Illuminate\Http\Request;
 
-class EventsController extends Controller
+class PatientController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,6 +19,16 @@ class EventsController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -27,8 +36,7 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        \Log::channel("trace")->info("Request POST /events.");
-        return EventService::storeEvent($request);
+        //
     }
 
     /**
@@ -39,21 +47,20 @@ class EventsController extends Controller
      */
     public function show($id)
     {
-        \Log::channel('trace')->info("Request GET /events/{$id}.");
-        $role = User::find($id)->role;
+        \Log::channel('trace')->info("Request GET /patient/{$id}.");
+        return PatientService::getPatientInfo($id);
+        // \Log::channel('debug')->info($request);
+    }
 
-        $events = null;
-
-        if ($role >= config('role.doctor.value')) {
-            $events = EventService::getDoctorEvents($id);
-        }
-        if ($role < config('role.doctor.value')) {
-            $events = EventService::getPatientEvents($id);
-        }
-
-        $json = json_encode($events);
-        \Log::channel('debug')->info($json);
-        return $json;
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -65,9 +72,7 @@ class EventsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        \Log::channel('trace')->info("Request PUT /events/{$id}.");
-        return EventService::updateEvent($request);
-        \Log::channel('debug')->info($request);
+        //
     }
 
     /**

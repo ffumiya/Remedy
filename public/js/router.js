@@ -158,7 +158,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {};
   },
-  methods: {},
+  methods: {
+    setAPIToken: function setAPIToken() {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + Laravel.apiToken;
+    }
+  },
   beforeCreate: function beforeCreate() {},
   created: function created() {
     var userID = document.querySelector("meta[name='user-id']").getAttribute("content");

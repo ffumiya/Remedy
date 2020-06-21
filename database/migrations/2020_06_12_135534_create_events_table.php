@@ -15,15 +15,16 @@ class CreateEventsTable extends Migration
     {
         // Events object reference from https://fullcalendar.io/docs/event-object;
         Schema::create('events', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('event_id');
+            $table->string('id');
             $table->bigInteger('host_id'); // 開催者(医療機関)
-            $table->bigInteger('guest_id')->nullable(); // 患者
-            $table->string('groupId')->nullable(); // 子ID
+            $table->bigInteger('guest_id')->nullable(); //患者
+            $table->string('groupId')->default(""); // 子ID
             $table->boolean('allDay')->default(false); // 終日
-            $table->dateTime('start')->nullable();
-            $table->dateTime('end')->nullable();
+            $table->string('start')->nullable();
+            $table->string('end')->nullable();
             $table->string('title');
-            $table->string('url')->nullable();
+            $table->string('url')->default("");
             $table->string('classNames')->nullable();
             $table->boolean('editable')->default(true);
             $table->boolean('startEditable')->default(true);
@@ -36,7 +37,7 @@ class CreateEventsTable extends Migration
             $table->string('backgroundColor')->nullable();
             $table->string('borderColor')->nullable();
             $table->string('textColor')->nullable();
-            $table->string('extendedProps')->nullable();
+            $table->bigInteger('extendedProps')->nullable();
             $table->string('source')->nullable();
             $table->softDeletes();
             $table->timestamps();
