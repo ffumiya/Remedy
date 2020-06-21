@@ -12,10 +12,12 @@ const router = new VueRouter({
     routes: [
         {
             path: "/home",
+            name: "home",
             component: Home
         },
         {
-            path: "/payment",
+            path: "/payment/:id",
+            name: "payment",
             component: Payment
         },
         {

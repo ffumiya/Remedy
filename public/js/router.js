@@ -15900,9 +15900,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: "history",
   routes: [{
     path: "/home",
+    name: "home",
     component: _views_Home_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   }, {
-    path: "/payment",
+    path: "/payment/:id",
+    name: "payment",
     component: _views_Payment_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     path: "*",

@@ -17096,6 +17096,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -17103,7 +17109,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      events: []
+      events: [],
+      userid: 1
     };
   },
   methods: {
@@ -17112,10 +17119,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("api/events/".concat(userID)).then(function (res) {
         console.table(res.data);
-        _this.events = res.data; // this.allEvents = res.data;
-        // this.allEvents.forEach(event => {
-        //     this.events.push(event);
-        // });
+        _this.events = res.data;
       })["catch"](function (error) {
         return console.error(error);
       });
@@ -17694,6 +17698,54 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     if (this.room) {
       this.closeRoom();
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StripeComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/StripeComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      eventID: null
+    };
+  },
+  methods: {
+    pay: function pay() {
+      var _this = this;
+
+      axios.post("/api/events/".concat(this.eventID)).then(function (res) {
+        _this.$router.push({
+          name: "home"
+        });
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    },
+    setAPIToken: function setAPIToken() {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + Laravel.apiToken;
+    }
+  },
+  created: function created() {
+    this.eventID = this.$route.params.id;
+    var userID = document.querySelector("meta[name='user-id']").getAttribute("content");
+    this.setAPIToken();
   }
 });
 
@@ -95813,24 +95865,34 @@ var render = function() {
                   : _vm._e()
               ]),
               _vm._v(" "),
-              event.isPaid == null && event.start != null
-                ? _c("div", { staticClass: "col" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: { href: "/payment" }
-                      },
-                      [
-                        _vm._v(
-                          "\n                        料金お支払い\n                    "
-                        )
-                      ]
-                    )
-                  ])
+              event.paid_at == null && event.start != null
+                ? _c(
+                    "div",
+                    { staticClass: "col" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: {
+                            to: {
+                              name: "payment",
+                              params: { id: event.id }
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        料金お支払い\n                    "
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  )
                 : _vm._e(),
               _vm._v(" "),
-              event.isPaid != null && event.start != null
+              event.paid_at != null && event.start != null
                 ? _c("div", { staticClass: "col" }, [
                     _c("button", { staticClass: "btn btn-primary" }, [
                       _vm._v("ビデオ診療開始")
@@ -96078,7 +96140,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h1", [_vm._v("Stripe")])
+  return _c("div", [
+    _c("h1", [_vm._v("Stripe")]),
+    _vm._v("\n    " + _vm._s(_vm.$route.params.id) + "\n    "),
+    _c("button", { staticClass: "btn btn-primary", on: { click: _vm.pay } }, [
+      _vm._v("支払う")
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -111851,15 +111919,17 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _StripeComponent_vue_vue_type_template_id_d13450d6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StripeComponent.vue?vue&type=template&id=d13450d6& */ "./resources/js/components/StripeComponent.vue?vue&type=template&id=d13450d6&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _StripeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StripeComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/StripeComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
-  script,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _StripeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _StripeComponent_vue_vue_type_template_id_d13450d6___WEBPACK_IMPORTED_MODULE_0__["render"],
   _StripeComponent_vue_vue_type_template_id_d13450d6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
@@ -111873,6 +111943,20 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 if (false) { var api; }
 component.options.__file = "resources/js/components/StripeComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/StripeComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/StripeComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StripeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./StripeComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StripeComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StripeComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -111919,9 +112003,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: "history",
   routes: [{
     path: "/home",
+    name: "home",
     component: _views_Home_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   }, {
-    path: "/payment",
+    path: "/payment/:id",
+    name: "payment",
     component: _views_Payment_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     path: "*",

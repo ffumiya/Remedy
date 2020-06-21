@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Event;
 use Carbon\Carbon;
+use DateTime;
 use Exception;
 
 class EventService extends BaseService
@@ -59,5 +60,13 @@ class EventService extends BaseService
             ["id" => $request->id],
             ["start" => $request->start, "end" => $request->end]
         );
+    }
+
+    public static function payEvent($id)
+    {
+        $event = Event::where("id", $id)->first();
+        $event->paid_at = new DateTime();
+        $event->update();
+        return true;
     }
 }

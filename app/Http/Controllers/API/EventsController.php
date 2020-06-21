@@ -80,4 +80,10 @@ class EventsController extends Controller
     {
         //
     }
+
+    public function pay($id)
+    {
+        \Log::channel('trace')->info("Request POST /events/{$id}.");
+        return EventService::payEvent($id);
+    }
 }

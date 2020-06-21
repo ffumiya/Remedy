@@ -22,15 +22,21 @@
                     </div>
                     <div
                         class="col"
-                        v-if="event.isPaid == null && event.start != null"
+                        v-if="event.paid_at == null && event.start != null"
                     >
-                        <a href="/payment" class="btn btn-primary">
+                        <router-link
+                            v-bind:to="{
+                                name: 'payment',
+                                params: { id: event.id }
+                            }"
+                            class="btn btn-primary"
+                        >
                             料金お支払い
-                        </a>
+                        </router-link>
                     </div>
                     <div
                         class="col"
-                        v-if="event.isPaid != null && event.start != null"
+                        v-if="event.paid_at != null && event.start != null"
                     >
                         <button class="btn btn-primary">ビデオ診療開始</button>
                     </div>
@@ -47,7 +53,8 @@ export default {
     components: { moment },
     data() {
         return {
-            events: []
+            events: [],
+            userid: 1
         };
     },
     methods: {
@@ -56,10 +63,7 @@ export default {
                 .get(`api/events/${userID}`)
                 .then(res => {
                     console.table(res.data);
-                    this.allEvents = res.data;
-                    this.allEvents.forEach(event => {
-                        this.events.push(event);
-                    });
+                    this.events = res.data;
                 })
                 .catch(error => console.error(error));
         },

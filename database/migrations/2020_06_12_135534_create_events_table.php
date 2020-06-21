@@ -39,6 +39,7 @@ class CreateEventsTable extends Migration
             $table->string('textColor')->nullable();
             $table->bigInteger('extendedProps')->nullable();
             $table->string('source')->nullable();
+            $table->timestamp('paid_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
