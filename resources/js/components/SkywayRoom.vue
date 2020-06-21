@@ -177,7 +177,6 @@ export default {
         // ルーム名取得
         getRoomName: function() {
             this.roomName = this.$route.params.id;
-            alert(this.roomName);
         },
         // カメラ選択
         onChange: function() {
@@ -252,7 +251,7 @@ export default {
             });
             // 入室処理;
             this.room.on("open", () => {
-                console.log("入室しました。");
+                console.log(`Room:${this.roomName}へ入室しました。`);
             });
             // 参加処理
             this.room.on("peerJoin", peerId => {
@@ -289,6 +288,7 @@ export default {
                     remoteVideo.srcObject = null;
                     remoteVideo.remove();
                 });
+                this.$router.push({ name: "home" });
             });
             this.room.on("error", err => {
                 console.error(`room.on("error")でキャッチできるERROR : ${err}`);

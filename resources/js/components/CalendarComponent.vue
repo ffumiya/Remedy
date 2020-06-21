@@ -69,6 +69,7 @@
                             type="button"
                             class="btn btn-primary"
                             v-if="guestInfo"
+                            v-on:click="toVideo"
                         >
                             ビデオ診療開始
                         </button>
@@ -278,6 +279,13 @@ export default {
                     alert("予定の変更に失敗しました。");
                     console.error("failed to post event");
                 });
+        },
+        toVideo() {
+            jQuery("#modalForClick").modal("hide");
+            this.$router.push({
+                name: "video",
+                params: { id: this.selectedEvent.id }
+            });
         }
     },
     created() {

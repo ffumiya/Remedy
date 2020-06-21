@@ -16767,6 +16767,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //
 //
 //
+//
 __webpack_require__(/*! @fullcalendar/core/main.min.css */ "./node_modules/@fullcalendar/core/main.min.css");
 
 __webpack_require__(/*! @fullcalendar/daygrid/main.min.css */ "./node_modules/@fullcalendar/daygrid/main.min.css");
@@ -16908,6 +16909,15 @@ var Event = function Event() {
         console.error(err);
         alert("予定の変更に失敗しました。");
         console.error("failed to post event");
+      });
+    },
+    toVideo: function toVideo() {
+      jQuery("#modalForClick").modal("hide");
+      this.$router.push({
+        name: "video",
+        params: {
+          id: this.selectedEvent.id
+        }
       });
     }
   },
@@ -17390,7 +17400,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     // ルーム名取得
     getRoomName: function getRoomName() {
       this.roomName = this.$route.params.id;
-      alert(this.roomName);
     },
     // カメラ選択
     onChange: function onChange() {
@@ -17494,7 +17503,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }); // 入室処理;
 
       this.room.on("open", function () {
-        console.log("入室しました。");
+        console.log("Room:".concat(_this2.roomName, "\u3078\u5165\u5BA4\u3057\u307E\u3057\u305F\u3002"));
       }); // 参加処理
 
       this.room.on("peerJoin", function (peerId) {
@@ -17550,6 +17559,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         Array.from(remoteVideos.children).forEach(function (remoteVideo) {
           remoteVideo.srcObject = null;
           remoteVideo.remove();
+        });
+
+        _this2.$router.push({
+          name: "home"
         });
       });
       this.room.on("error", function (err) {
@@ -95569,7 +95582,8 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn btn-primary",
-                          attrs: { type: "button" }
+                          attrs: { type: "button" },
+                          on: { click: _vm.toVideo }
                         },
                         [
                           _vm._v(
