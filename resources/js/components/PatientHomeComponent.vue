@@ -38,7 +38,14 @@
                         class="col"
                         v-if="event.paid_at != null && event.start != null"
                     >
-                        <button class="btn btn-primary">ビデオ診療開始</button>
+                        <router-link
+                            v-bind:to="{
+                                name: 'video',
+                                params: { id: event.id }
+                            }"
+                            class="btn btn-primary"
+                            >ビデオ診療開始</router-link
+                        >
                     </div>
                 </div>
             </div>

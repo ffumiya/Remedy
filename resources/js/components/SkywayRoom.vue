@@ -176,7 +176,8 @@ export default {
         },
         // ルーム名取得
         getRoomName: function() {
-            this.roomName = "Remedy";
+            this.roomName = this.$route.params.id;
+            alert(this.roomName);
         },
         // カメラ選択
         onChange: function() {

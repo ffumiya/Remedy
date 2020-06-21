@@ -6,6 +6,7 @@ Vue.use(VueRouter);
 import Home from "./views/Home.vue";
 import Payment from "./views/Payment.vue";
 import NotFound from "./views/NotFound.vue";
+import Video from "./views/Video.vue";
 
 const router = new VueRouter({
     mode: "history",
@@ -19,6 +20,11 @@ const router = new VueRouter({
             path: "/payment/:id",
             name: "payment",
             component: Payment
+        },
+        {
+            path: "/video/:id",
+            name: "video",
+            component: Video
         },
         {
             path: "*",
