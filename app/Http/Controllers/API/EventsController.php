@@ -37,9 +37,9 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        \Log::channel('trace')->info("Request GET /events/{$id}.");
+        // $id = 1;
         $role = User::find($id)->role;
 
         $events = null;
@@ -65,7 +65,6 @@ class EventsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        \Log::channel('trace')->info("Request PUT /events/{$id}.");
         return EventService::updateEvent($request);
         \Log::channel('debug')->info($request);
     }
@@ -83,7 +82,6 @@ class EventsController extends Controller
 
     public function pay($id)
     {
-        \Log::channel('trace')->info("Request POST /events/{$id}.");
         return EventService::payEvent($id);
     }
 }

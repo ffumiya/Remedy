@@ -13,6 +13,10 @@ use function PHPSTORM_META\map;
 
 return [
 
+    'enable_request_log' => env('ENABLE_REQUEST_LOG', false),
+    'enable_requestbody_log' => env('ENABLE_REQUESTBODY_LOG', false),
+
+
     /*
     |--------------------------------------------------------------------------
     | Default Log Channel

@@ -47,7 +47,6 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        \Log::channel('trace')->info("Request GET /patient/{$id}.");
         return PatientService::getPatientInfo($id);
         // \Log::channel('debug')->info($request);
     }
