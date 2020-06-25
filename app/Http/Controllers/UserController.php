@@ -14,35 +14,6 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $request->flash();
-        $userRole = $request->input('user_role');
-        $userID = $request->input('user_id');
-        $userName = $request->input('user_name');
-
-        $users = null;
-
-        if (\Auth::user()->role == config('role.admin.value')) {
-            $users = \DB::table('users');
-        } else {
-            $clinicID = \Auth::user()->clinic_id;
-            $users = \DB::table('users')->where('clinic_id', $clinicID);
-        }
-
-        if (is_null($users)) {
-            return view('user.index', compact(['users']));
-        }
-
-        if (isset($userRole)) {
-            $users = $users->where('role', $userRole);
-        }
-        if (isset($userID)) {
-            $users = $users->where('id', $userID);
-        }
-        if (isset($userName)) {
-            $users = $users->where('name', 'LIKE', '%' . $userName . '%');
-        }
-        $users = $users->paginate(20);
-        return view('user.index', compact(['users']));
     }
 
     /**
@@ -52,7 +23,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
     }
 
     /**
@@ -63,16 +33,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $clinicID = \Auth::user()->clinic_id;
-        $name = $request->input('name');
-
-        \Log::info(['clinic_id' => $clinicID, 'name' => $name]);
-        User::create([
-            'name' => $name,
-            'clinic_id' => $clinicID,
-        ]);
-
-        return view('user.create');
     }
 
     /**
@@ -83,7 +43,6 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -94,7 +53,6 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
     }
 
     /**
@@ -106,7 +64,6 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
     }
 
     /**
@@ -117,6 +74,5 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
     }
 }
