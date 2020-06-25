@@ -24,8 +24,8 @@ class RequestLogger
 
         $canWriteBody = $this->canWriteBody($request);
         if ($canWriteBody) {
-            $body = implode($request->all());
-            \Log::channel('debug')->info("Request body = {$body}");
+            \Log::channel('debug')->info("Request {$request->method()} url={$request->fullurl()}");
+            \Log::channel('debug')->info($request);
         }
         return $next($request);
     }
