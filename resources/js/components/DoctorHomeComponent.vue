@@ -45,7 +45,7 @@ export default {
         },
         getEvents(userID) {
             axios
-                .get(`api/events/${userID}`)
+                .get(`api/events?userID=${userID}`)
                 .then(res => {
                     this.allEvents = res.data;
                     this.allEvents.forEach(event => {

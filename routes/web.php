@@ -22,6 +22,7 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
     // 一般ユーザー
+    Route::resource('payment', 'PaymentController')->only(["show", "update"]);
     Route::get('/home/{any?}', function () {
         return view('home');
     })->where('any', '.+');

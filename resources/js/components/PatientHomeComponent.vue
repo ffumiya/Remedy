@@ -24,7 +24,7 @@
                         class="col"
                         v-if="event.paid_at == null && event.start != null"
                     >
-                        <router-link
+                        <!-- <router-link
                             v-bind:to="{
                                 name: 'payment',
                                 params: { id: event.id }
@@ -32,7 +32,13 @@
                             class="btn btn-primary"
                         >
                             料金お支払い
-                        </router-link>
+                        </router-link> -->
+                        <a
+                            v-bind:href="`/payment/` + event.id"
+                            class="btn btn-primary"
+                        >
+                            料金お支払い
+                        </a>
                     </div>
                     <div
                         class="col"
@@ -67,7 +73,7 @@ export default {
     methods: {
         getEvents(userID) {
             axios
-                .get(`api/events/${userID}`)
+                .get(`api/events?userID=${userID}`)
                 .then(res => {
                     console.table(res.data);
                     this.events = res.data;

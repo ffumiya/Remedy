@@ -21,8 +21,8 @@ class CreateEventsTable extends Migration
             $table->bigInteger('guest_id')->nullable(); //患者
             $table->string('groupId')->default(""); // 子ID
             $table->boolean('allDay')->default(false); // 終日
-            $table->string('start')->nullable();
-            $table->string('end')->nullable();
+            $table->timestamp('start')->nullable();
+            $table->timestamp('end')->nullable();
             $table->string('title');
             $table->string('url')->default("");
             $table->string('classNames')->nullable();
@@ -39,6 +39,7 @@ class CreateEventsTable extends Migration
             $table->string('textColor')->nullable();
             $table->bigInteger('extendedProps')->nullable();
             $table->string('source')->nullable();
+            $table->bigInteger('price')->default(0);
             $table->timestamp('paid_at')->nullable();
             $table->softDeletes();
             $table->timestamps();

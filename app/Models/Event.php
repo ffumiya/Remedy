@@ -11,4 +11,9 @@ class Event extends Model
     protected $guarded = [
         'event_id'
     ];
+
+    protected $dates = [
+        'start',
+        'end'
+    ];
 }

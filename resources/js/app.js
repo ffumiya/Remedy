@@ -10,10 +10,8 @@ window.Vue = require("vue");
 
 import SkywayRoom from "./components/SkywayRoom.vue";
 import FullCalendarComponent from "./components/CalendarComponent.vue";
-import ReservationComponent from "./components/ReservationComponent.vue";
 import DoctorHomeComponent from "./components/DoctorHomeComponent.vue";
 import PatientHomeComponent from "./components/PatientHomeComponent.vue";
-import StripeComponent from "./components/StripeComponent.vue";
 
 import router from "./router";
 
@@ -30,10 +28,8 @@ import router from "./router";
 
 Vue.component("video-component", SkywayRoom);
 Vue.component("calendar-component", FullCalendarComponent);
-Vue.component("reservation-component", ReservationComponent);
 Vue.component("doctor-home-component", DoctorHomeComponent);
 Vue.component("patient-home-component", PatientHomeComponent);
-Vue.component("stripe-component", StripeComponent);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -13,6 +13,7 @@
             :selectable="true"
             :dropable="true"
             :locale="locale"
+            :timeZone="timeZone"
             :eventTimeFormat="eventTimeFormat"
             :defaultView="defaultView"
             :height="height"
@@ -64,14 +65,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer" v-if="selectedEvent">
                         <button
                             type="button"
                             class="btn btn-primary"
-                            v-if="guestInfo"
+                            v-if="guestInfo && selectedEvent.paid_at != null"
                             v-on:click="toVideo"
                         >
                             ビデオ診療開始
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            v-if="!selectedEvent.paid_at"
+                            disabled
+                        >
+                            {{ selectedEvent.paid_at }}
+                            料金支払い待ち
                         </button>
                         <button
                             type="button"
@@ -103,18 +113,19 @@
                     </div>
                     <div class="modal-body">
                         <form v-if="selectedEvent != null">
-                            <!-- <input
-                                name="start"
-                                type="text"
-                                class="form-control"
-                                v-model="selectedEvent.start"
-                            /> -->
                             <input
                                 name="title"
                                 type="text"
                                 class="form-control"
                                 placeholder="タイトルを入力"
                                 v-model="selectedEvent.title"
+                            />
+                            <input
+                                type="number"
+                                name="price"
+                                class="form-control"
+                                placeholder="金額を入力"
+                                v-model="selectedEvent.price"
                             />
                         </form>
                     </div>
@@ -153,8 +164,6 @@ import interactionPlugin from "@fullcalendar/interaction";
 import jaLocale from "@fullcalendar/core/locales/ja"; // 日本語化用
 import axios from "axios";
 import moment from "moment";
-
-class Event {}
 
 export default {
     props: {
@@ -250,13 +259,19 @@ export default {
             }
         },
         buildEvent() {
+            var price = this.getPrice();
+            var paid_at = this.getPaidAt();
             return {
                 id: this.getOnetime_token(),
                 host_id: this.userID,
                 guest_id: 1,
                 title: this.selectedEvent.title,
                 start: this.selectedEvent.start,
+                // start: new Date(),
                 end: this.selectedEvent.end,
+                extendedProps: this.selectedEvent.extendedProps,
+                price: price,
+                paid_at: paid_at,
                 selectable: true,
                 editable: true
             };
@@ -286,6 +301,24 @@ export default {
                 name: "video",
                 params: { id: this.selectedEvent.id }
             });
+        },
+        getPaidAt() {
+            try {
+                if (this.selectedEvent.paid_at) {
+                    return this.selectedEvent.paid_at;
+                }
+            } catch (e) {
+                return null;
+            }
+        },
+        getPrice() {
+            try {
+                if (this.selectedEvent.price) {
+                    return this.selectedEvent.price;
+                }
+            } catch (e) {
+                return 0;
+            }
         }
     },
     created() {

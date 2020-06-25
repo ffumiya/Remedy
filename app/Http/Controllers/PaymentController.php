@@ -1,34 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Services\EventService;
 use Illuminate\Http\Request;
 
-class EventsController extends Controller
+class PaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $id = \Auth::id();
-        $role = User::find($id)->role;
-        $events = null;
+        //
+    }
 
-        if ($role >= config('role.doctor.value')) {
-            $events = EventService::getDoctorEvents($id);
-        }
-        if ($role < config('role.doctor.value')) {
-            $events = EventService::getPatientEvents($id);
-        }
-
-        \Log::channel('debug')->info($events);
-        return $events;
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -39,7 +34,7 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        return EventService::storeEvent($request);
+        //
     }
 
     /**
@@ -48,10 +43,20 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
-        $event = EventService::getEvent($id);
-        return $event;
+        return view("payment.show");
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -63,7 +68,7 @@ class EventsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return EventService::updateEvent($request);
+        //
     }
 
     /**
@@ -75,10 +80,5 @@ class EventsController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function pay($id)
-    {
-        return EventService::payEvent($id);
     }
 }

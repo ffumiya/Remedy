@@ -26,10 +26,10 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::get('/role/{id}', function (Request $request) {
         // return $request->user()->role;
-        return 10;
+        return config('role.patient.value');
     });
     Route::resource('/patient', 'API\PatientController')->only(['show']);
-    Route::resource('/events', 'API\EventsController')->only(['store', 'show', 'update', 'destroy']);
+    Route::resource('/events', 'API\EventsController')->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::post('/events/{id}', 'API\EventsController@pay');
     Route::resource('/reservation', 'API\ReservationController')->only(['show']);
 });
