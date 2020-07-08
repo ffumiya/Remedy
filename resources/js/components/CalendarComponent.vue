@@ -13,7 +13,6 @@
             :selectable="true"
             :dropable="true"
             :locale="locale"
-            :timeZone="timeZone"
             :eventTimeFormat="eventTimeFormat"
             :defaultView="defaultView"
             :height="height"
@@ -182,6 +181,7 @@ export default {
             calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
             locale: jaLocale,
             timeZone: "Asia/Tokyo",
+            // timeZone: "",
             eventTimeFormat: { hour: "numeric", minute: "2-digit" },
             businessHours: true,
             defaultView: "timeGridWeek",

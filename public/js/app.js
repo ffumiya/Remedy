@@ -16776,7 +16776,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 __webpack_require__(/*! @fullcalendar/core/main.min.css */ "./node_modules/@fullcalendar/core/main.min.css");
 
 __webpack_require__(/*! @fullcalendar/daygrid/main.min.css */ "./node_modules/@fullcalendar/daygrid/main.min.css");
@@ -16808,6 +16807,7 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
       calendarPlugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__["default"], _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_2__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_3__["default"]],
       locale: _fullcalendar_core_locales_ja__WEBPACK_IMPORTED_MODULE_4___default.a,
       timeZone: "Asia/Tokyo",
+      // timeZone: "",
       eventTimeFormat: {
         hour: "numeric",
         minute: "2-digit"
@@ -95439,7 +95439,6 @@ var render = function() {
           selectable: true,
           dropable: true,
           locale: _vm.locale,
-          timeZone: _vm.timeZone,
           eventTimeFormat: _vm.eventTimeFormat,
           defaultView: _vm.defaultView,
           height: _vm.height,

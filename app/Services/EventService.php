@@ -54,12 +54,18 @@ class EventService extends BaseService
             $price = $request->price;
         }
 
+        //TODO: FullCalendarの時間が9時間ずれる問題
+        $start = new Carbon($request->start);
+        $start->addHour(9);
+        $end = new Carbon($request->end);
+        $end->addHour(9);
+
         Event::create([
             "id" => $request->id,
             "host_id" => $request->host_id,
             "guest_id" => $request->guest_id,
-            "start" => $request->start,
-            "end" => $request->end,
+            "start" => $start,
+            "end" => $end,
             "title" => $request->title,
             "price" => $price
         ]);
