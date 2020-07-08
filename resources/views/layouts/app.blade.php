@@ -24,9 +24,27 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+
+    <!-- ここから追記分 --!>
+
+    <!-- Favicons -->
+    <link href="{{ asset('img/icon.png') }}" rel="icon">
+    <link href="{{ asset('img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:Lato:300,400,700,300italic,400italic|Raleway:400,300,700" rel="stylesheet">
+
+    <!-- Bootstrap CSS File -->
+    <link href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Libraries CSS Files -->
+    <link href="{{ asset('lib/icomoon/icomoon.css') }}" rel="stylesheet">
+
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
+
+    <!-- ここまで追記分 --!>
 
 <body>
     <div id="app">
@@ -96,7 +114,9 @@
     </nav> --}}
 
     <main>
+        @yield('header')
         @yield('content')
+        @yield('footer')
     </main>
     </div>
 </body>
