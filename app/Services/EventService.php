@@ -77,7 +77,7 @@ class EventService extends BaseService
     public static function payEvent($id)
     {
         $event = Event::where("id", $id)->first();
-        $event->paid_at = new DateTime();
+        $event->payment_method_id = $id;
         $event->update();
         return true;
     }

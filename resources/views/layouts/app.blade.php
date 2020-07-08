@@ -12,7 +12,13 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script type="text/javascript" src="{{ asset('js/app.js') }}" defer></script>
+    <script defer>
+        window.Laravel = {!! json_encode([
+            'apiToken' => \Auth::user()->api_token ?? null
+        ]) !!};
+    </script>
+    @yield('script')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -94,10 +100,7 @@
     </main>
     </div>
 </body>
-<script>
-    window.Laravel = {!! json_encode([
-        'apiToken' => \Auth::user()->api_token ?? null
-    ]) !!};
-</script>
+
+
 
 </html>

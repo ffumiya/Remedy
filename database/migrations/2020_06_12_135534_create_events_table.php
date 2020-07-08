@@ -40,7 +40,7 @@ class CreateEventsTable extends Migration
             $table->bigInteger('extendedProps')->nullable();
             $table->string('source')->nullable();
             $table->bigInteger('price')->default(0);
-            $table->timestamp('paid_at')->nullable();
+            $table->timestamp('payment_method_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

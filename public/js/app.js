@@ -17153,6 +17153,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -95861,7 +95867,7 @@ var render = function() {
                   : _vm._e()
               ]),
               _vm._v(" "),
-              event.paid_at == null && event.start != null
+              event.payment_method_id == null && event.start != null
                 ? _c("div", { staticClass: "col" }, [
                     _c(
                       "a",
@@ -95878,7 +95884,7 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
-              event.paid_at != null && event.start != null
+              event.payment_method_id != null && event.start != null
                 ? _c(
                     "div",
                     { staticClass: "col" },

@@ -22,7 +22,10 @@
                     </div>
                     <div
                         class="col"
-                        v-if="event.paid_at == null && event.start != null"
+                        v-if="
+                            event.payment_method_id == null &&
+                                event.start != null
+                        "
                     >
                         <!-- <router-link
                             v-bind:to="{
@@ -42,7 +45,10 @@
                     </div>
                     <div
                         class="col"
-                        v-if="event.paid_at != null && event.start != null"
+                        v-if="
+                            event.payment_method_id != null &&
+                                event.start != null
+                        "
                     >
                         <router-link
                             v-bind:to="{
