@@ -93,12 +93,8 @@
                                 <label for="clinic"
                                     >診療を希望する病院を選択してください。</label
                                 >
-                                <select
-                                    name="clinic"
-                                    class="form-control"
-                                    disabled
-                                >
-                                    <option value="0" selected
+                                <select name="clinic" class="form-control">
+                                    <option value="0" selected disabled
                                         >Remedy病院</option
                                     >
                                 </select>
@@ -106,12 +102,9 @@
                                     >診療を希望する医師を選択してください。</label
                                 >
                                 <select name="doctor" class="form-control">
-                                    <option value="" disabled selected
-                                        >---医師を選択してください---</option
+                                    <option value="23" disabled selected
+                                        >doctor先生</option
                                     >
-                                    <option value="0">○○先生</option>
-                                    <option value="1">△△先生</option>
-                                    <option value="2">××先生</option>
                                 </select>
                                 <label for="date"
                                     >診療を希望する日時を選択してください。<small
@@ -157,6 +150,10 @@
 <script>
 import moment from "moment";
 
+const userID = document
+    .querySelector("meta[name='user-id']")
+    .getAttribute("content");
+
 export default {
     components: { moment },
     data() {
@@ -191,9 +188,12 @@ export default {
             }
             this.event.date.err = null;
 
-            this.sendNewEvent();
-            jQuery("#modalForSelect").modal("hide");
-            this.initializeEvent();
+            const sended = this.sendNewEvent();
+            if (sended) {
+                this.getEvents(userID);
+                jQuery("#modalForCreate").modal("hide");
+                this.initializeEvent();
+            }
         },
         initializeEvent() {
             this.event = {
@@ -214,23 +214,22 @@ export default {
             };
         },
         sendNewEvent() {
-            axios
+            return axios
                 .post("/api/event", Object.assign({}, this.event))
                 .then(res => {
                     this.events.push(event);
                     console.log("completed post event");
+                    return true;
                 })
                 .catch(err => {
                     console.error(err);
                     alert("オンライン診療の申込に失敗しました。");
                     console.error("failed to post event");
+                    return false;
                 });
         }
     },
     created() {
-        const userID = document
-            .querySelector("meta[name='user-id']")
-            .getAttribute("content");
         this.setAPIToken();
         this.getEvents(userID);
         this.initializeEvent();
