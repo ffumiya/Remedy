@@ -1,0 +1,13 @@
+{
+    "Register": "新規登録",
+    "Login": "ログイン",
+    "Name": "名前",
+    "E-Mail Address": "メールアドレス",
+    "Password": "パスワード",
+    "Confirm Password": "パスワード(確認)",
+    "Remember Me": "ログイン情報を記憶させる",
+    "Forgot Your Password?": "パスワードを忘れた方",
+    "Verify Your Email Address": "登録したメールアドレス",
+    "A fresh verification link has been sent to your email address.": "入力したメールアドレスに認証メールを送りました。",
+    "Please confirm your password before continuing.": "続けるにはパスワードを入力してください。"
+}
