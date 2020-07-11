@@ -52,23 +52,19 @@
                                 {{ selectedEvent.end | moment("HH:mm") }}
                             </p>
                         </div>
-                        <div v-if="guestInfo">
-                            <div class="card">
-                                <p>患者名</p>
-                                <p>{{ guestInfo.name }}</p>
-                            </div>
-                        </div>
-                        <div v-else>
-                            <div class="card">
-                                <p>患者情報を取得できませんでした。</p>
-                            </div>
+                        <div class="card">
+                            <p>患者名</p>
+                            <p>{{ selectedEvent.extendedProps.name }}</p>
                         </div>
                     </div>
                     <div class="modal-footer" v-if="selectedEvent">
                         <button
                             type="button"
                             class="btn btn-primary"
-                            v-if="guestInfo && selectedEvent.paid_at != null"
+                            v-if="
+                                selectedEvent.extendedProps.payment_method_id !=
+                                    null
+                            "
                             v-on:click="toVideo"
                         >
                             ビデオ診療開始
@@ -76,10 +72,12 @@
                         <button
                             type="button"
                             class="btn btn-primary"
-                            v-if="!selectedEvent.paid_at"
+                            v-if="
+                                !selectedEvent.extendedProps.payment_method_id
+                            "
                             disabled
                         >
-                            {{ selectedEvent.paid_at }}
+                            {{ selectedEvent.extendedProps.payment_method_id }}
                             料金支払い待ち
                         </button>
                         <button
@@ -200,6 +198,7 @@ export default {
         handleDateClick(arg) {},
         handleEventClick(arg) {
             this.selectedEvent = arg.event;
+            console.log(this.selectedEvent);
             axios
                 .get(
                     `/api/patient/${this.selectedEvent.extendedProps.guest_id}`
@@ -260,7 +259,7 @@ export default {
         },
         buildEvent() {
             var price = this.getPrice();
-            var paid_at = this.getPaidAt();
+            var payment_method_id = this.getPaidAt();
             return {
                 id: this.getOnetime_token(),
                 host_id: this.userID,
@@ -271,7 +270,7 @@ export default {
                 end: this.selectedEvent.end,
                 extendedProps: this.selectedEvent.extendedProps,
                 price: price,
-                paid_at: paid_at,
+                payment_method_id: payment_method_id,
                 selectable: true,
                 editable: true
             };
@@ -304,8 +303,8 @@ export default {
         },
         getPaidAt() {
             try {
-                if (this.selectedEvent.paid_at) {
-                    return this.selectedEvent.paid_at;
+                if (this.selectedEvent.payment_method_id) {
+                    return this.selectedEvent.payment_method_id;
                 }
             } catch (e) {
                 return null;

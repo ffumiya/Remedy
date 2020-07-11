@@ -16774,8 +16774,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 __webpack_require__(/*! @fullcalendar/core/main.min.css */ "./node_modules/@fullcalendar/core/main.min.css");
 
 __webpack_require__(/*! @fullcalendar/daygrid/main.min.css */ "./node_modules/@fullcalendar/daygrid/main.min.css");
@@ -16831,6 +16829,7 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
       var _this = this;
 
       this.selectedEvent = arg.event;
+      console.log(this.selectedEvent);
       axios__WEBPACK_IMPORTED_MODULE_5___default.a.get("/api/patient/".concat(this.selectedEvent.extendedProps.guest_id)).then(function (res) {
         _this.guestInfo = res.data;
         console.log("Get patient data");
@@ -16886,7 +16885,7 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
     },
     buildEvent: function buildEvent() {
       var price = this.getPrice();
-      var paid_at = this.getPaidAt();
+      var payment_method_id = this.getPaidAt();
       return {
         id: this.getOnetime_token(),
         host_id: this.userID,
@@ -16897,7 +16896,7 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
         end: this.selectedEvent.end,
         extendedProps: this.selectedEvent.extendedProps,
         price: price,
-        paid_at: paid_at,
+        payment_method_id: payment_method_id,
         selectable: true,
         editable: true
       };
@@ -16932,8 +16931,8 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
     },
     getPaidAt: function getPaidAt() {
       try {
-        if (this.selectedEvent.paid_at) {
-          return this.selectedEvent.paid_at;
+        if (this.selectedEvent.payment_method_id) {
+          return this.selectedEvent.payment_method_id;
         }
       } catch (e) {
         return null;
@@ -17027,6 +17026,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -17048,11 +17049,10 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get("api/events?userID=".concat(userID)).then(function (res) {
+        console.log(res);
         _this.allEvents = res.data;
 
         _this.allEvents.forEach(function (event) {
-          console.log(event.start);
-
           if (event.start != null) {
             _this.bookedEvents.push(event);
           }
@@ -17091,6 +17091,18 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -17298,7 +17310,7 @@ __webpack_require__.r(__webpack_exports__);
     sendNewEvent: function sendNewEvent() {
       var _this2 = this;
 
-      axios.post("/api/event", Object.assign({}, event)).then(function (res) {
+      axios.post("/api/event", Object.assign({}, this.event)).then(function (res) {
         _this2.events.push(event);
 
         console.log("completed post event");
@@ -95619,21 +95631,19 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _vm.guestInfo
-                        ? _c("div", [
-                            _c("div", { staticClass: "card" }, [
-                              _c("p", [_vm._v("患者名")]),
-                              _vm._v(" "),
-                              _c("p", [_vm._v(_vm._s(_vm.guestInfo.name))])
-                            ])
-                          ])
-                        : _c("div", [_vm._m(1)])
+                      _c("div", { staticClass: "card" }, [
+                        _c("p", [_vm._v("患者名")]),
+                        _vm._v(" "),
+                        _c("p", [
+                          _vm._v(_vm._s(_vm.selectedEvent.extendedProps.name))
+                        ])
+                      ])
                     ])
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.selectedEvent
                   ? _c("div", { staticClass: "modal-footer" }, [
-                      _vm.guestInfo && _vm.selectedEvent.paid_at != null
+                      _vm.selectedEvent.extendedProps.payment_method_id != null
                         ? _c(
                             "button",
                             {
@@ -95649,7 +95659,7 @@ var render = function() {
                           )
                         : _vm._e(),
                       _vm._v(" "),
-                      !_vm.selectedEvent.paid_at
+                      !_vm.selectedEvent.extendedProps.payment_method_id
                         ? _c(
                             "button",
                             {
@@ -95659,7 +95669,10 @@ var render = function() {
                             [
                               _vm._v(
                                 "\n                        " +
-                                  _vm._s(_vm.selectedEvent.paid_at) +
+                                  _vm._s(
+                                    _vm.selectedEvent.extendedProps
+                                      .payment_method_id
+                                  ) +
                                   "\n                        料金支払い待ち\n                    "
                               )
                             ]
@@ -95698,7 +95711,7 @@ var render = function() {
             { staticClass: "modal-dialog", attrs: { role: "document" } },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _vm._m(2),
+                _vm._m(1),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _vm.selectedEvent != null
@@ -95829,14 +95842,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("p", [_vm._v("患者情報を取得できませんでした。")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
       _c("h5", { staticClass: "modal-title" }, [_vm._v("予定の新規作成")]),
       _vm._v(" "),
@@ -95892,7 +95897,11 @@ var render = function() {
           "div",
           _vm._l(_vm.bookingEvents, function(event) {
             return _c("div", { key: event.id, staticClass: "card" }, [
-              _c("p", [_vm._v(_vm._s(event.title))])
+              _c("p", [_vm._v("患者ID：" + _vm._s(event.id))]),
+              _vm._v(" "),
+              _c("p", [_vm._v("患者名：" + _vm._s(event.name) + " 様")]),
+              _vm._v(" "),
+              _c("p", [_vm._v("希望時間：" + _vm._s(event.desired_time))])
             ])
           }),
           0
@@ -95949,7 +95958,15 @@ var render = function() {
       [
         _c("h3", [_vm._v("予約一覧")]),
         _vm._v(" "),
-        _c("h3", [_vm._v("あなたの担当医：初診申し込み後に決定します。")]),
+        _vm.events.length == 0
+          ? _c("div", [
+              _c("h4", [_vm._v("現在の予定はありません。")]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v("医師から診療予定が追加されるまでお待ちください。")
+              ])
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _vm._l(_vm.events, function(event) {
           return _c("div", { key: event.id, staticClass: "card" }, [
@@ -95959,7 +95976,10 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "col" }, [
-                _vm._v("担当医：" + _vm._s(event.host_id))
+                _vm._v("\n                    担当医：\n                    "),
+                event.host_id
+                  ? _c("span", [_vm._v(_vm._s(event.host_id))])
+                  : _c("span", [_vm._v("調整中")])
               ])
             ]),
             _vm._v(" "),
@@ -95968,25 +95988,63 @@ var render = function() {
                 _vm._v(
                   "\n                    開始時間：\n                    "
                 ),
-                event.start != null
-                  ? _c("span", [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(
-                            _vm._f("moment")(event.start, "MM/DD HH:mm~")
-                          ) +
-                          "\n                    "
-                      )
-                    ])
-                  : _vm._e(),
+                _c(
+                  "span",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: event.start,
+                        expression: "event.start"
+                      }
+                    ]
+                  },
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm._f("moment")(event.start, "MM/DD HH:mm~")) +
+                        "\n                    "
+                    )
+                  ]
+                ),
                 _vm._v(" "),
-                event.start == null
-                  ? _c("span", [
-                      _vm._v(
-                        "\n                        日程調整中\n                    "
-                      )
-                    ])
-                  : _vm._e()
+                _c(
+                  "span",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !event.start,
+                        expression: "!event.start"
+                      }
+                    ]
+                  },
+                  [
+                    _vm._v(
+                      "\n                        日程調整中\n                        "
+                    ),
+                    _c(
+                      "span",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: event.desired_time,
+                            expression: "event.desired_time"
+                          }
+                        ]
+                      },
+                      [
+                        _vm._v("(希望時間：\n                            "),
+                        _c("span", [_vm._v(_vm._s(event.desired_time))]),
+                        _vm._v("\n                            ~)")
+                      ]
+                    )
+                  ]
+                )
               ]),
               _vm._v(" "),
               event.payment_method_id == null && event.start != null
