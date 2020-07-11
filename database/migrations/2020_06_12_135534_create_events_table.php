@@ -22,8 +22,9 @@ class CreateEventsTable extends Migration
             $table->bigInteger('guest_id')->nullable(); //患者
             $table->string('groupId')->default(""); // 子ID
             $table->boolean('allDay')->default(false); // 終日
-            $table->timestamp('start')->nullable();
-            $table->timestamp('end')->nullable();
+            $table->timestamp('start')->nullable(); //開始時間
+            $table->timestamp('desired_time')->nullable(); //希望開始時間
+            $table->timestamp('end')->nullable(); //終了時間
             $table->string('title');
             $table->string('url')->default("");
             $table->string('classNames')->nullable();

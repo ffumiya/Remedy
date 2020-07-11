@@ -59,8 +59,8 @@ class EventService extends BaseService
         $start->addHour(9);
         $end = new Carbon($request->end);
         $end->addHour(9);
-
         Event::create([
+
             "id" => $request->id,
             "host_id" => $request->host_id,
             "guest_id" => $request->guest_id,
@@ -83,9 +83,15 @@ class EventService extends BaseService
 
     public static function updateEvent($request)
     {
+        //TODO: FullCalendarの時間が9時間ずれる問題
+        $start = new Carbon($request->start);
+        $start->addHour(9);
+        $end = new Carbon($request->end);
+        $end->addHour(9);
+
         Event::updateOrCreate(
             ["id" => $request->id],
-            ["start" => $request->start, "end" => $request->end]
+            ["start" => $start, "end" => $end]
         );
     }
 
@@ -99,10 +105,12 @@ class EventService extends BaseService
 
     public static function applicationEvent($request)
     {
+        $date = $request->date["datetime"];
+
         $datetime = time();
         Event::updateOrCreate(
             ["id" => $datetime],
-            ["guest_id" => \Auth::id(), "start" => $request->date]
+            ["guest_id" => \Auth::id(), "desired_time" => $date]
         );
         \Log::channel('trace')->info("Applicated new event");
     }

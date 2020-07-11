@@ -3,22 +3,34 @@
         <h1>Remedy</h1>
         <div>
             <h3>予約一覧</h3>
-            <h3>あなたの担当医：初診申し込み後に決定します。</h3>
+            <div v-if="events.length == 0">
+                <h4>現在の予定はありません。</h4>
+                <p>医師から診療予定が追加されるまでお待ちください。</p>
+            </div>
             <div class="card" v-for="event in events" v-bind:key="event.id">
                 <div class="row">
                     <div class="col">
                         <p>{{ event.title }}</p>
                     </div>
-                    <div class="col">担当医：{{ event.host_id }}</div>
+                    <div class="col">
+                        担当医：
+                        <span v-if="event.host_id">{{ event.host_id }}</span>
+                        <span v-else>調整中</span>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         開始時間：
-                        <span v-if="event.start != null">
+                        <span v-show="event.start">
                             {{ event.start | moment("MM/DD HH:mm~") }}
                         </span>
-                        <span v-if="event.start == null">
+                        <span v-show="!event.start">
                             日程調整中
+                            <span v-show="event.desired_time"
+                                >(希望時間：
+                                <span>{{ event.desired_time }}</span>
+                                ~)</span
+                            >
                         </span>
                     </div>
                     <div
@@ -203,7 +215,7 @@ export default {
         },
         sendNewEvent() {
             axios
-                .post("/api/event", Object.assign({}, event))
+                .post("/api/event", Object.assign({}, this.event))
                 .then(res => {
                     this.events.push(event);
                     console.log("completed post event");
