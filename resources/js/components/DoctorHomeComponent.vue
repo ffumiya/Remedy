@@ -20,7 +20,6 @@
             </div>
         </div>
         <div class="col-xs-12 col-md-6 bg-white">
-            <h1>カレンダーコンポーネント</h1>
             <calendar-component :events="bookedEvents" />
         </div>
     </div>
