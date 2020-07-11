@@ -1,11 +1,15 @@
 @extends('layouts.app')
 
+@section('style')
+<link href="{{ asset('css/style.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 
 
-  <!-- ==== GREYWRAP ==== -->
+<!-- ==== GREYWRAP ==== -->
 
-  <!-- <div id="greywrap"></div>
+<!-- <div id="greywrap"></div>
     <div class="row">
       <div class="col-lg-4 callout">
         <span class="icon icon-stack"></span>
@@ -27,11 +31,11 @@
     </div>
   </div> -->
 
-  <!-- greywrap -->
+<!-- greywrap -->
 
-  <!-- ==== ABOUT ==== -->
+<!-- ==== ABOUT ==== -->
 
-  <!-- <div class="container" id="about" name="about">
+<!-- <div class="container" id="about" name="about">
     <div class="row white">
       <br>
       <h1 class="centered">A LITTLE ABOUT OUR AGENCY</h1>
@@ -51,11 +55,11 @@
     </div>
   </div> -->
 
-  <!-- container -->
+<!-- container -->
 
-  <!-- ==== SECTION DIVIDER1 -->
+<!-- ==== SECTION DIVIDER1 -->
 
-  <!-- <section class="section-divider textdivider divider1">
+<!-- <section class="section-divider textdivider divider1">
     <div class="container">
       <h1>DESIGN EXPAND BOUNDARIES</h1>
       <hr>
@@ -63,12 +67,12 @@
     </div>
   </section> -->
 
-  <!-- section -->
+<!-- section -->
 
 
-  <!-- ==== SERVICES ==== -->
-  <!-- <div class="container" id="services" name="services"> -->
-  <!--
+<!-- ==== SERVICES ==== -->
+<!-- <div class="container" id="services" name="services"> -->
+<!--
     <br>
     <br>
     <div class="row">
@@ -85,75 +89,75 @@
       </div>
     </div> -->
 
-    <!-- <div class="row"> -->
-      <!-- <h2 class="centered">MOBILE FIRST THINKING, ALWAYS.</h2>
+<!-- <div class="row"> -->
+<!-- <h2 class="centered">MOBILE FIRST THINKING, ALWAYS.</h2>
       <hr>
       <br> -->
 
-      <!--<div class="col-lg-offset-2 col-lg-8">-->
+<!--<div class="col-lg-offset-2 col-lg-8">-->
 
 
 
-  <!-- <section class="section-divider textdivider divider6"> -->
+<!-- <section class="section-divider textdivider divider6"> -->
 
-    <!--ヘッダー（PC版）ー-->
-    <div class="remedy-pc">    
+<!--ヘッダー（PC版）ー-->
+<div class="remedy-pc">
     <section class="section-divider1 textdivider divider11">
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-5" style="text-align: left;">
-          <!-- <br><br><br><br/><br/><br/><h2 style="color:#1466b8">Remedy</h2>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-5" style="text-align: left;">
+                    <!-- <br><br><br><br/><br/><br/><h2 style="color:#1466b8">Remedy</h2>
           <p>セカンドオピニオンに特化した</br/>オンライン診療サービス</p>
           <p><a class="btn btn-primary">無償試験導入希望の方はこちら</a></p>  -->
-          <!-- <p><a class="btn btn-primary">無償試験導入希望の方はこちら</a></p>  -->
-        </div>
+                    <!-- <p><a class="btn btn-primary">無償試験導入希望の方はこちら</a></p>  -->
+                </div>
 
-        <!-- <div class="col-xs-6 col-xs-offset-6 centered"><br/><br/><br/>
+                <!-- <div class="col-xs-6 col-xs-offset-6 centered"><br/><br/><br/>
           <img class="img-responsive" src="{{ asset('img/remedy-pc/header_pc.png') }}"" align="">
         </div> -->
-      </div>
-      </section>
-    </div>
-    </div>
-  </div>
-  
-    <!--3つの特徴（PC版）ー-->
-    <div class="remedy-pc">
+            </div>
+    </section>
+</div>
+</div>
+</div>
+
+<!--3つの特徴（PC版）ー-->
+<div class="remedy-pc">
     <div class="row">
-        <div class="col-xs-4 col-xs-offset-4 centered" >
-        <!-- <div style="text-align: center;"> -->
-          <img class="img-responsive" src="{{ asset('img/remedy-pc/whatremedy.png') }}" align=""><br>
+        <div class="col-xs-4 col-xs-offset-4 centered">
+            <!-- <div style="text-align: center;"> -->
+            <img class="img-responsive" src="{{ asset('img/remedy-pc/whatremedy.png') }}" align=""><br>
 
         </div>
         <div class="col-xs-4"></div>
         <div class="col-xs-10 col-xs-offset-1 centered">
-        <p style="font-size: 20px; color: black; font-weight: 600;">セカンドオピニオン特化型オンライン診療サービスです。病院・医師の皆様が全国の<br>
-        オンラインセカンドオピニオン希望者様へ医療サービスを提供できる環境を構築します</p>
-        
-        <br><br><br><br>
-        <div class="col-xs-1"></div>
+            <p style="font-size: 20px; color: black; font-weight: 600;">セカンドオピニオン特化型オンライン診療サービスです。病院・医師の皆様が全国の<br>
+                オンラインセカンドオピニオン希望者様へ医療サービスを提供できる環境を構築します</p>
+
+            <br><br><br><br>
+            <div class="col-xs-1"></div>
         </div>
 
-              <!-- <h1 style="text-align: center; color: dimgray;"><b>リメディとは？</b></h1><br/><br/> -->
+        <!-- <h1 style="text-align: center; color: dimgray;"><b>リメディとは？</b></h1><br/><br/> -->
         <div class="col-xs-10 col-xs-offset-1 centered">
-      <!-- <div class="col-xs-10 col-xs-offset-1 remedy-pc"> -->
-      <div style="text-align: center;">
-          <img class="img-responsive" src="{{ asset('img/remedy-pc/three.png') }}" align=""></br></br></br></br>
-      </div>
+            <!-- <div class="col-xs-10 col-xs-offset-1 remedy-pc"> -->
+            <div style="text-align: center;">
+                <img class="img-responsive" src="{{ asset('img/remedy-pc/three.png') }}" align=""></br></br></br></br>
+            </div>
         </div>
-      </br></br>
-    <!-- </div> -->
-      </div>
+        </br></br>
+        <!-- </div> -->
     </div>
+</div>
 
-      <!--4つの要素（PC版）ー-->
-    
-    <div class="remedy-pc">
-      <br><br><br><br>
+<!--4つの要素（PC版）ー-->
+
+<div class="remedy-pc">
+    <br><br><br><br>
     <section class="section-divider2 textdivider divider12 remedy-pc">
-    <div class="container">
+        <div class="container">
 
-      <!-- <div class="col-xs-13 remedy-pc">
+            <!-- <div class="col-xs-13 remedy-pc">
         <div class="col-xs-6 col-xs-offset-3 centered">
 
           <img class="img-responsive" src="{{ asset('img/remedy-pc/four_top.png') }}"" align="">
@@ -161,7 +165,7 @@
             <!-- <div class='container'>
               <h1>リメディが提供する４つの機能</h1>
             </div> -->
-              <div class="row">
+            <div class="row">
                 <!-- <div class="col-xs-7 centered">
                   <img class="img-responsive" src="{{ asset('img/remedy-pc/four_UI.png') }}"" align="">
                 </div>
@@ -169,65 +173,65 @@
                   <br><br><br>
                   <img class="img-responsive" src="{{ asset('img/remedy-pc/four_characters.png') }}"" align="">
                 </div> -->
-              </div>
             </div>
-            <br>
-            <br>
-            <br>
-            </section>
         </div>
+        <br>
+        <br>
+        <br>
+    </section>
+</div>
 
 
-      <!--フロー(PC版)ー-->
+<!--フロー(PC版)ー-->
 
-      <div class="row remedy-pc">
-        <br><br><br>
-      <br><br><br><br>
-        <div class="col-xs-4 col-xs-offset-4 centered remedy-pc">
+<div class="row remedy-pc">
+    <br><br><br>
+    <br><br><br><br>
+    <div class="col-xs-4 col-xs-offset-4 centered remedy-pc">
         <p style="color: dimgray; font-size: 68px; font-weight: bold;">ご利用フロー</p>
-        </div>
-        <div class="col-xs-10 col-xs-offset-1 remedy-pc">
+    </div>
+    <div class="col-xs-10 col-xs-offset-1 remedy-pc">
 
 
-          <img style="margin-top: 70px;" class="img-responsive" src="{{ asset('img/remedy-pc/flow.png') }}" align=""></br></br/><br/><br/>
-        </div>
-      </div>
-    
+        <img style="margin-top: 70px;" class="img-responsive" src="{{ asset('img/remedy-pc/flow.png') }}"
+            align=""></br></br /><br /><br />
+    </div>
+</div>
 
-          
-      <!--無料募集(PC版)ー-->
 
-      <div class="remedy-pc">
-      <br><br><br><br>
-      <section class="section-divider3 textdivider divider13">
+
+<!--無料募集(PC版)ー-->
+
+<div class="remedy-pc">
+    <br><br><br><br>
+    <section class="section-divider3 textdivider divider13">
         <div class="col-xs-2 col-xs-offset-5 remedy-pc">
-        <p><a href="/login" target="_blank" class="btn btn-primary rounded-circle p-0 btn-lg" style="font-family: '游ゴシック';">登録はこちらから</a></p>
-        <br><br><br></br>
+            <p><a href="/register" target="_blank" class="btn btn-primary rounded-circle p-0 btn-lg"
+                    style="font-family: '游ゴシック';">登録はこちらから</a></p>
+            <br><br><br></br>
         </div>
-        </div>
-      
-        </section>
+</div>
 
-      <!--START UP STUDIO(PC版)ー-->
-        <div class="row">
-        <div class="col-xs-4 col-xs-offset-4 centered remedy-pc">
-          <br><br><br>
-          <p style="color: black; font-size: 40px; font-weight: bold;">お知らせ</p>
-        </div>
-        </div>
-        <div class="row remedy-pc">
-      
-          <div class="col-xs-10 col-xs-offset-1 remedy-pc">
+</section>
 
-          <img style="margin-top: 50px;" class="img-responsive" src="{{ asset('img/remedy-pc/announcements.png') }}" align=""></br></br>
-          <br><br><br><br>
-          </div>
+<!--START UP STUDIO(PC版)ー-->
+<div class="row">
+    <div class="col-xs-4 col-xs-offset-4 centered remedy-pc">
+        <br><br><br>
+        <p style="color: black; font-size: 40px; font-weight: bold;">お知らせ</p>
+    </div>
+</div>
+<div class="row remedy-pc">
 
-      </div>
-      </div>
+    <div class="col-xs-10 col-xs-offset-1 remedy-pc">
 
+        <img style="margin-top: 50px;" class="img-responsive" src="{{ asset('img/remedy-pc/announcements.png') }}"
+            align=""></br></br>
+        <br><br><br><br>
+    </div>
 
-
+</div>
+</div>
 
 
 
@@ -237,154 +241,150 @@
 
 
 
-      <!--ヘッダー（SP版）ー-->
 
-      <div class="remedy-sp">    
-      <section class="section-divider4 textdivider divider8">
+
+
+<!--ヘッダー（SP版）ー-->
+
+<div class="remedy-sp">
+    <section class="section-divider4 textdivider divider8">
         <br><br>
         <br><br>
         <br><br>
         <br><br>
-       <div class="container">
-          <div class="row">
-            <!-- <div class="col-xs-4">
+        <div class="container">
+            <div class="row">
+                <!-- <div class="col-xs-4">
             <br><h2 style="color:#1466b8">Remedy</h2>
           <p style="font-size: medium; color: dimgray;">セカンドオピニオンに特化した</br/>オンライン診療サービス</p>
           <p><a class="btn btn-primary">無償試験導入希望の方はこちら</a></p>
           </div> -->
-          <!-- <div class="col-xs-10 col-xs-offset-1 centered"> -->
-          <!-- <img class="img-responsive" src="{{ asset('img/remedy-pc/header_pc.png') }}"" align=""></div> -->
-      </div>
-      </div>
-      </section>
-      </div>
-
-
-
-
-      <!--3つの特徴（SP版）ー-->
-
-      <div class="remedy-sp">
-      <div class="row">
-        <br>
-        <div class="col-xs-6 col-xs-offset-3 centered"><br/>
-          <img class="img-responsive" src="{{ asset('img/remedy-sp/whatisremedy.png') }}" align=""><br/>
+                <!-- <div class="col-xs-10 col-xs-offset-1 centered"> -->
+                <!-- <img class="img-responsive" src="{{ asset('img/remedy-pc/header_pc.png') }}"" align=""></div> -->
+            </div>
         </div>
-      </div>
-            <!-- <br><br>
+    </section>
+</div>
+
+
+
+
+<!--3つの特徴（SP版）ー-->
+
+<div class="remedy-sp">
+    <div class="row">
+        <br>
+        <div class="col-xs-6 col-xs-offset-3 centered"><br />
+            <img class="img-responsive" src="{{ asset('img/remedy-sp/whatisremedy.png') }}" align=""><br />
+        </div>
+    </div>
+    <!-- <br><br>
             <div class='container'>
               <h3 style="text-align: center; color: grey;">リメディの３つの特徴</h3><br/>
             </div> -->
-      <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-          <img class="img-responsive" src="{{ asset('img/remedy-sp/three.png') }}" align=""><br/>
-      </div>
-      <br><br><br>
-      <br><br><br>
-      <br><br><br>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            <img class="img-responsive" src="{{ asset('img/remedy-sp/three.png') }}" align=""><br />
+        </div>
+        <br><br><br>
+        <br><br><br>
+        <br><br><br>
     </div>
-    </div>
+</div>
 
 
 
 
 
-      <!--4つの要素（SP版）ー-->
+<!--4つの要素（SP版）ー-->
 
-      <div class="col-lg-13 remedy-sp">
-      <section class="section-divider5 textdivider divider9">
+<div class="col-lg-13 remedy-sp">
+    <section class="section-divider5 textdivider divider9">
         <br><br><br>
         <br><br><br>
 
-        <div class="col-xs-12 centered"></br><br/><br><br>
-          <!-- <img class="img-responsive" src="{{ asset('img/remedy-sp/four.png') }}"" align=""> -->
+        <div class="col-xs-12 centered"></br><br /><br><br>
+            <!-- <img class="img-responsive" src="{{ asset('img/remedy-sp/four.png') }}"" align=""> -->
         </div>
 
-            <!-- <div class='container'>
+        <!-- <div class='container'>
               <h3 style="color: dimgray;">リメディが提供する４つの機能</h3>
             </div> -->
-            <!-- <div class="container">
+        <!-- <div class="container">
               <div class="row">
                 <div class="col-lg-7 centered">
                   <img class="img-responsive" src="{{ asset('img/remedy-sp/header_pc.png') }}"" align="">
                 </div>
                 <div class="col-xs-10 col-xs-offset-1">
-                  
+
                   <img class="img-responsive" src="{{ asset('img/remedy-pc/four_characters.png') }}"" align="">
                 </div>
               </div>
             </div> -->
-          </div>
-        </section>
-        </div>
+</div>
+</section>
+</div>
 
 
-      <!--フロー(SP版)ー-->
+<!--フロー(SP版)ー-->
 
-      <div class="row remedy-sp">
-        <br>
-        <!-- <div class="col-xs-6 col-xs-offset-3 centered"> -->
-          <div style="text-align:center;">
-          <!-- <div> -->
+<div class="row remedy-sp">
+    <br>
+    <!-- <div class="col-xs-6 col-xs-offset-3 centered"> -->
+    <div style="text-align:center;">
+        <!-- <div> -->
         <p style="color: dimgray; font-size: 24px; font-weight: bold;">ご利用フロー</p>
-          <!-- <img class="img-responsive" src="{{ asset('img/remedy-sp/flow_character.png') }}"" align=""> -->
-        </div>
-        <div class="col-xs-10 col-xs-offset-1">
-
-          <img class="img-responsive" src="{{ asset('img/remedy-sp/flow.png') }}" align=""></br></br/
-        </div>
-      </div>
+        <!-- <img class="img-responsive" src="{{ asset('img/remedy-sp/flow_character.png') }}"" align=""> -->
     </div>
+    <div class="col-xs-10 col-xs-offset-1">
 
-            
-      
-      
-      
-      <!--無料募集(SP版)ー-->
-      <div class="remedy-sp">
-        <section class="section-divider6 textdivider divider14">
-          <!-- <div class="container">
+        <img class="img-responsive" src="{{ asset('img/remedy-sp/flow.png') }}" align=""></br></br/ </div> </div> </div>
+            <!--無料募集(SP版)ー-->
+        <div class="remedy-sp">
+            <section class="section-divider6 textdivider divider14">
+                <!-- <div class="container">
           <h1 style="color:#1466b8">Remedy</h1>
-          
+
           <h2 style="color:rgb(39, 39, 39); font-size: medium;"><b>試験導入病院様募集＆無償提供について</b></h2>
           <hr>
           <div class="col-xs-10 col-xs-offset-1">
           <p style="color:rgb(39, 39, 39); font-size: 15px;">セカンドオピニオン特化型のオンライン診療システム「リメディ」を患者様・病院様に貢献できるサービスにするため、サービスリリース前の試験導入にご協力頂ける医療施設様を募集致します。ご協力頂ける施設様（最大10施設様）には、本サービス「リメディ」を9月1日から10月31日まで無償提供させていただきます。ご協力をご検討頂ける病院施設様は下記フォームからご連絡いただけますと幸いです。後日、リディ事務局が試験導入の詳細についてご連絡させていただきます。</p><br/>
           </div> -->
-          <!-- <div class="col-xs-10 col-xs-offset-1">
+                <!-- <div class="col-xs-10 col-xs-offset-1">
           <br><br/><br><br>
           <img class="img-responsive" src="{{ asset('img/remedy-sp/test_description.png') }}"" align="">
           </div>
           </section> -->
-          <!-- <p style="font-family: YuGothic;"><a class="btn btn-primary rounded-circle p-0 btn-sm" style="font-family: YuGothic;">お問い合わせはこちら</a></p> -->
-        <div style="text-align: center;" class="remedy-sp">
-        <p><a href="/login" target="_blank" class="btn-lg btn-primary rounded-circle p-0 btn-lg" style="font-family: '游ゴシック';">登録はこちらから</a></p>
+                <!-- <p style="font-family: YuGothic;"><a class="btn btn-primary rounded-circle p-0 btn-sm" style="font-family: YuGothic;">お問い合わせはこちら</a></p> -->
+                <div style="text-align: center;" class="remedy-sp">
+                    <p><a href="/login" target="_blank" class="btn-lg btn-primary rounded-circle p-0 btn-lg"
+                            style="font-family: '游ゴシック';">登録はこちらから</a></p>
+                </div>
         </div>
-        </div>
-      </div>
+    </div>
 
 
 
-      <!--START UP STUDIO(SP版)ー-->
+    <!--START UP STUDIO(SP版)ー-->
 
-        <div class="row">
+    <div class="row">
         <div class="col-xs-11 col-xs-offset-1 remedy-sp">
-          <br>
-          <img class="img-responsive" src="{{ asset('img/remedy-sp/announcement.png') }}" align=""></br></br><br>
-          </div>
+            <br>
+            <img class="img-responsive" src="{{ asset('img/remedy-sp/announcement.png') }}" align=""></br></br><br>
+        </div>
 
-      </div>
-      </div>
-        
-
-      </div>
-      </div>
-  <!-- container -->
+    </div>
+</div>
 
 
-  <!-- ==== SECTION DIVIDER2 -->
+</div>
+</div>
+<!-- container -->
 
-  <!-- <section class="section-divider textdivider divider2">
+
+<!-- ==== SECTION DIVIDER2 -->
+
+<!-- <section class="section-divider textdivider divider2">
     <div class="container">
       <h1>DESIGN IS AN INTERACTION</h1>
       <hr>
@@ -392,11 +392,11 @@
     </div>
   </section> -->
 
-  <!-- section -->
+<!-- section -->
 
-  <!-- ==== TEAM MEMBERS ==== -->
+<!-- ==== TEAM MEMBERS ==== -->
 
-  <!-- <div class="container" id="team" name="team">
+<!-- <div class="container" id="team" name="team">
     <br>
     <div class="row white centered">
       <h1 class="centered">MEET OUR AWESOME TEAM</h1>
@@ -446,16 +446,16 @@
     </div>
   </div> -->
 
-  <!-- container -->
+<!-- container -->
 
-  <!-- ==== GREYWRAP ==== -->
+<!-- ==== GREYWRAP ==== -->
 
 
-  <!-- greywrap -->
+<!-- greywrap -->
 
-  <!-- ==== SECTION DIVIDER3 -->
+<!-- ==== SECTION DIVIDER3 -->
 
-  <!-- <section class="section-divider textdivider divider3">
+<!-- <section class="section-divider textdivider divider3">
     <div class="container">
       <h1>DESIGN SOLVE PROBLEMS</h1>
       <hr>
@@ -463,9 +463,9 @@
     </div>
   </section> -->
 
-  <!-- ==== PORTFOLIO ==== -->
+<!-- ==== PORTFOLIO ==== -->
 
-  <!-- <div class="container" id="portfolio" name="portfolio">
+<!-- <div class="container" id="portfolio" name="portfolio">
     <br>
     <div class="row">
       <br>
@@ -579,11 +579,11 @@
     </div>
   </div> -->
 
-  <!-- /container -->
+<!-- /container -->
 
-  <!-- ==== SECTION DIVIDER4 ==== -->
+<!-- ==== SECTION DIVIDER4 ==== -->
 
-  <!-- <section class="section-divider textdivider divider4">
+<!-- <section class="section-divider textdivider divider4">
     <div class="container">
       <h1>DESIGN CREATES EMOTIONAL CONNECTION</h1>
       <hr>
@@ -591,9 +591,9 @@
     </div>
   </section> -->
 
-  <!-- ==== BLOG ==== -->
+<!-- ==== BLOG ==== -->
 
-  <!-- <div class="container" id="blog" name="blog">
+<!-- <div class="container" id="blog" name="blog">
     <br>
     <div class="row">
       <br>
@@ -640,14 +640,14 @@
     <br>
   </div> -->
 
-  <!-- /container -->
+<!-- /container -->
 
 
-  <!-- ==== SECTION DIVIDER6 ==== -->
+<!-- ==== SECTION DIVIDER6 ==== -->
 
-  <!-- <div class="container" id="contact" name="contact">
+<!-- <div class="container" id="contact" name="contact">
     <div class="row"> -->
-      <!-- <br>
+<!-- <br>
       <h1 class="centered">THANKS FOR VISITING US</h1>
       <hr>
       <br>
@@ -686,12 +686,12 @@
           <span class="icon icon-envelop"></span> <a href="#"> example@example.com</a> <br/>
           <span class="icon icon-twitter"></span> <a href="#"> @TemplateMag </a> <br/>
           <span class="icon icon-facebook"></span> <a href="#"> TemplateMag </a> <br/>
-        </p> 
+        </p>
       </div>-->
 
-      <!-- <div class="col-lg-5"> -->
-        
-      <!-- <div class="col-lg-2"></div>
+<!-- <div class="col-lg-5"> -->
+
+<!-- <div class="col-lg-2"></div>
       <div class="col-lg-8">
         <form class="contact-form php-mail-form" role="form" action="contactform/contactform.php" method="POST">
 
@@ -726,30 +726,31 @@
     </div>
   </div> -->
 
-  <!-- container -->
+<!-- container -->
 
 
 <!-- フッター -->
 <div id="copyrights">
     <div class="container">
-      <div class="row">
-          <div class="col-xs-2 col-xs-offset-5 remedy-pc">
-            <br/>
-          <img class="img-responsive" src="{{ asset('img/remedy-pc/footer.png') }}" align="">          </div>
-          </div>
-          <div class="col-xs-4 col-xs-offset-4 remedy-sp">
-            <br/>
-          <img class="img-responsive" src="{{ asset('img/remedy-pc/footer.png') }}" align="">          </div>
-          </div>
-      </div>
-      <!-- <p>
-        <a style="color: aliceblue;">セカンドオピニオン特化型</a></br>      
-        <a style="color: aliceblue;">オンライン診療サービス</a></br>    
+        <div class="row">
+            <div class="col-xs-2 col-xs-offset-5 remedy-pc">
+                <br />
+                <img class="img-responsive" src="{{ asset('img/remedy-pc/footer.png') }}" align=""> </div>
+        </div>
+        <div class="col-xs-4 col-xs-offset-4 remedy-sp">
+            <br />
+            <img class="img-responsive" src="{{ asset('img/remedy-pc/footer.png') }}" align=""> </div>
+    </div>
+</div>
+<!-- <p>
+        <a style="color: aliceblue;">セカンドオピニオン特化型</a></br>
+        <a style="color: aliceblue;">オンライン診療サービス</a></br>
         <strong style="font-size: 30px;">Remedy</strong>
       </p> -->
-      </div>
-      </div>
-    </div></div>
+</div>
+</div>
+</div>
+</div>
 
 
 
