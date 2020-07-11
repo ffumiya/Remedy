@@ -69,6 +69,15 @@ class EventService extends BaseService
             "title" => $request->title,
             "price" => $price
         ]);
+
+        if ($price == 0) {
+            $datetime = new Carbon();
+            $paymentMethodId = "0price{$datetime}";
+            Event::updateOrCreate(
+                ["id" => $request->id],
+                ["payment_method_id" => $paymentMethodId]
+            );
+        }
         \Log::channel('trace')->info("Completed store event");
     }
 
@@ -86,5 +95,9 @@ class EventService extends BaseService
         $event->payment_method_id = $id;
         $event->update();
         return true;
+    }
+
+    public static function applicationEvent(Request $request)
+    {
     }
 }
