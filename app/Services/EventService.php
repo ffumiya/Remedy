@@ -97,7 +97,13 @@ class EventService extends BaseService
         return true;
     }
 
-    public static function applicationEvent(Request $request)
+    public static function applicationEvent($request)
     {
+        $datetime = time();
+        Event::updateOrCreate(
+            ["id" => $datetime],
+            ["guest_id" => \Auth::id(), "start" => $request->date]
+        );
+        \Log::channel('trace')->info("Applicated new event");
     }
 }

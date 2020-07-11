@@ -17027,7 +17027,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -17159,6 +17158,83 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -17166,6 +17242,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      event: null,
       events: [],
       userid: 1
     };
@@ -17183,12 +17260,60 @@ __webpack_require__.r(__webpack_exports__);
     },
     setAPIToken: function setAPIToken() {
       axios.defaults.headers.common["Authorization"] = "Bearer " + Laravel.apiToken;
+    },
+    showModal: function showModal() {
+      jQuery("#modalForCreate").modal("show");
+    },
+    createEvent: function createEvent(e) {
+      console.log(this.event);
+
+      if (this.event.date.datetime == "") {
+        this.event.date.err = "日時を正しく指定してください。";
+        return;
+      }
+
+      this.event.date.err = null;
+      this.sendNewEvent();
+      jQuery("#modalForSelect").modal("hide");
+      this.initializeEvent();
+    },
+    initializeEvent: function initializeEvent() {
+      this.event = {
+        clinic: {
+          id: null,
+          name: "",
+          err: null
+        },
+        doctor: {
+          id: null,
+          name: "",
+          err: null
+        },
+        date: {
+          datetime: "",
+          err: null
+        }
+      };
+    },
+    sendNewEvent: function sendNewEvent() {
+      var _this2 = this;
+
+      axios.post("/api/event", Object.assign({}, event)).then(function (res) {
+        _this2.events.push(event);
+
+        console.log("completed post event");
+      })["catch"](function (err) {
+        console.error(err);
+        alert("オンライン診療の申込に失敗しました。");
+        console.error("failed to post event");
+      });
     }
   },
   created: function created() {
     var userID = document.querySelector("meta[name='user-id']").getAttribute("content");
     this.setAPIToken();
     this.getEvents(userID);
+    this.initializeEvent();
   },
   filters: {
     moment: function moment(value, format) {
@@ -95778,11 +95903,7 @@ var render = function() {
     _c(
       "div",
       { staticClass: "col-xs-12 col-md-6 bg-white" },
-      [
-        _c("h1", [_vm._v("カレンダーコンポーネント")]),
-        _vm._v(" "),
-        _c("calendar-component", { attrs: { events: _vm.bookedEvents } })
-      ],
+      [_c("calendar-component", { attrs: { events: _vm.bookedEvents } })],
       1
     )
   ])
@@ -95827,6 +95948,8 @@ var render = function() {
       "div",
       [
         _c("h3", [_vm._v("予約一覧")]),
+        _vm._v(" "),
+        _c("h3", [_vm._v("あなたの担当医：初診申し込み後に決定します。")]),
         _vm._v(" "),
         _vm._l(_vm.events, function(event) {
           return _c("div", { key: event.id, staticClass: "card" }, [
@@ -95907,13 +96030,212 @@ var render = function() {
                 : _vm._e()
             ])
           ])
-        })
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col m-5" }, [
+            _c(
+              "button",
+              { staticClass: "btn btn-primary", on: { click: _vm.showModal } },
+              [
+                _vm._v(
+                  "\n                    オンライン診療を申込む\n                "
+                )
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "modal",
+            attrs: { id: "modalForCreate", tabindex: "-1", role: "dialog" }
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
+              [
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _vm.event
+                      ? _c("form", [
+                          _c("label", { attrs: { for: "clinic" } }, [
+                            _vm._v("診療を希望する病院を選択してください。")
+                          ]),
+                          _vm._v(" "),
+                          _vm._m(1),
+                          _vm._v(" "),
+                          _c("label", { attrs: { for: "doctor" } }, [
+                            _vm._v("診療を希望する医師を選択してください。")
+                          ]),
+                          _vm._v(" "),
+                          _vm._m(2),
+                          _vm._v(" "),
+                          _vm._m(3),
+                          _vm._v(" "),
+                          _c(
+                            "p",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.event.date.err,
+                                  expression: "event.date.err"
+                                }
+                              ],
+                              staticClass: "text-danger"
+                            },
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(_vm.event.date.err) +
+                                  "\n                            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.event.date.datetime,
+                                expression: "event.date.datetime"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "datetime-local",
+                              name: "date",
+                              placeholder: "希望日時"
+                            },
+                            domProps: { value: _vm.event.date.datetime },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.event.date,
+                                  "datetime",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "button" },
+                        on: { click: _vm.createEvent }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            申し込む\n                        "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            キャンセル\n                        "
+                        )
+                      ]
+                    )
+                  ])
+                ])
+              ]
+            )
+          ]
+        )
       ],
       2
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("オンライン診療申込")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "select",
+      { staticClass: "form-control", attrs: { name: "clinic", disabled: "" } },
+      [
+        _c("option", { attrs: { value: "0", selected: "" } }, [
+          _vm._v("Remedy病院")
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "select",
+      { staticClass: "form-control", attrs: { name: "doctor" } },
+      [
+        _c("option", { attrs: { value: "", disabled: "", selected: "" } }, [
+          _vm._v("---医師を選択してください---")
+        ]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "0" } }, [_vm._v("○○先生")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "1" } }, [_vm._v("△△先生")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "2" } }, [_vm._v("××先生")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "date" } }, [
+      _vm._v("診療を希望する日時を選択してください。"),
+      _c("small", [_vm._v("※診療時間は30分が目安です。")])
+    ])
+  }
+]
 render._withStripped = true
 
 

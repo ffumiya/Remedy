@@ -17,7 +17,8 @@ class CreateEventsTable extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->bigIncrements('event_id');
             $table->string('id');
-            $table->bigInteger('host_id'); // 開催者(医療機関)
+            $table->bigInteger('host_id')->nullable(); // 医師
+            $table->bigInteger('clinic_id')->nullable(); // 医療機関
             $table->bigInteger('guest_id')->nullable(); //患者
             $table->string('groupId')->default(""); // 子ID
             $table->boolean('allDay')->default(false); // 終日
