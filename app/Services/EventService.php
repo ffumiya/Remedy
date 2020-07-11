@@ -38,6 +38,7 @@ class EventService extends BaseService
             ->orWhere('start', null)
             ->count();
         $events = Event::where('host_id', $id)
+            ->join('users', 'events.guest_id', '=', 'users.id')
             ->where('start', '>', $thisMonthFirst)
             ->orWhere('start', null)
             ->get();
