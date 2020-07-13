@@ -206,8 +206,8 @@
     <br><br><br><br>
     <section class="section-divider3 textdivider divider13">
         <div class="col-xs-2 col-xs-offset-5 remedy-pc">
-            <p><a href="/register" target="_blank" class="btn btn-primary rounded-circle p-0 btn-lg"
-                    style="font-family: '游ゴシック';">登録はこちらから</a></p>
+            <p><a href="/register" target="_blank" class="btn btn-primary" style="font-family: '游ゴシック';">登録はこちらから</a>
+            </p>
             <br><br><br></br>
         </div>
 </div>
@@ -357,7 +357,7 @@
           </section> -->
                 <!-- <p style="font-family: YuGothic;"><a class="btn btn-primary rounded-circle p-0 btn-sm" style="font-family: YuGothic;">お問い合わせはこちら</a></p> -->
                 <div style="text-align: center;" class="remedy-sp">
-                    <p><a href="/login" target="_blank" class="btn-lg btn-primary rounded-circle p-0 btn-lg"
+                    <p><a href="/login" target="_blank" class="btn btn-primary"
                             style="font-family: '游ゴシック';">登録はこちらから</a></p>
                 </div>
         </div>
