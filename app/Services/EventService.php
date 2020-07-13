@@ -16,16 +16,29 @@ class EventService extends BaseService
         return $event;
     }
 
+    /**
+     * 患者ホーム画面で表示する予約を取得
+     * @param int 患者のユーザID
+     */
     public static function getPatientEvents($id)
     {
-        $eventCount = 0;
-        $eventCount = Event::where('guest_id', $id)
-            ->where('start', '>', new DateTime())->count();
-        $events = Event::where('guest_id', $id)
-            ->where('start', '>', new DateTime())
-            ->orderBy('start', 'asc')
-            ->get();
-        \Log::channel('trace')->info("Return {$eventCount} events.");
+        $dateTime = new DateTime();
+        /**
+         * SELECT *
+         * FROM `EVENTS`
+         * WHERE `START` IS NULL OR `START` > NOW() AND `DESIRED_TIME` > NOW()
+         * AND `GUEST_ID` = 24;
+         */
+        $query = Event::where(Event::GUEST_ID, $id)
+            ->where(function ($query) use ($dateTime) {
+                $query->whereNull(Event::START)
+                    ->orWhere(Event::START, '>', $dateTime);
+            })
+            ->where(EVENT::DESIRED_TIME, '>', $dateTime);
+        $count = $query->count();
+        $events = $query->get();
+
+        \Log::channel('trace')->info("Return {$count} events.");
         return $events;
     }
 
