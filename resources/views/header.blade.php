@@ -1,4 +1,3 @@
-
 @section('header')
 <div id="navbar-main">
     <!-- Fixed navbar -->
