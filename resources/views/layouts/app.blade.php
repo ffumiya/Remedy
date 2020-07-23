@@ -25,7 +25,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
 
-    <!-- ここから追記分 --!>
+    <!-- ここから追記分 -->
 
     <!-- Favicons -->
     <link href="{{ asset('img/icon.png') }}" rel="icon">
@@ -46,7 +46,7 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 
-    <!-- ここまで追記分 --!>
+    <!-- ここまで追記分 -->
 
 <body>
     <div id="app">

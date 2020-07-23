@@ -4,9 +4,9 @@
 
 @section('content')
 <div class="login-form">
-    <form method="POST" action="{{ route('login') }}"><br>
+    <form method="POST" action="{{ route('login') }}"><br><br>
         @csrf
-        <h2 class="text-center">ログイン</h2><br> 
+        <h2 class="text-center">ログイン</h2><br>
         <div class="form-group">
         	<div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -18,11 +18,11 @@
                 </span>
                 @enderror
             </div>
-                @error('email')
-                <span class="invalid-feedback" role="alert">
-                <strong>ログイン情報をお確かめください</strong>
-                </span>
-                @enderror
+            @error('email')
+            <span class="invalid-feedback" role="alert">
+            <strong>ログイン情報をお確かめください</strong>
+            </span>
+            @enderror
         </div>
 		<div class="form-group">
             <div class="input-group">

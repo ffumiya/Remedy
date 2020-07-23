@@ -1017,8 +1017,8 @@
 	.login-form {
     /* width: 385px; */
     width: 385px;
-    height:60vh;
-		margin: 130px auto;
+    height:65vh;
+		margin: 110px auto;
 	}
     .login-form form {        
     	margin-bottom: 15px;
@@ -1037,14 +1037,15 @@
         font-size: 16px;
     }
 
-    .input-group-addon-sm .fa{
-        font-size: 16px;
+    .input-group-addon .fa-paper-plane{
+      font-size: 13px;
     }
 
     .login-btn {
         font-size: 15px;
         font-weight: bold;
     }
+
 	.social-btn .btn {
 		border: none;
         margin: 10px 3px 0;
