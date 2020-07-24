@@ -17,12 +17,14 @@ class CreateEventsTable extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->bigIncrements('event_id');
             $table->string('id');
-            $table->bigInteger('host_id'); // 開催者(医療機関)
+            $table->bigInteger('host_id')->nullable(); // 医師
+            $table->bigInteger('clinic_id')->nullable(); // 医療機関
             $table->bigInteger('guest_id')->nullable(); //患者
             $table->string('groupId')->default(""); // 子ID
             $table->boolean('allDay')->default(false); // 終日
-            $table->timestamp('start')->nullable();
-            $table->timestamp('end')->nullable();
+            $table->timestamp('start')->nullable(); //開始時間
+            $table->timestamp('desired_time')->nullable(); //希望開始時間
+            $table->timestamp('end')->nullable(); //終了時間
             $table->string('title');
             $table->string('url')->default("");
             $table->string('classNames')->nullable();
@@ -40,7 +42,7 @@ class CreateEventsTable extends Migration
             $table->bigInteger('extendedProps')->nullable();
             $table->string('source')->nullable();
             $table->bigInteger('price')->default(0);
-            $table->timestamp('payment_method_id')->nullable();
+            $table->string('payment_method_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

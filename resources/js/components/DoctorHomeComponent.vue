@@ -15,12 +15,13 @@
                     v-for="event in bookingEvents"
                     v-bind:key="event.id"
                 >
-                    <p>{{ event.title }}</p>
+                    <p>患者ID：{{ event.id }}</p>
+                    <p>患者名：{{ event.name }} 様</p>
+                    <p>希望時間：{{ event.desired_time }}</p>
                 </div>
             </div>
         </div>
         <div class="col-xs-12 col-md-6 bg-white">
-            <h1>カレンダーコンポーネント</h1>
             <calendar-component :events="bookedEvents" />
         </div>
     </div>
@@ -47,9 +48,9 @@ export default {
             axios
                 .get(`api/events?userID=${userID}`)
                 .then(res => {
+                    console.log(res);
                     this.allEvents = res.data;
                     this.allEvents.forEach(event => {
-                        console.log(event.start);
                         if (event.start != null) {
                             this.bookedEvents.push(event);
                         }

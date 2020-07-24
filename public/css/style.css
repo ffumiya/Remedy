@@ -836,9 +836,12 @@
   /* 追加情報 */
   
   /* パソコンで見たときは"pc"のclassがついた画像が表示される */
+
   .remedy-pc { 
     display: block !important; 
   }
+
+
   .remedy-sp { display: none !important; }
   /* スマートフォンで見たときは"sp"のclassがついた画像が表示される */
   @media only screen and (max-width: 750px) {
@@ -987,7 +990,7 @@
     background-image: url('../img/remedy-pc/header.png');
   }
 
-  /*　ここから追記ぶん */ 
+/*　ここから追記分 */ 
 
   .not-found {
     padding-top: 200px;
@@ -1078,3 +1081,4 @@
     .fa-paper-plane-sm{
       font-size: 0.8em;
     }
+

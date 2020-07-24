@@ -81,4 +81,9 @@ class EventsController extends Controller
     {
         return EventService::payEvent($id);
     }
+
+    public function application(Request $request)
+    {
+        return EventService::applicationEvent($request);
+    }
 }

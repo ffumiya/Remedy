@@ -52,34 +52,28 @@
                                 {{ selectedEvent.end | moment("HH:mm") }}
                             </p>
                         </div>
-                        <div v-if="guestInfo">
-                            <div class="card">
-                                <p>患者名</p>
-                                <p>{{ guestInfo.name }}</p>
-                            </div>
-                        </div>
-                        <div v-else>
-                            <div class="card">
-                                <p>患者情報を取得できませんでした。</p>
-                            </div>
+                        <div class="card">
+                            <p>患者名</p>
+                            <p>{{ selectedEvent.name }}</p>
                         </div>
                     </div>
                     <div class="modal-footer" v-if="selectedEvent">
                         <button
                             type="button"
                             class="btn btn-primary"
-                            v-if="guestInfo && selectedEvent.paid_at != null"
+                            v-if="selectedEvent.payment_method_id != null"
                             v-on:click="toVideo"
                         >
                             ビデオ診療開始
                         </button>
+
+                        {{ selectedEvent.payment_method_id }}
                         <button
                             type="button"
                             class="btn btn-primary"
-                            v-if="!selectedEvent.paid_at"
+                            v-if="!selectedEvent.payment_method_id"
                             disabled
                         >
-                            {{ selectedEvent.paid_at }}
                             料金支払い待ち
                         </button>
                         <button
@@ -116,7 +110,7 @@
                                 name="title"
                                 type="text"
                                 class="form-control"
-                                placeholder="タイトルを入力"
+                                placeholder="患者名を入力"
                                 v-model="selectedEvent.title"
                             />
                             <input
@@ -164,6 +158,10 @@ import jaLocale from "@fullcalendar/core/locales/ja"; // 日本語化用
 import axios from "axios";
 import moment from "moment";
 
+const userID = document
+    .querySelector("meta[name='user-id']")
+    .getAttribute("content");
+
 export default {
     props: {
         events: null
@@ -200,6 +198,7 @@ export default {
         handleDateClick(arg) {},
         handleEventClick(arg) {
             this.selectedEvent = arg.event;
+            console.log(this.selectedEvent);
             axios
                 .get(
                     `/api/patient/${this.selectedEvent.extendedProps.guest_id}`
@@ -260,10 +259,11 @@ export default {
         },
         buildEvent() {
             var price = this.getPrice();
-            var paid_at = this.getPaidAt();
+            var payment_method_id = this.getPaidAt();
+            var name = this.getPatientName();
             return {
                 id: this.getOnetime_token(),
-                host_id: this.userID,
+                host_id: userID,
                 guest_id: 1,
                 title: this.selectedEvent.title,
                 start: this.selectedEvent.start,
@@ -271,7 +271,8 @@ export default {
                 end: this.selectedEvent.end,
                 extendedProps: this.selectedEvent.extendedProps,
                 price: price,
-                paid_at: paid_at,
+                payment_method_id: payment_method_id,
+                name: name,
                 selectable: true,
                 editable: true
             };
@@ -280,7 +281,7 @@ export default {
             var newEvent = this.buildEvent();
             jQuery("#modalForSelect").modal("hide");
             axios
-                .put(`/api/events/${this.userID}`, Object.assign({}, newEvent))
+                .put(`/api/events/${userID}`, Object.assign({}, newEvent))
                 .then(res => {
                     this.events.forEach(event => {
                         if (event.id == newEvent) {
@@ -304,8 +305,17 @@ export default {
         },
         getPaidAt() {
             try {
-                if (this.selectedEvent.paid_at) {
-                    return this.selectedEvent.paid_at;
+                if (this.selectedEvent.extendedProps.payment_method_id) {
+                    return this.selectedEvent.extendedProps.payment_method_id;
+                }
+            } catch (e) {
+                return null;
+            }
+        },
+        getPatientName() {
+            try {
+                if (this.selectedEvent.extendedProps.name) {
+                    return this.selectedEvent.extendedProps.name;
                 }
             } catch (e) {
                 return null;
@@ -326,10 +336,7 @@ export default {
             this.resize();
             this.getScrollTime();
             addEventListener("resize", this.resize);
-            this.userID = document
-                .querySelector("meta[name='user-id']")
-                .getAttribute("content");
-            this.getConfig(this.userID);
+            this.getConfig(userID);
         } catch (err) {
             console.log(err);
         }
