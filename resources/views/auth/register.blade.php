@@ -1,6 +1,58 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="login-form">
+    <form method="POST" action="{{ route('register') }}"><br>
+        @csrf
+        <h2 class="text-center">登録</h2><br> 
+        <div class="form-group">
+        	<div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" placeholder="名前" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+            </div>
+            @error('name')
+            <span class="invalid-feedback" role="alert">
+            <strong>ユーザー名を確かめください</strong>
+            </span>
+            @enderror
+        </div>
+
+        <div class="form-group">
+        	<div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" placeholder="名前" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+            </div>
+            @error('name')
+            <span class="invalid-feedback" role="alert">
+            <strong>ユーザー名を確かめください</strong>
+            </span>
+            @enderror
+        </div>
+
+		<div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="パスワード" name="password" required autocomplete="current-password">
+
+                @error('password')
+                <span class="invalid-feedback" role="alert">
+                <strong>パスワードをお確かめください</strong>
+                </span>
+                @enderror
+            </div>
+        </div>        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary login-btn btn-block">ログイン</button>
+        </div>
+        <div class="clearfix">
+            <label class="pull-left checkbox-inline"><input name="remember" type="checkbox" {{ old('remember') ? 'checked' : '' }}> ログイン情報を記録</label><br>
+            <a href="{{ route('password.request') }}" class="pull-right">パスワードを忘れた方はこちら</a>
+        </div>
+        <br><br>
+</div>
+
+<!-- 以下、元の登録ページ -->
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

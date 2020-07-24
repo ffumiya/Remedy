@@ -32,11 +32,13 @@
     <link href="{{ asset('img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:Lato:300,400,700,300italic,400italic|Raleway:400,300,700"
-        rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:Lato:300,400,700,300italic,400italic|Raleway:400,300,700" rel="stylesheet">
 
     <!-- Bootstrap CSS File -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Libraries CSS Files -->
@@ -48,6 +50,7 @@
 </head>
 
 <!-- ここまで追記分 -->
+
 
 <body>
     <div id="app">
@@ -117,7 +120,9 @@
     </nav> --}}
 
     <main>
+        @yield('header')
         @yield('content')
+        @yield('footer')
     </main>
     </div>
 </body>
