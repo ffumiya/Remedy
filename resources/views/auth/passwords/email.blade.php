@@ -1,7 +1,42 @@
 @extends('layouts.app')
 
+@include('header')
+
 @section('content')
-<div class="container">
+<div class="login-form">
+    @if (session('status'))
+        <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+        </div>
+    @endif
+    <form method="POST" action="{{ route('password.email') }}"><br>
+        @csrf
+        <h3 class="text-center">パスワードの再設定</h3><br> 
+
+        <div class="form-group">
+        	<div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" placeholder="メールアドレス" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+            </div>
+            @error('email')
+            <span class="invalid-feedback" role="alert">
+            <strong>メールアドレスを確かめください</strong>
+            </span>
+            @enderror
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary login-btn btn-block">送信</button>
+        </div>
+
+</div>
+@endsection
+
+@include('footer')
+
+<!-- 以下、元のメール入力ページ -->
+
+<!-- <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -43,5 +78,4 @@
             </div>
         </div>
     </div>
-</div>
-@endsection
+</div> -->
