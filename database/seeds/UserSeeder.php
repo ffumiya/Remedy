@@ -15,44 +15,45 @@ class UserSeeder extends Seeder
         factory(User::class, 20)->create();
 
         $now = new DateTIme();
+        $password = 'password';
         User::insert([
             [
-                'name' => 'm-tanaka',
-                'email' => 'm-tanaka@example.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('password'),
-                'role' => config('role.admin.value'),
-                'api_token' => str_random(60),
-                'remember_token' => Str::random(10),
-                'clinic_id' => 0,
-                'created_at' => $now,
-                'updated_at' => $now
+                User::NAME => 'm-tanaka',
+                User::EMAIL => 'm-tanaka@example.com',
+                User::EMAIL_VERIFIED_AT => now(),
+                User::PASSWORD => Hash::make($password),
+                User::ROLE => config('role.admin.value'),
+                User::API_TOKEN => str_random(60),
+                User::REMEMBER_TOKEN => Str::random(10),
+                User::CLINIC_ID => 0,
+                USER::CREATED_AT => $now,
+                USER::UPDATED_AT => $now
             ],
             [
-                'name' => 'patient',
-                'email' => 'patient@example.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('password'),
-                'role' => config('role.patient.value'),
-                'api_token' => null,
-                'remember_token' => Str::random(10),
-                'api_token' => str_random(60),
-                'clinic_id' => 1,
-                'created_at' => $now,
-                'updated_at' => $now
+                User::NAME => 'patient',
+                User::EMAIL => 'patient@example.com',
+                User::EMAIL_VERIFIED_AT => now(),
+                User::PASSWORD => Hash::make($password),
+                User::ROLE => config('role.patient.value'),
+                User::API_TOKEN => null,
+                User::REMEMBER_TOKEN => Str::random(10),
+                User::API_TOKEN => str_random(60),
+                User::CLINIC_ID => 1,
+                USER::CREATED_AT => $now,
+                USER::UPDATED_AT => $now
             ],
             [
-                'name' => 'doctor',
-                'email' => 'doctor@example.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('password'),
-                'role' => config('role.doctor.value'),
-                'api_token' => null,
-                'remember_token' => Str::random(10),
-                'api_token' => str_random(60),
-                'clinic_id' => 1,
-                'created_at' => $now,
-                'updated_at' => $now
+                User::NAME => 'doctor',
+                User::EMAIL => 'doctor@example.com',
+                User::EMAIL_VERIFIED_AT => now(),
+                User::PASSWORD => Hash::make($password),
+                User::ROLE => config('role.doctor.value'),
+                User::API_TOKEN => null,
+                User::REMEMBER_TOKEN => Str::random(10),
+                User::API_TOKEN => str_random(60),
+                User::CLINIC_ID => 1,
+                USER::CREATED_AT => $now,
+                USER::UPDATED_AT => $now
             ],
         ]);
     }

@@ -19,12 +19,12 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'password' => Hash::make('password'),
-        'remember_token' => Str::random(10),
-        'api_token' => str_random(60),
-        'clinic_id' => rand(1, 3),
+        User::NAME => $faker->name,
+        User::EMAIL => $faker->unique()->safeEmail,
+        User::EMAIL_VERIFIED_AT => now(),
+        User::PASSWORD => Hash::make('password'),
+        USer::REMEMBER_TOKEN => Str::random(10),
+        User::API_TOKEN => str_random(60),
+        User::CLINIC_ID => rand(1, 3),
     ];
 });

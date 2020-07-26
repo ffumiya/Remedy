@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\Clinic;
 use App\Models\Event;
 use App\Models\User;
 use Faker\Generator as Faker;
@@ -12,8 +13,8 @@ $factory->define(Event::class, function (Faker $faker) {
 
     if ($hostCount < 1) {
         return [
-            'start' => $start,
-            'title' => $faker->word,
+            Event::START => $start,
+            Event::TITLE => $faker->word,
         ];
     }
 
@@ -22,11 +23,11 @@ $factory->define(Event::class, function (Faker $faker) {
     $host = $hosts[$i];
     $clinicID = $host->clinic_id;
 
-    $guests = User::Role(config('role.patient.value'))->where('clinic_id', $clinicID)->get();
+    $guests = User::Role(config('role.patient.value'))->where(User::CLINIC_ID, $clinicID)->get();
     if ($guests->count() < 1) {
         return [
-            'start' => $start,
-            'title' => $faker->word,
+            Event::START => $start,
+            Event::TITLE => $faker->word,
         ];
     }
 
@@ -34,9 +35,9 @@ $factory->define(Event::class, function (Faker $faker) {
     $guest = $guests[$i];
 
     return [
-        'start' => $start,
-        'title' => $faker->word,
-        'host_id' => $host->id,
-        'guest_id' => $guest->id,
+        Event::START => $start,
+        Event::TITLE => $faker->word,
+        Event::HOST_ID => $host->id,
+        Event::GUEST_ID => $guest->id,
     ];
 });
