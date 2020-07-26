@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@include('header')
 @section('content')
 <div id='external-events'>
     <p>
@@ -75,6 +75,7 @@
     }
 </style>
 @endsection
+@include('footer')
 
 @section('script')
 <script src='https://unpkg.com/@fullcalendar/core@4.3.1/main.min.js'></script>

@@ -29,6 +29,8 @@ class HomeController extends Controller
                 return view('patienthome');
             case config('role.doctor.value'):
                 return view('doctorhome');
+            case config('role.admin.value'):
+                return view('doctorhome');
         }
     }
 }

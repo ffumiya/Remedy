@@ -22,11 +22,9 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
     // 一般ユーザー
+    Route::get('home', 'homeController@index')->name('home.index');
     Route::resource('payment', 'PaymentController')->only(["show", "update"]);
     Route::post('payment', 'PaymentController@charge')->name('payment.charge');
-    Route::get('/home/{any?}', function () {
-        return view('home');
-    })->where('any', '.+');
 
     // 医師ユーザー
     Route::middleware('can:doctor')->group(function () {
