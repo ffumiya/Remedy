@@ -23,8 +23,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $userId = \Auth::id();
-        $reservationList = null;
-        return view('home');
+        $role = \Auth::user()->role;
+        switch ($role) {
+            case config('role.patient.value'):
+                return view('patienthome');
+            case config('role.doctor.value'):
+                return view('doctorhome');
+        }
     }
 }

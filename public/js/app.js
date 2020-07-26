@@ -16770,10 +16770,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 __webpack_require__(/*! @fullcalendar/core/main.min.css */ "./node_modules/@fullcalendar/core/main.min.css");
 
 __webpack_require__(/*! @fullcalendar/daygrid/main.min.css */ "./node_modules/@fullcalendar/daygrid/main.min.css");
@@ -16787,6 +16783,14 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
  // 日本語化用
 
 
+ // var Draggable = FullCalendar.Draggable;
+// var containerEl = document.getElementById("external-events");
+// new Draggable(containerEl, {
+//     itemSelector: ".fc-event",
+//     eventData: function(eventEl) {
+//         return eventEl;
+//     }
+// });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -16794,6 +16798,7 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
   },
   components: {
     FullCalendar: _fullcalendar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    // Draggable,
     moment: moment__WEBPACK_IMPORTED_MODULE_6___default.a
   },
   data: function data() {
@@ -16886,9 +16891,10 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
     buildEvent: function buildEvent() {
       var price = this.getPrice();
       var payment_method_id = this.getPaidAt();
+      var name = this.getPatientName();
       return {
         id: this.getOnetime_token(),
-        host_id: this.userID,
+        host_id: userID,
         guest_id: 1,
         title: this.selectedEvent.title,
         start: this.selectedEvent.start,
@@ -16897,6 +16903,7 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
         extendedProps: this.selectedEvent.extendedProps,
         price: price,
         payment_method_id: payment_method_id,
+        name: name,
         selectable: true,
         editable: true
       };
@@ -16906,7 +16913,7 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
 
       var newEvent = this.buildEvent();
       jQuery("#modalForSelect").modal("hide");
-      axios__WEBPACK_IMPORTED_MODULE_5___default.a.put("/api/events/".concat(this.userID), Object.assign({}, newEvent)).then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_5___default.a.put("/api/events/".concat(userID), Object.assign({}, newEvent)).then(function (res) {
         _this3.events.forEach(function (event) {
           if (event.id == newEvent) {
             event = newEvent;
@@ -16931,8 +16938,17 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
     },
     getPaidAt: function getPaidAt() {
       try {
-        if (this.selectedEvent.payment_method_id) {
-          return this.selectedEvent.payment_method_id;
+        if (this.selectedEvent.extendedProps.payment_method_id) {
+          return this.selectedEvent.extendedProps.payment_method_id;
+        }
+      } catch (e) {
+        return null;
+      }
+    },
+    getPatientName: function getPatientName() {
+      try {
+        if (this.selectedEvent.extendedProps.name) {
+          return this.selectedEvent.extendedProps.name;
         }
       } catch (e) {
         return null;
@@ -16949,12 +16965,13 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
     }
   },
   created: function created() {
+    var userID = document.querySelector("meta[name='user-id']").getAttribute("content");
+
     try {
       this.resize();
       this.getScrollTime();
       addEventListener("resize", this.resize);
-      this.userID = document.querySelector("meta[name='user-id']").getAttribute("content");
-      this.getConfig(this.userID);
+      this.getConfig(userID);
     } catch (err) {
       console.log(err);
     }
@@ -16999,6 +17016,160 @@ __webpack_require__(/*! @fullcalendar/timegrid/main.min.css */ "./node_modules/@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fullcalendar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fullcalendar/vue */ "./node_modules/@fullcalendar/vue/main.esm.js");
+/* harmony import */ var _fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fullcalendar/daygrid */ "./node_modules/@fullcalendar/daygrid/main.esm.js");
+/* harmony import */ var _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fullcalendar/timegrid */ "./node_modules/@fullcalendar/timegrid/main.esm.js");
+/* harmony import */ var _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fullcalendar/interaction */ "./node_modules/@fullcalendar/interaction/main.esm.js");
+/* harmony import */ var _fullcalendar_core_locales_ja__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fullcalendar/core/locales/ja */ "./node_modules/@fullcalendar/core/locales/ja.js");
+/* harmony import */ var _fullcalendar_core_locales_ja__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_fullcalendar_core_locales_ja__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_6__);
+var _methods;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -17029,26 +17200,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
+
+ // 日本語化用
+
+
+
+var userID = document.querySelector("meta[name='user-id']").getAttribute("content"); // var Draggable = FullCalendar.Draggable;
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    FullCalendar: _fullcalendar_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    FullCalendar: _fullcalendar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    moment: moment__WEBPACK_IMPORTED_MODULE_6___default.a
   },
   data: function data() {
     return {
       viewHeight: "",
       allEvents: [],
       bookedEvents: [],
-      bookingEvents: []
+      bookingEvents: [],
+      calendarPlugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__["default"], _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_2__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_3__["default"]],
+      locale: _fullcalendar_core_locales_ja__WEBPACK_IMPORTED_MODULE_4___default.a,
+      eventTimeFormat: {
+        hour: "numeric",
+        minute: "2-digit"
+      },
+      defaultView: "timeGridWeek",
+      height: 0,
+      firstDay: 1,
+      scrollTime: "",
+      selectedEvent: null
     };
   },
-  methods: {
+  methods: (_methods = {
     resize: function resize() {
       this.viewHeight = "".concat(innerHeight, "px");
     },
     getEvents: function getEvents(userID) {
       var _this = this;
 
-      axios.get("api/events?userID=".concat(userID)).then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_5___default.a.get("api/events?userID=".concat(userID)).then(function (res) {
         console.log(res);
         _this.allEvents = res.data;
 
@@ -17066,15 +17258,163 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     setAPIToken: function setAPIToken() {
-      axios.defaults.headers.common["Authorization"] = "Bearer " + Laravel.apiToken;
+      axios__WEBPACK_IMPORTED_MODULE_5___default.a.defaults.headers.common["Authorization"] = "Bearer " + Laravel.apiToken;
+    },
+    handleSelect: function handleSelect(arg) {
+      this.selectedEvent = arg;
+      jQuery("#modalForSelect").modal("show");
+    },
+    handleDateClick: function handleDateClick(arg) {},
+    handleEventClick: function handleEventClick(arg) {
+      var _this2 = this;
+
+      this.selectedEvent = arg.event;
+      console.log(this.selectedEvent);
+      axios__WEBPACK_IMPORTED_MODULE_5___default.a.get("/api/patient/".concat(this.selectedEvent.extendedProps.guest_id)).then(function (res) {
+        _this2.guestInfo = res.data;
+        console.log("Get patient data");
+      })["catch"](function (err) {
+        _this2.guestInfo = null;
+        console.error(err);
+        console.error("failed to get patient data");
+      });
+      jQuery("#modalForClick").modal("show");
+    },
+    handleEventResize: function handleEventResize(arg) {
+      this.selectedEvent = arg.event;
+      this.updateEvent();
+    },
+    handleEventDrop: function handleEventDrop(arg) {
+      this.selectedEvent = arg.event;
+      this.updateEvent();
+    }
+  }, _defineProperty(_methods, "resize", function resize() {
+    this.height = innerHeight - 150;
+  }), _defineProperty(_methods, "getConfig", function getConfig(userID) {}), _defineProperty(_methods, "getScrollTime", function getScrollTime() {
+    this.scrollTime = "7:00:00";
+  }), _defineProperty(_methods, "createEvent", function createEvent() {
+    var _this3 = this;
+
+    var event = this.buildEvent();
+
+    if (!event.title) {
+      return;
+    }
+
+    console.log(event.start);
+    jQuery("#modalForSelect").modal("hide");
+    axios__WEBPACK_IMPORTED_MODULE_5___default.a.post("/api/events", Object.assign({}, event)).then(function (res) {
+      _this3.bookingEvents.push(event);
+
+      console.log("completed post event");
+    })["catch"](function (err) {
+      console.error(err);
+      alert("予定の作成に失敗しました。");
+      console.error("failed to post event");
+    });
+  }), _defineProperty(_methods, "getOnetime_token", function getOnetime_token() {
+    if (this.selectedEvent.id) {
+      return this.selectedEvent.id;
+    } else {
+      return moment__WEBPACK_IMPORTED_MODULE_6___default()(new Date()).unix().toString();
+    }
+  }), _defineProperty(_methods, "buildEvent", function buildEvent() {
+    var price = this.getPrice();
+    var payment_method_id = this.getPaidAt();
+    var name = this.getPatientName();
+    return {
+      id: this.getOnetime_token(),
+      host_id: userID,
+      guest_id: 1,
+      title: this.selectedEvent.title,
+      start: this.selectedEvent.start,
+      // start: new Date(),
+      end: this.selectedEvent.end,
+      extendedProps: this.selectedEvent.extendedProps,
+      price: price,
+      payment_method_id: payment_method_id,
+      name: name,
+      selectable: true,
+      editable: true
+    };
+  }), _defineProperty(_methods, "updateEvent", function updateEvent() {
+    var _this4 = this;
+
+    var newEvent = this.buildEvent();
+    jQuery("#modalForSelect").modal("hide");
+    axios__WEBPACK_IMPORTED_MODULE_5___default.a.put("/api/events/".concat(userID), Object.assign({}, newEvent)).then(function (res) {
+      _this4.events.forEach(function (event) {
+        if (event.id == newEvent) {
+          event = newEvent;
+        }
+      });
+
+      console.log("completed move event");
+    })["catch"](function (err) {
+      console.error(err);
+      alert("予定の変更に失敗しました。");
+      console.error("failed to post event");
+    });
+  }), _defineProperty(_methods, "toVideo", function toVideo() {
+    jQuery("#modalForClick").modal("hide");
+    this.$router.push({
+      name: "video",
+      params: {
+        id: this.selectedEvent.id
+      }
+    });
+  }), _defineProperty(_methods, "getPaidAt", function getPaidAt() {
+    try {
+      if (this.selectedEvent.extendedProps.payment_method_id) {
+        return this.selectedEvent.extendedProps.payment_method_id;
+      }
+    } catch (e) {
+      return null;
+    }
+  }), _defineProperty(_methods, "getPatientName", function getPatientName() {
+    try {
+      if (this.selectedEvent.extendedProps.name) {
+        return this.selectedEvent.extendedProps.name;
+      }
+    } catch (e) {
+      return null;
+    }
+  }), _defineProperty(_methods, "getPrice", function getPrice() {
+    try {
+      if (this.selectedEvent.price) {
+        return this.selectedEvent.price;
+      }
+    } catch (e) {
+      return 0;
+    }
+  }), _methods),
+  filters: {
+    moment: function moment(value, format) {
+      var time = "";
+      time = moment__WEBPACK_IMPORTED_MODULE_6___default()(value).format(format);
+
+      if (time.toString() === "Invalid date") {
+        return "";
+      }
+
+      return time;
+    },
+    exceptUserID: function exceptUserID(value) {
+      return value.replace("/\([0-9].*\)/g");
     }
   },
   created: function created() {
-    var userID = document.querySelector("meta[name='user-id']").getAttribute("content");
     this.setAPIToken();
     this.resize();
     addEventListener("resize", this.resize);
     this.getEvents(userID);
+    var containerEl = document.getElementById("external-events");
+    new _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_3__["Draggable"](containerEl, {
+      itemSelector: ".fc-event",
+      eventData: {
+        title: "event"
+      }
+    });
   }
 });
 
@@ -17240,14 +17580,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
+var userID = document.querySelector("meta[name='user-id']").getAttribute("content");
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     moment: moment__WEBPACK_IMPORTED_MODULE_0___default.a
@@ -17285,9 +17619,13 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.event.date.err = null;
-      this.sendNewEvent();
-      jQuery("#modalForSelect").modal("hide");
-      this.initializeEvent();
+      var sended = this.sendNewEvent();
+
+      if (sended) {
+        this.getEvents(userID);
+        jQuery("#modalForCreate").modal("hide");
+        this.initializeEvent();
+      }
     },
     initializeEvent: function initializeEvent() {
       this.event = {
@@ -17310,19 +17648,20 @@ __webpack_require__.r(__webpack_exports__);
     sendNewEvent: function sendNewEvent() {
       var _this2 = this;
 
-      axios.post("/api/event", Object.assign({}, this.event)).then(function (res) {
+      return axios.post("/api/event", Object.assign({}, this.event)).then(function (res) {
         _this2.events.push(event);
 
         console.log("completed post event");
+        return true;
       })["catch"](function (err) {
         console.error(err);
         alert("オンライン診療の申込に失敗しました。");
         console.error("failed to post event");
+        return false;
       });
     }
   },
   created: function created() {
-    var userID = document.querySelector("meta[name='user-id']").getAttribute("content");
     this.setAPIToken();
     this.getEvents(userID);
     this.initializeEvent();
@@ -95574,7 +95913,7 @@ var render = function() {
           },
           weekends: true,
           selectable: true,
-          dropable: true,
+          droppable: true,
           locale: _vm.locale,
           eventTimeFormat: _vm.eventTimeFormat,
           defaultView: _vm.defaultView,
@@ -95634,16 +95973,14 @@ var render = function() {
                       _c("div", { staticClass: "card" }, [
                         _c("p", [_vm._v("患者名")]),
                         _vm._v(" "),
-                        _c("p", [
-                          _vm._v(_vm._s(_vm.selectedEvent.extendedProps.name))
-                        ])
+                        _c("p", [_vm._v(_vm._s(_vm.selectedEvent.name))])
                       ])
                     ])
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.selectedEvent
                   ? _c("div", { staticClass: "modal-footer" }, [
-                      _vm.selectedEvent.extendedProps.payment_method_id != null
+                      _vm.selectedEvent.payment_method_id != null
                         ? _c(
                             "button",
                             {
@@ -95658,8 +95995,12 @@ var render = function() {
                             ]
                           )
                         : _vm._e(),
-                      _vm._v(" "),
-                      !_vm.selectedEvent.extendedProps.payment_method_id
+                      _vm._v(
+                        "\n\n                    " +
+                          _vm._s(_vm.selectedEvent.payment_method_id) +
+                          "\n                    "
+                      ),
+                      !_vm.selectedEvent.payment_method_id
                         ? _c(
                             "button",
                             {
@@ -95668,12 +96009,7 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                        " +
-                                  _vm._s(
-                                    _vm.selectedEvent.extendedProps
-                                      .payment_method_id
-                                  ) +
-                                  "\n                        料金支払い待ち\n                    "
+                                "\n                        料金支払い待ち\n                    "
                               )
                             ]
                           )
@@ -95729,7 +96065,7 @@ var render = function() {
                           attrs: {
                             name: "title",
                             type: "text",
-                            placeholder: "タイトルを入力"
+                            placeholder: "患者名を入力"
                           },
                           domProps: { value: _vm.selectedEvent.title },
                           on: {
@@ -95895,14 +96231,23 @@ var render = function() {
         _vm._v(" "),
         _c(
           "div",
+          { attrs: { id: "external-events" } },
           _vm._l(_vm.bookingEvents, function(event) {
-            return _c("div", { key: event.id, staticClass: "card" }, [
-              _c("p", [_vm._v("患者ID：" + _vm._s(event.id))]),
-              _vm._v(" "),
-              _c("p", [_vm._v("患者名：" + _vm._s(event.name) + " 様")]),
-              _vm._v(" "),
-              _c("p", [_vm._v("希望時間：" + _vm._s(event.desired_time))])
-            ])
+            return _c(
+              "div",
+              {
+                key: event.id,
+                staticClass:
+                  "card fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event"
+              },
+              [
+                _c("p", [_vm._v("患者ID：" + _vm._s(event.id))]),
+                _vm._v(" "),
+                _c("p", [_vm._v("患者名：" + _vm._s(event.name) + " 様")]),
+                _vm._v(" "),
+                _c("p", [_vm._v("希望時間：" + _vm._s(event.desired_time))])
+              ]
+            )
           }),
           0
         )
@@ -95912,7 +96257,256 @@ var render = function() {
     _c(
       "div",
       { staticClass: "col-xs-12 col-md-6 bg-white" },
-      [_c("calendar-component", { attrs: { events: _vm.bookedEvents } })],
+      [
+        _c("p", [_vm._v("カレンダー")]),
+        _vm._v(" "),
+        _c("FullCalendar", {
+          attrs: {
+            plugins: _vm.calendarPlugins,
+            events: _vm.bookedEvents,
+            header: {
+              left: "title",
+              center: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+              right: "prev today next"
+            },
+            weekends: true,
+            selectable: true,
+            droppable: true,
+            locale: _vm.locale,
+            eventTimeFormat: _vm.eventTimeFormat,
+            defaultView: _vm.defaultView,
+            height: _vm.height,
+            firstDay: _vm.firstDay,
+            scrollTime: _vm.scrollTime
+          },
+          on: {
+            select: _vm.handleSelect,
+            dateClick: _vm.handleDateClick,
+            eventClick: _vm.handleEventClick,
+            eventResize: _vm.handleEventResize,
+            eventDrop: _vm.handleEventDrop
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "modal",
+            attrs: { id: "modalForClick", tabindex: "-1", role: "dialog" }
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
+              [
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _vm.selectedEvent != null
+                    ? _c("div", { staticClass: "modal-body" }, [
+                        _c("div", { staticClass: "card" }, [
+                          _c("p", [_vm._v("診察日程")]),
+                          _vm._v(" "),
+                          _c("p", [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm._f("moment")(
+                                    _vm.selectedEvent.start,
+                                    "YYYY.MM.DD HH:mm"
+                                  )
+                                ) +
+                                "\n                                ～\n                                " +
+                                _vm._s(
+                                  _vm._f("moment")(
+                                    _vm.selectedEvent.end,
+                                    "HH:mm"
+                                  )
+                                ) +
+                                "\n                            "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "card" }, [
+                          _c("p", [_vm._v("患者名")]),
+                          _vm._v(" "),
+                          _c("p", [_vm._v(_vm._s(_vm.selectedEvent.name))])
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.selectedEvent
+                    ? _c("div", { staticClass: "modal-footer" }, [
+                        _vm.selectedEvent.payment_method_id != null
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                attrs: { type: "button" },
+                                on: { click: _vm.toVideo }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                            ビデオ診療開始\n                        "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(
+                          "\n\n                        " +
+                            _vm._s(_vm.selectedEvent.payment_method_id) +
+                            "\n                        "
+                        ),
+                        !_vm.selectedEvent.payment_method_id
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                attrs: { type: "button", disabled: "" }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                            料金支払い待ち\n                        "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            attrs: { type: "button", "data-dismiss": "modal" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            閉じる\n                        "
+                            )
+                          ]
+                        )
+                      ])
+                    : _vm._e()
+                ])
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "modal",
+            attrs: { id: "modalForSelect", tabindex: "-1", role: "dialog" }
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "modal-dialog", attrs: { role: "document" } },
+              [
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _vm.selectedEvent != null
+                      ? _c("form", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.selectedEvent.title,
+                                expression: "selectedEvent.title"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              name: "title",
+                              type: "text",
+                              placeholder: "患者名を入力"
+                            },
+                            domProps: { value: _vm.selectedEvent.title },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.selectedEvent,
+                                  "title",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.selectedEvent.price,
+                                expression: "selectedEvent.price"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "number",
+                              name: "price",
+                              placeholder: "金額を入力"
+                            },
+                            domProps: { value: _vm.selectedEvent.price },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.selectedEvent,
+                                  "price",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "button" },
+                        on: { click: _vm.createEvent }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            作成\n                        "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            キャンセル\n                        "
+                        )
+                      ]
+                    )
+                  ])
+                ])
+              ]
+            )
+          ]
+        )
+      ],
       1
     )
   ])
@@ -95926,6 +96520,48 @@ var staticRenderFns = [
       _c("h1", [_vm._v("Remedy")]),
       _vm._v(" "),
       _c("h3", [_vm._v("診察スケジュール一覧")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("予定の詳細")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("予定の新規作成")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
     ])
   }
 ]
@@ -96256,9 +96892,9 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "select",
-      { staticClass: "form-control", attrs: { name: "clinic", disabled: "" } },
+      { staticClass: "form-control", attrs: { name: "clinic" } },
       [
-        _c("option", { attrs: { value: "0", selected: "" } }, [
+        _c("option", { attrs: { value: "0", selected: "", disabled: "" } }, [
           _vm._v("Remedy病院")
         ])
       ]
@@ -96272,15 +96908,9 @@ var staticRenderFns = [
       "select",
       { staticClass: "form-control", attrs: { name: "doctor" } },
       [
-        _c("option", { attrs: { value: "", disabled: "", selected: "" } }, [
-          _vm._v("---医師を選択してください---")
-        ]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "0" } }, [_vm._v("○○先生")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "1" } }, [_vm._v("△△先生")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "2" } }, [_vm._v("××先生")])
+        _c("option", { attrs: { value: "23", disabled: "", selected: "" } }, [
+          _vm._v("doctor先生")
+        ])
       ]
     )
   },
@@ -96499,7 +97129,7 @@ var render = function() {
     _vm.role == 0
       ? _c("div", [_vm._v("Now loading...")])
       : _vm.role >= 100
-      ? _c("div", [_c("doctor-home-component")], 1)
+      ? _c("div", [_c("doctor-home-component2")], 1)
       : _c("div", [_c("patient-home-component")], 1)
   ])
 }
@@ -111760,8 +112390,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_SkywayRoom_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/SkywayRoom.vue */ "./resources/js/components/SkywayRoom.vue");
 /* harmony import */ var _components_CalendarComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/CalendarComponent.vue */ "./resources/js/components/CalendarComponent.vue");
 /* harmony import */ var _components_DoctorHomeComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/DoctorHomeComponent.vue */ "./resources/js/components/DoctorHomeComponent.vue");
-/* harmony import */ var _components_PatientHomeComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/PatientHomeComponent.vue */ "./resources/js/components/PatientHomeComponent.vue");
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
+/* harmony import */ var _components_DoctorHomeComponent2_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/DoctorHomeComponent2.vue */ "./resources/js/components/DoctorHomeComponent2.vue");
+/* harmony import */ var _components_PatientHomeComponent_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/PatientHomeComponent.vue */ "./resources/js/components/PatientHomeComponent.vue");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -111770,6 +112401,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
 
 
 
@@ -111788,7 +112420,8 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 Vue.component("video-component", _components_SkywayRoom_vue__WEBPACK_IMPORTED_MODULE_0__["default"]);
 Vue.component("calendar-component", _components_CalendarComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 Vue.component("doctor-home-component", _components_DoctorHomeComponent_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
-Vue.component("patient-home-component", _components_PatientHomeComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
+Vue.component("doctor-home-component2", _components_DoctorHomeComponent2_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
+Vue.component("patient-home-component", _components_PatientHomeComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -111797,7 +112430,7 @@ Vue.component("patient-home-component", _components_PatientHomeComponent_vue__WE
 
 var app = new Vue({
   el: "#app",
-  router: _router__WEBPACK_IMPORTED_MODULE_4__["default"]
+  router: _router__WEBPACK_IMPORTED_MODULE_5__["default"]
 });
 
 /***/ }),
@@ -112000,6 +112633,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DoctorHomeComponent_vue_vue_type_template_id_bb417b38___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/DoctorHomeComponent2.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/DoctorHomeComponent2.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed (from ./node_modules/vue-loader/lib/index.js):\nError: ENOENT: no such file or directory, open 'C:\\Users\\m-tanaka\\work\\Remedy\\resources\\js\\components\\DoctorHomeComponent2.vue'");
 
 /***/ }),
 

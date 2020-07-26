@@ -625,7 +625,7 @@ var render = function() {
     _vm.role == 0
       ? _c("div", [_vm._v("Now loading...")])
       : _vm.role >= 100
-      ? _c("div", [_c("doctor-home-component")], 1)
+      ? _c("div", [_c("doctor-home-component2")], 1)
       : _c("div", [_c("patient-home-component")], 1)
   ])
 }
