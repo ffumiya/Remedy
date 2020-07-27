@@ -167,8 +167,7 @@
 
         <div class="col-xs-6 col-xs-offset-3 centered">
 
-          <img class="img-responsive" src="{{ asset('img/remedy-pc/four_top.png') }}"" align="">
-        </div> -->
+        </div> 
             <!-- <div class='container'>
               <h1>リメディが提供する４つの機能</h1>
             </div> -->

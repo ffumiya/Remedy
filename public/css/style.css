@@ -1020,8 +1020,8 @@
 	.login-form {
     /* width: 385px; */
     width: 385px;
-    height:65vh;
-		margin: 110px auto;
+    height:70vh;
+		margin: 90px auto;
 	}
     .login-form form {        
     	margin-bottom: 15px;
@@ -1041,7 +1041,15 @@
     }
 
     .input-group-addon .fa-paper-plane{
-      font-size: 13px;
+      font-size: 12px;
+    }
+
+    .input-group-addon .fa-check {
+      color: #fff;
+      left: 14px;
+      top: 16px;
+      font-size: 7px;
+      position: absolute;
     }
 
     .login-btn {
@@ -1082,3 +1090,80 @@
       font-size: 0.8em;
     }
 
+  .btn-new-register {
+    padding: 10px 50px;
+    border: 0 none;
+    outline:0;
+    font-family: 'メイリオ', 'Meiryo', sans-serif;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 15px;
+  }
+
+  .reserved-patient-element{
+    background-color: white; 
+    box-shadow: 0 10px 25px 0 rgba(0, 0, 0, .5);
+    border-radius: 15px;
+    color: rgb(0,96,146);
+    font-size: 25px;
+    font-weight: 550;
+    margin-top: 30px;
+    padding: 10px 20px;
+    vertical-align: middle;
+  }
+
+  .vtl-mid{
+    vertical-align: middle;
+  }
+
+  .mgr-25{
+    margin-right: 25px;
+  }
+
+   .bg-grey{
+     background-color: #F2F2F2;
+   } 
+
+  row-100{
+    width: 100%;
+  }
+
+  .pad-5{
+    padding: 5px 0px;
+   }
+
+  .mgr-btm-5{
+    margin-bottom: 10px;
+  }
+
+  .remedy-logo{
+    width: 100px;
+    height: auto;
+  }
+
+  .profile{
+    width: 30%;
+    height: auto;
+    margin-top: 10px;
+  }
+
+  .blue-emphasis{
+    background-color: rgb(0,96,146);
+    border-radius: 5px;
+    color: white;
+    font-size: 18px;
+    padding: 2px 15px;
+    width: 50%;
+  }
+
+  .btn-start{
+    background-color:#FF3366;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 20px;
+    padding:5px 20px;
+    margin-top: 5px;
+  }
