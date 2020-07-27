@@ -21,9 +21,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+    Route::resource('user', 'API\UserController')->only(['create']);
     Route::get('/role/{id}', function (Request $request) {
         return $request->user()->role;
         // return config('role.patient.value');
@@ -32,5 +30,4 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('/events', 'API\EventsController')->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::post('/events/{id}', 'API\EventsController@pay');
     Route::post('/event', 'API\EventsController@application');
-    Route::resource('/reservation', 'API\ReservationController')->only(['show']);
 });

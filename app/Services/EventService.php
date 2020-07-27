@@ -95,27 +95,23 @@ class EventService extends BaseService
         return $events;
     }
 
-    public static function storeEvent($request)
+    public static function storeEvent($event)
     {
-        if (empty($request->price)) {
+        if (empty($event[Event::PRICE])) {
             $price = 0;
         } else {
-            $price = $request->price;
+            $price = $event[Event::PRICE];
         }
 
-        //TODO: FullCalendarの時間が9時間ずれる問題
-        $start = new Carbon($request->start);
-        $start->addHour(9);
-        $end = new Carbon($request->end);
-        $end->addHour(9);
+        $start = date('Y-m-d H:i', strtotime(strstr($event[Event::START], 'GMT', true)));
+        $end = date('Y-m-d H:i', strtotime(strstr($event[Event::END], 'GMT', true)));
         Event::create([
-
-            "id" => $request->id,
-            "host_id" => $request->host_id,
-            "guest_id" => $request->guest_id,
+            "id" => $event[Event::ID],
+            "host_id" => $event[Event::HOST_ID],
+            "guest_id" => $event[Event::GUEST_ID],
             "start" => $start,
             "end" => $end,
-            "title" => $request->title,
+            "title" => $event[Event::TITLE],
             "price" => $price
         ]);
 
@@ -123,7 +119,7 @@ class EventService extends BaseService
             $datetime = new Carbon();
             $paymentMethodId = "0price{$datetime}";
             Event::updateOrCreate(
-                ["id" => $request->id],
+                ["id" => $event[Event::ID]],
                 ["payment_method_id" => $paymentMethodId]
             );
         }

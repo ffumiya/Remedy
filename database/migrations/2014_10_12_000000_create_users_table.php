@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string(User::EMAIL)->unique()->nullable();
             $table->timestamp(User::EMAIL_VERIFIED_AT)->nullable();
             $table->string(User::PASSWORD)->nullable();
-            $table->string(User::API_TOKEN, 80)->unique()->default(str_random(60));
+            $table->string(User::API_TOKEN, 80)->unique();
             $table->integer(User::ROLE)->default(config('role.patient.value'));
             $table->bigInteger(User::CLINIC_ID)->nullable();
             $table->rememberToken()->nullable();

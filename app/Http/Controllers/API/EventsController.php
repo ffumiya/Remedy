@@ -39,7 +39,7 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        return EventService::storeEvent($request);
+        return EventService::storeEvent($request->event);
     }
 
     /**
