@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@include('header')
+
 @section('content')
 <div class="login-form">
     <form method="POST" action="{{ route('register') }}"><br>
@@ -20,11 +22,11 @@
         <div class="form-group">
         	<div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
-                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" placeholder="名前" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" placeholder="メールアドレス" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
             </div>
-            @error('name')
+            @error('email')
             <span class="invalid-feedback" role="alert">
-            <strong>ユーザー名を確かめください</strong>
+            <strong>メールアドレスを確かめください</strong>
             </span>
             @enderror
         </div>
@@ -32,7 +34,7 @@
 		<div class="form-group">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="パスワード" name="password" required autocomplete="current-password">
+                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="パスワード" name="password" required autocomplete="new-password">
 
                 @error('password')
                 <span class="invalid-feedback" role="alert">
@@ -41,19 +43,37 @@
                 @enderror
             </div>
         </div>        
+
+		<div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">
+                <i class="fa fa-lock"></i>
+			    <i class="fa fa-check"></i>
+                </span>
+                <input id="password_confirmation" type="password" class="form-control" placeholder="パスワード（確認用)" name="password_confirmation" required autocomplete="new-password">
+
+                @error('password')
+                <span class="invalid-feedback" role="alert">
+                <strong>パスワードをお確かめください</strong>
+                </span>
+                @enderror
+            </div>
+        </div>        
+
         <div class="form-group">
-            <button type="submit" class="btn btn-primary login-btn btn-block">ログイン</button>
+            <button type="submit" class="btn btn-primary login-btn btn-block">新規登録</button>
         </div>
         <div class="clearfix">
-            <label class="pull-left checkbox-inline"><input name="remember" type="checkbox" {{ old('remember') ? 'checked' : '' }}> ログイン情報を記録</label><br>
-            <a href="{{ route('password.request') }}" class="pull-right">パスワードを忘れた方はこちら</a>
+            <a href="/login" class="pull-right">既にアカウントをお持ちの方はこちら</a>
         </div>
         <br><br>
 </div>
 
+@include('footer')
+
 <!-- 以下、元の登録ページ -->
 
-<div class="container">
+<!-- <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -125,5 +145,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 @endsection
