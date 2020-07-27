@@ -16,19 +16,19 @@ class ClinicSeeder extends Seeder
 
         Clinic::insert([
             [
-                "name" => "clinic1",
-                "created_at" => $now,
-                "updated_at" => $now
+                Clinic::NAME => "clinic1",
+                CLINIC::CREATED_AT => $now,
+                CLINIC::UPDATED_AT => $now
             ],
             [
-                "name" => "clinic2",
-                "created_at" => $now,
-                "updated_at" => $now
+                Clinic::NAME => "clinic2",
+                CLINIC::CREATED_AT => $now,
+                CLINIC::UPDATED_AT => $now
             ],
             [
-                "name" => "clinic3",
-                "created_at" => $now,
-                "updated_at" => $now
+                Clinic::NAME => "clinic3",
+                CLINIC::CREATED_AT => $now,
+                CLINIC::UPDATED_AT => $now
             ],
 
         ]);

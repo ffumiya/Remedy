@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,15 +14,15 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create(User::TABLE_NAME, function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique()->nullable();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->nullable();
-            $table->string('api_token', 80)->unique()->default(str_random(60));
-            $table->integer('role')->default(config('role.patient.value'));
-            $table->bigInteger('clinic_id')->nullable();
+            $table->string(User::NAME);
+            $table->string(User::EMAIL)->unique()->nullable();
+            $table->timestamp(User::EMAIL_VERIFIED_AT)->nullable();
+            $table->string(User::PASSWORD)->nullable();
+            $table->string(User::API_TOKEN, 80)->unique()->default(str_random(60));
+            $table->integer(User::ROLE)->default(config('role.patient.value'));
+            $table->bigInteger(User::CLINIC_ID)->nullable();
             $table->rememberToken()->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -35,6 +36,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists(User::TABLE_NAME);
     }
 }

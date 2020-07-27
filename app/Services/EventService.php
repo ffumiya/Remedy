@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Clinic;
 use App\Models\Event;
+use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 
@@ -16,6 +18,39 @@ class EventService extends BaseService
         return $event;
     }
 
+    public static function getCurrentPatientEvent($id)
+    {
+        $dateTime = new DateTime();
+
+        /**
+         * SELECT events.event_id AS EVENT,
+         * EVENTS.id AS ID,
+         * EVENTS.host_id AS HOST_ID,
+         * EVENTS.`start` AS START,
+         * users.name AS DOCTOR_NAME,
+         * users.email AS DOCTOR_EMAIL,
+         * clinics.name AS CLINIC_NAME
+         * FROM EVENTS
+         * LEFT JOIN users
+         * ON EVENTS.host_id = users.id
+         * LEFT JOIN clinics
+         * ON users.clinic_id = clinics.id
+         * WHERE start > NOW() AND guest_id = 21
+         * ORDER BY START ASC
+         * LIMIT 1;
+         */
+        $addColumns = ['USERS.NAME AS doctor_name', 'CLINICS.NAME AS clinic_name'];
+        $event = Event::select()
+            ->addSelect($addColumns)
+            ->leftJoin(User::TABLE_NAME, Event::getHOST_KEY(), '=', User::getEVENT_KEY())
+            ->leftJoin(Clinic::TABLE_NAME, User::getCLINIC_KEY(), '=', Clinic::getUSER_KEY())
+            ->where(Event::GUEST_ID, $id)
+            ->where(Event::START, '>', $dateTime)
+            ->orderBy(Event::START)
+            ->first();
+        return $event;
+    }
+
     /**
      * 患者ホーム画面で表示する予約を取得
      * @param int 患者のユーザID
@@ -26,19 +61,19 @@ class EventService extends BaseService
         /**
          * SELECT *
          * FROM `EVENTS`
-         * WHERE `START` IS NULL OR `START` > NOW() AND `DESIRED_TIME` > NOW()
-         * AND `GUEST_ID` = 24;
+         * WHERE (`START` IS NULL OR `START` > NOW() OR `DESIRED_TIME` > NOW())
+         * AND `GUEST_ID` = ?;
          */
         $query = Event::where(Event::GUEST_ID, $id)
             ->where(function ($query) use ($dateTime) {
                 $query->whereNull(Event::START)
-                    ->orWhere(Event::START, '>', $dateTime);
-            })
-            ->where(EVENT::DESIRED_TIME, '>', $dateTime);
+                    ->orWhere(Event::START, '>', $dateTime)
+                    ->orwhere(Event::DESIRED_TIME, '>', $dateTime);
+            });
         $count = $query->count();
         $events = $query->get();
 
-        \Log::channel('trace')->info("Return {$count} events.");
+        \Log::channel('trace')->info("Return {$count} events to user {$id}.");
         return $events;
     }
 

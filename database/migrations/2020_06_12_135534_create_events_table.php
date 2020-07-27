@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Event;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,35 +15,35 @@ class CreateEventsTable extends Migration
     public function up()
     {
         // Events object reference from https://fullcalendar.io/docs/event-object;
-        Schema::create('events', function (Blueprint $table) {
-            $table->bigIncrements('event_id');
-            $table->string('id');
-            $table->bigInteger('host_id')->nullable(); // 医師
-            $table->bigInteger('clinic_id')->nullable(); // 医療機関
-            $table->bigInteger('guest_id')->nullable(); //患者
-            $table->string('groupId')->default(""); // 子ID
-            $table->boolean('allDay')->default(false); // 終日
-            $table->timestamp('start')->nullable(); //開始時間
-            $table->timestamp('desired_time')->nullable(); //希望開始時間
-            $table->timestamp('end')->nullable(); //終了時間
-            $table->string('title');
-            $table->string('url')->default("");
-            $table->string('classNames')->nullable();
-            $table->boolean('editable')->default(true);
-            $table->boolean('startEditable')->default(true);
-            $table->boolean('durationEditable')->default(true);
-            $table->boolean('resourceEditable')->default(true);
-            $table->string('rendering')->nullable();
-            $table->boolean('overlap')->default(true); // 禁止期間
-            $table->string('constrait')->nullable(); // 親ID
-            $table->string('color')->nullable();
-            $table->string('backgroundColor')->nullable();
-            $table->string('borderColor')->nullable();
-            $table->string('textColor')->nullable();
-            $table->bigInteger('extendedProps')->nullable();
-            $table->string('source')->nullable();
-            $table->bigInteger('price')->default(0);
-            $table->string('payment_method_id')->nullable();
+        Schema::create(Event::TABLE_NAME, function (Blueprint $table) {
+            $table->bigIncrements(Event::EVENT_ID);
+            $table->string(Event::ID);
+            $table->bigInteger(Event::HOST_ID)->nullable(); // 医師
+            $table->bigInteger(Event::CLINIC_ID)->nullable(); // 医療機関
+            $table->bigInteger(Event::GUEST_ID)->nullable(); //患者
+            $table->string(Event::GROUP_ID)->default(""); // 子ID
+            $table->boolean(Event::ALL_DAY)->default(false); // 終日
+            $table->timestamp(Event::START)->nullable(); //開始時間
+            $table->timestamp(Event::DESIRED_TIME)->nullable(); //希望開始時間
+            $table->timestamp(Event::END)->nullable(); //終了時間
+            $table->string(Event::TITLE);
+            $table->string(Event::URL)->default("");
+            $table->string(Event::CLASS_NAMES)->nullable();
+            $table->boolean(Event::EDITABLE)->default(true);
+            $table->boolean(Event::START_EDITABLE)->default(true);
+            $table->boolean(Event::DURATION_EDITABLE)->default(true);
+            $table->boolean(Event::RESOURCE_EDITABLE)->default(true);
+            $table->string(Event::RENDERING)->nullable();
+            $table->boolean(Event::OVERLAP)->default(true); // 禁止期間
+            $table->string(Event::CONSTRAIT)->nullable(); // 親ID
+            $table->string(Event::COLOR)->nullable();
+            $table->string(Event::BACKGROUND_COLOR)->nullable();
+            $table->string(Event::BORDER_COLOR)->nullable();
+            $table->string(Event::TEXT_COLOR)->nullable();
+            $table->bigInteger(Event::EXTENDED_PROPS)->nullable();
+            $table->string(Event::SOURCE)->nullable();
+            $table->bigInteger(Event::PRICE)->default(0);
+            $table->string(Event::PAYMENT_METHOD_ID)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -55,6 +56,6 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists(Event::TABLE_NAME);
     }
 }

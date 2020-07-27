@@ -4,21 +4,26 @@ namespace App\Models;
 
 class Event extends BaseModel
 {
-    #########################
-    #  カラム名                                        #
-    #########################
-    const EVENT_ID = "EVENT_ID";
-    const ID = "ID";
-    const HOST_ID = "HOST_ID";
-    const CLINIC_ID = "CLINIC_ID";
-    const GUEST_ID = "GUEST_ID";
-    const DESIRED_TIME = "DESIRED_TIME";
-    const PRICE = "PRICE";
-    const STRIPE_METHOD_ID = "PAYMENT_METHOD_ID";
+    /**
+     * テーブル関連
+     */
+    const TABLE_NAME = "events";
 
-    #########################
-    #  FullCalendar 指定のカラム                #
-    #########################
+    /**
+     * カラム名
+     */
+    const EVENT_ID = "event_id";
+    const ID = "id";
+    const HOST_ID = "host_id";
+    const CLINIC_ID = "clinic_id";
+    const GUEST_ID = "guest_id";
+    const DESIRED_TIME = "desired_id";
+    const PRICE = "price";
+    const STRIPE_METHOD_ID = "payment_method_id";
+
+    /*
+     * FullCalendar 指定のカラム
+     */
     const GROUP_ID = "groupId";
     const ALL_DAY = "allDay";
     const START = "start";
@@ -35,9 +40,11 @@ class Event extends BaseModel
     const CONSTRAIT = "constrait";
     const COLOR = "color";
     const BACKGROUND_COLOR = "backgroundColor";
+    const BORDER_COLOR = 'borderColor';
     const TEXT_COLOR = "textColor";
     const EXTENDED_PROPS = "extendedProps";
     const SOURCE = "source";
+    const PAYMENT_METHOD_ID = 'payment_method_id';
 
     protected $primaryKey = 'event_id';
 
@@ -49,4 +56,14 @@ class Event extends BaseModel
         'start',
         'end'
     ];
+
+    public static function getGUEST_KEY()
+    {
+        return Event::TABLE_NAME . "." . Event::GUEST_ID;
+    }
+
+    public static function getHOST_KEY()
+    {
+        return Event::TABLE_NAME . "." . Event::HOST_ID;
+    }
 }

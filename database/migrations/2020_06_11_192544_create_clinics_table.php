@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Clinic;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +14,9 @@ class CreateClinicsTable extends Migration
      */
     public function up()
     {
-        Schema::create('clinics', function (Blueprint $table) {
+        Schema::create(Clinic::TABLE_NAME, function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string(Clinic::NAME);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -28,6 +29,6 @@ class CreateClinicsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clinics');
+        Schema::dropIfExists(Clinic::TABLE_NAME);
     }
 }

@@ -25,8 +25,8 @@ Route::middleware('auth:api')->group(function () {
         return $request->user();
     });
     Route::get('/role/{id}', function (Request $request) {
-        // return $request->user()->role;
-        return config('role.patient.value');
+        return $request->user()->role;
+        // return config('role.patient.value');
     });
     Route::resource('/patient', 'API\PatientController')->only(['show']);
     Route::resource('/events', 'API\EventsController')->only(['index', 'store', 'show', 'update', 'destroy']);

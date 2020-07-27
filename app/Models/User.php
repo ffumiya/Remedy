@@ -10,7 +10,33 @@ use Laravel\Cashier\Billable;
 class User extends Authenticatable
 {
     use Notifiable;
-    /** use Billable; */
+    use Billable;
+
+    #########################
+    #  テーブル名                                      #
+    #########################
+    const TABLE_NAME = "users";
+
+    #########################
+    #  カラム名                                        #
+    #########################
+    const ID = "id";
+    const NAME = "name";
+    const EMAIL = "email";
+    const EMAIL_VERIFIED_AT = "email_verified_at";
+    const PASSWORD = "password";
+    const REMEMBER_TOKEN = "remember_token";
+    const API_TOKEN = "api_token";
+    const ROLE = "role";
+    const CLINIC_ID = "clinic_id";
+
+    #########################
+    #  Stripe指定カラム                             #
+    #########################
+    const STRIPE_ID = "stripe_id";
+    const CARD_BRAND = "card_brand";
+    const CARD_LAST_FOUR = "card_last_four";
+    const TRIAL_ENDS_AT = "trial_ends_at";
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +44,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'clinic_id'
+        User::NAME, User::EMAIL, User::PASSWORD, User::CLINIC_ID
     ];
 
     /**
@@ -27,7 +53,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        User::PASSWORD, User::REMEMBER_TOKEN
     ];
 
     /**
@@ -36,11 +62,21 @@ class User extends Authenticatable
      * @var array
      */
     protected $dates = [
-        'email_verified_at',
+        User::EMAIL_VERIFIED_AT
     ];
 
     public function scopeRole($query, $role)
     {
-        return $query->where('role', $role);
+        return $query->where(User::ROLE, $role);
+    }
+
+    public static function getEVENT_KEY()
+    {
+        return User::TABLE_NAME . '.' . User::ID;
+    }
+
+    public static function getCLINIC_KEY()
+    {
+        return User::TABLE_NAME . '.' . User::CLINIC_ID;
     }
 }
