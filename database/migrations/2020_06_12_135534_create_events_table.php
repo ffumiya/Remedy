@@ -16,8 +16,8 @@ class CreateEventsTable extends Migration
     {
         // Events object reference from https://fullcalendar.io/docs/event-object;
         Schema::create(Event::TABLE_NAME, function (Blueprint $table) {
-            $table->bigIncrements(Event::EVENT_ID);
-            $table->string(Event::ID);
+            $table->bigIncrements(Event::ID);
+            $table->string(Event::EVENT_ID);
             $table->bigInteger(Event::HOST_ID)->nullable(); // 医師
             $table->bigInteger(Event::CLINIC_ID)->nullable(); // 医療機関
             $table->bigInteger(Event::GUEST_ID)->nullable(); //患者

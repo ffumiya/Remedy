@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::middleware('auth:api')->group(function () {
-    Route::resource('user', 'API\UserController')->only(['create']);
+    Route::resource('user', 'API\UserController')->only(['store']);
     Route::get('/role/{id}', function (Request $request) {
         return $request->user()->role;
         // return config('role.patient.value');

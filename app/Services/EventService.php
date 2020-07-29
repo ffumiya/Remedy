@@ -13,9 +13,9 @@ class EventService extends BaseService
 
     public static function getEvent($id)
     {
-        $event = Event::where("id", $id)->first();
-        \Log::channel('debug')->info($event);
-        return $event;
+        // $event = Event::where("id", $id)->first();
+        // \Log::channel('debug')->info($event);
+        // return $event;
     }
 
     public static function getCurrentPatientEvent($id)
@@ -77,24 +77,39 @@ class EventService extends BaseService
         return $events;
     }
 
+    /**
+     * 医師ホーム画面で表示する予定を取得
+     */
     public static function getDoctorEvents($id)
     {
+        /**
+         * SELECT *
+         * FROM `EVENTS`
+         * INNER JOIN `USERS`
+         * ON `EVENTS`.`guest_id` = `users`.`id`
+         * WHERE `host_id` = ?
+         * AND `start` > ?
+         * OR `start` IS NULL;
+         */
         $eventCount = 0;
         $thisMonthFirst = Carbon::now()->firstOfMonth()->toDateString();
-        $eventCount = Event::where('host_id', $id)
-            ->where('start', '>', $thisMonthFirst)
-            ->orWhere('start', null)
+        $eventCount = Event::where(Event::HOST_ID, $id)
+            ->where(Event::START, '>', $thisMonthFirst)
+            ->orWhere(Event::START, null)
             ->count();
-        $events = Event::where('host_id', $id)
-            ->join('users', 'events.guest_id', '=', 'users.id')
-            ->where('start', '>', $thisMonthFirst)
-            ->orWhere('start', null)
+        $events = Event::where(Event::HOST_ID, $id)
+            ->join(User::TABLE_NAME, Event::getGUEST_KEY(), '=', User::getEVENT_KEY())
+            ->where(Event::START, '>', $thisMonthFirst)
+            ->orWhere(Event::START, null)
             ->get();
         \Log::channel('debug')->info($events);
         \Log::channel('trace')->info("Return {$eventCount} events.");
         return $events;
     }
 
+    /**
+     * イベントの新規作成
+     */
     public static function storeEvent($event)
     {
         if (empty($event[Event::PRICE])) {
@@ -103,60 +118,73 @@ class EventService extends BaseService
             $price = $event[Event::PRICE];
         }
 
-        $start = date('Y-m-d H:i', strtotime(strstr($event[Event::START], 'GMT', true)));
-        $end = date('Y-m-d H:i', strtotime(strstr($event[Event::END], 'GMT', true)));
+        $eventId = $event[Event::EXTENDED_PROPS][Event::EVENT_ID];
+        $hostId = $event[Event::EXTENDED_PROPS][Event::HOST_ID];
+        $guestId = $event[Event::EXTENDED_PROPS][Event::GUEST_ID];
+        $start = EventService::parseEventTimeToDateTime($event[Event::START]);
+        $end = EventService::parseEventTimeToDateTime($event[Event::END]);
+        $title = $event[Event::TITLE];
         Event::create([
-            "id" => $event[Event::ID],
-            "host_id" => $event[Event::HOST_ID],
-            "guest_id" => $event[Event::GUEST_ID],
-            "start" => $start,
-            "end" => $end,
-            "title" => $event[Event::TITLE],
-            "price" => $price
+            Event::EVENT_ID => $eventId,
+            Event::HOST_ID => $hostId,
+            Event::GUEST_ID => $guestId,
+            Event::START => $start,
+            Event::END => $end,
+            Event::TITLE => $title,
+            Event::PRICE => $price
         ]);
 
         if ($price == 0) {
             $datetime = new Carbon();
             $paymentMethodId = "0price{$datetime}";
             Event::updateOrCreate(
-                ["id" => $event[Event::ID]],
-                ["payment_method_id" => $paymentMethodId]
+                [Event::EVENT_ID => $eventId],
+                [Event::PAYMENT_METHOD_ID => $paymentMethodId]
             );
         }
         \Log::channel('trace')->info("Completed store event");
     }
 
+    /**
+     * イベントの更新
+     */
     public static function updateEvent($request)
     {
-        //TODO: FullCalendarの時間が9時間ずれる問題
-        $start = new Carbon($request->start);
-        $start->addHour(9);
-        $end = new Carbon($request->end);
-        $end->addHour(9);
-
+        $EVENT = "event";
+        $eventId = $request[$EVENT][Event::EXTENDED_PROPS][Event::EVENT_ID];
+        $start = EventService::parseEventTimeToDateTime($request[$EVENT][Event::START]);
+        $end = EventService::parseEventTimeToDateTime($request[$EVENT][Event::END]);
         Event::updateOrCreate(
-            ["id" => $request->id],
-            ["start" => $start, "end" => $end]
+            [Event::EVENT_ID => $eventId],
+            [
+                Event::START => $start,
+                Event::END => $end
+            ]
         );
     }
 
     public static function payEvent($id)
     {
-        $event = Event::where("id", $id)->first();
-        $event->payment_method_id = $id;
-        $event->update();
-        return true;
+        // $event = Event::where("id", $id)->first();
+        // $event->payment_method_id = $id;
+        // $event->update();
+        // return true;
     }
 
     public static function applicationEvent($request)
     {
-        $date = $request->date["datetime"];
+        // $date = $request->date["datetime"];
 
-        $datetime = time();
-        Event::updateOrCreate(
-            ["id" => $datetime],
-            ["guest_id" => \Auth::id(), "desired_time" => $date]
-        );
-        \Log::channel('trace')->info("Applicated new event");
+        // $datetime = time();
+        // Event::updateOrCreate(
+        //     ["id" => $datetime],
+        //     ["guest_id" => \Auth::id(), "desired_time" => $date]
+        // );
+        // \Log::channel('trace')->info("Applicated new event");
+    }
+
+    private static function parseEventTimeToDateTime($time)
+    {
+        return date('Y-m-d H:i', strtotime(strstr($time, 'GMT', true)));
     }
 }

@@ -46,15 +46,13 @@ class Event extends BaseModel
     const SOURCE = "source";
     const PAYMENT_METHOD_ID = 'payment_method_id';
 
-    protected $primaryKey = 'event_id';
-
     protected $guarded = [
-        'event_id'
+        Event::ID
     ];
 
     protected $dates = [
-        'start',
-        'end'
+        Event::START,
+        Event::END
     ];
 
     public static function getGUEST_KEY()

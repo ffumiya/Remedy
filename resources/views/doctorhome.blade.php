@@ -146,9 +146,10 @@
 <script src="https://unpkg.com/@fullcalendar/list@4.3.0/main.min.js"></script>
 <script src="https://unpkg.com/@fullcalendar/core/locales/ja"></script>
 <script defer>
-    var users = [];
-    var events = [];
+    var events = @json( $events );
+    console.table(events);
     var calendarHeight = 0;
+    var calendar = null;
 
     document.addEventListener("resize", function() {
         calendarHeight = `${innerHeight}px`;
@@ -163,21 +164,22 @@
         var checkbox = document.getElementById("drop-remove");
 
 
-        // initialize the external events
+        // 外部イベントの初期化
         new Draggable(containerEl, {
             itemSelector: ".fc-event",
             eventData: function(eventEl) {
                 return {
                     title: eventEl.innerText,
-                    id: Math.round((new Date()).getTime() / 1000),
+                    id: eventEl.attributes.id.value,
+                    event_id: eventEl.attributes.id.value,
                     host_id: "{{ \Auth::id() }}",
-                    guest_id: eventEl.id
+                    guest_id: eventEl.attributes.guest_id.value
                 };
             }
         });
 
-        // initialize the calendar
-        var calendar = new Calendar(calendarEl, {
+        // カレンダーの初期化
+        calendar = new Calendar(calendarEl, {
             plugins: ["interaction","timeGrid"],
             header: {
                 left: "title",
@@ -197,7 +199,7 @@
             editable: true,
             selectable: true,
             droppable: true, // this allows things to be dropped onto the calendar
-            events: getEvents(),
+            events: events,
 
 
             select: function(info) {
@@ -206,8 +208,8 @@
             },
 
             eventReceive: function(info) {
-                // イベントがexternal-eventからドロップされた時のコールバック
-                console.log("eventReceive");
+                // 外部イベントがドロップされた時のコールバック
+                console.log(info.event);
                 $.ajax({
                     type: "POST",
                     url: "api/events",
@@ -217,22 +219,25 @@
                         event: buildEvent(info.event)
                     }
                 }).done(function (r) {
-                    console.log(r);
-                    $(`#${info.event.extendedProps.guest_id}`).remove();
+                    console.log("cteated event.");
+                    $(`#${info.event.id}`).remove();
                 }).fail(function(e) {
                     // 予定の削除
-                    console.error("error");
+                    calendar.getEventById(info.event.id).remove();
+                    console.error("イベントの追加に失敗しました。");
                 });
             },
 
             eventDrop: function(info) {
                 // イベントがドロップされた時のコールバック
-                console.log("eventDrop");
+                console.log(info);
+                updateEvent(info);
             },
 
             eventResize: function(info) {
                 // イベントがリサイズ（引っ張ったり縮めたり）された時のコールバック
                 console.log("eventResize");
+                updateEvent(info);
             },
 
             eventRender: function(info) {
@@ -243,15 +248,14 @@
                     if (clickCnt === 1) {
                         oneClickTimer = setTimeout(function() {
                             clickCnt = 0;
-
-                            // SINGLE CLICK
+                            // シングルクリックされた時の処理
                             console.log("single click");
-                        }, 400);
+                            console.log(info.event);
+                        }, 250);
                     } else if (clickCnt === 2) {
                         clearTimeout(oneClickTimer);
                         clickCnt = 0;
-
-                        // DOUBLE CLICK
+                        // ダブルクリックされた時の処理
                         console.log("double click");
                     }
                 });
@@ -275,31 +279,30 @@
             password: eventId
         }
         $.ajax({
-            type: 'GET',
-            url: 'api/user/create',
+            type: 'POST',
+            url: 'api/user',
             datatype: "json",
             data: data
         }).done(function(r) {
-            users.push(r);
-            console.table(users);
             var newElement = $('#template').clone(true);
-            newElement.attr("id", r.id);
+            newElement.attr("id", eventId);
+            newElement.attr("guest_id", r.id);
             newElement.prop('hidden', false);
             newElement.text(name);
             newElement.appendTo('#external-events');
             $("#modalForCreate").modal("hide");
         }).fail(function (e) {
             console.error("ajax failed");
-            alert("患者の新規登録に失敗しました。");
+            alert("患者の登録に失敗しました。");
         });
 
     }
 
     // スケジュール新規登録
     function createNewEvent() {
-
     }
 
+    // サーバ用のデータに変換する
     function buildEvent(event) {
         return {
             allDay: event.allDay,
@@ -308,26 +311,28 @@
             start: event.start,
             end: event.end,
             id: event.id,
-            guest_id: event.extendedProps.guest_id,
-            host_id: event.extendedProps.host_id,
+            extendedProps: event.extendedProps,
             title: event.title
         };
     }
 
-    function getEvents() {
+    // イベントの更新
+    function updateEvent(info) {
         $.ajax({
-            type: 'GET',
-            url: 'api/events?userID={{ \Auth::id() }}',
+            type: "PUT",
+            url: `api/events/${info.event.id}`,
             datatype: "json",
             data: {
-                api_token: "{{ \Auth::user()->api_token }}"
+                api_token: "{{ \Auth::user()->api_token }}",
+                event: buildEvent(info.event)
             }
-        }).done(function(r) {
-            console.table(r);
-            calendar.events = r;
-        }).fail(function (e) {
-            alert("カレンダーの取得に失敗しました。");
+        }).done(function (r) {
+            console.log(r);
+        }).fail(function(e) {
+            info.revert();
+            alert("イベントの更新に失敗しました。");
         });
+
     }
 
 </script>
