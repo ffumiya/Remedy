@@ -92,16 +92,15 @@ class EventService extends BaseService
          * OR `start` IS NULL;
          */
         $eventCount = 0;
-        $thisMonthFirst = Carbon::now()->firstOfMonth()->toDateString();
-        $eventCount = Event::where(Event::HOST_ID, $id)
-            ->where(Event::START, '>', $thisMonthFirst)
-            ->orWhere(Event::START, null)
-            ->count();
-        $events = Event::where(Event::HOST_ID, $id)
+
+        // 6か月前の月初まで表示
+        $startOfMonth = Carbon::now()->subMonth(6)->firstOfMonth()->toDateString();
+        $query = Event::where(Event::HOST_ID, $id)
             ->join(User::TABLE_NAME, Event::getGUEST_KEY(), '=', User::getEVENT_KEY())
-            ->where(Event::START, '>', $thisMonthFirst)
-            ->orWhere(Event::START, null)
-            ->get();
+            ->where(Event::START, '>', $startOfMonth)
+            ->orWhere(Event::START, null);
+        $eventCount = $query->count();
+        $events = $query->get();
         \Log::channel('debug')->info($events);
         \Log::channel('trace')->info("Return {$eventCount} events.");
         return $events;
