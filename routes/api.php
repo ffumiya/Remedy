@@ -28,6 +28,4 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::resource('/patient', 'API\PatientController')->only(['show']);
     Route::resource('/events', 'API\EventsController')->only(['index', 'store', 'show', 'update', 'destroy']);
-    Route::post('/events/{id}', 'API\EventsController@pay');
-    Route::post('/event', 'API\EventsController@application');
 });

@@ -89,14 +89,14 @@
                 <div class="row m-3">
                     <div class="col">
                         <div class="card p-3">
-                            <p class="h4 font-weight-bold">◆診察日程</p>
+                            <p class="h4 font-weight-bold primary">◆診察日程</p>
                             <p class="select-event-time"></p>
 
                         </div>
                     </div>
                     <div class="col">
                         <div class="card p-3">
-                            <p class="h4 font-weight-bold">◆患者名</p>
+                            <p class="h4 font-weight-bold primary">◆患者名</p>
                             <p id="patient-name"></p>
                             <small id="patient-age"></small>
                         </div>
@@ -109,6 +109,7 @@
                             <button class="btn btn-secondary btn-block" id="video-dummy-button"
                                 hidden>この診察は終了しました。</button>
                         </a>
+                        <button class="btn-delete btn btn-block mt-3" onclick="deleteEvent()">削除する</button>
                     </div>
                 </div>
             </div>
@@ -153,9 +154,11 @@
     </div>
 </div>
 <!-- End modal window -->
+@endsection
+@include('footer')
 
 
-@endsection @section('style')
+@section('style')
 <link href="https://unpkg.com/@fullcalendar/core@4.3.1/main.min.css" rel="stylesheet" />
 <link href="https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.css" rel="stylesheet" />
 <link href="https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.css" rel="stylesheet" />
@@ -192,6 +195,14 @@
         margin: 20px auto;
     }
 
+    .primary {
+        color: #006092;
+    }
+
+    .card {
+        box-shadow: 5px 5px 10px -5px gray;
+        border-radius: 12px;
+    }
 
     .fc-toolbar h2 {
         font-size: 3.2rem;
@@ -293,6 +304,11 @@
         color: white;
     }
 
+    .btn {
+        box-shadow: 5px 5px 10px -5px gray;
+        border-radius: 30px;
+    }
+
     .btn-primary {
         background-color: #006092;
     }
@@ -301,6 +317,11 @@
         font-size: 1.8rem;
         border-radius: 10px;
         padding: 6px 32px;
+    }
+
+    .btn-delete {
+        background-color: #b4b4b4;
+        font-weight: bold;
     }
 
     .close {
@@ -319,7 +340,9 @@
         font-weight: bold;
     }
 </style>
-@endsection @include('footer') @section('script')
+@endsection
+
+@section('script')
 <script src="https://unpkg.com/@fullcalendar/core@4.3.1/main.min.js"></script>
 <script src="https://unpkg.com/@fullcalendar/interaction@4.3.0/main.min.js"></script>
 <script src="https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.js"></script>
@@ -420,7 +443,7 @@
                 }).fail(function(e) {
                     // 予定の削除
                     calendar.getEventById(info.event.id).remove();
-                    console.error("イベントの追加に失敗しました。");
+                    console.error("予定の追加に失敗しました。");
                 });
             },
 
@@ -454,22 +477,26 @@
                             var to = formatDate(new Date(info.event.end), "HH:mm");
                             $(".select-event-time").html(`${month}月${day}日 ${from}～${to}`);
                             $("#patient-name").html(`${info.event.title}`);
-                            const isBigger = (date) => {
+                            const isSmallerThanToday = (date) => {
                                 var today = new Date();
-                                if (date.getFullYear() > today.getFullYear())  return true;
-                                if (date.getMonth() > today.getMonth()) return true;
-                                if (date.getDate() >= today.getDate()) return true;
+                                if (date.getFullYear() < today.getFullYear())  return true;
+                                if (date.getMonth() < today.getMonth()) return true;
+                                if (date.getDate() < today.getDate()) return true;
                                 return false;
                             }
-                            if (isBigger(info.event.start)) {
-                                $("#video-link").attr("href", `video/${info.event.extendedProps.event_id}`);
-                                $("#video-button").prop("hidden", false);
-                                $("#video-dummy-button").prop("hidden", true);
-                            } else {
+                            if (isSmallerThanToday(info.event.start)) {
+                                // 昨日以前のイベントは診察対象外
                                 $("#video-link").attr("href", null);
                                 $("#video-button").prop("hidden", true);
                                 $("#video-dummy-button").prop("hidden", false);
+                            } else {
+                                // 今日以後のイベントは診察対象
+                                $("#video-link").attr("href", `video/${info.event.extendedProps.event_id}`);
+                                $("#video-button").prop("hidden", false);
+                                $("#video-dummy-button").prop("hidden", true);
                             }
+                            // イベント削除用にIDを仕込み
+                            $("#modalForClick").attr("event-id", `${info.event.id}`);
                             $("#modalForClick").modal('show');
                         }, 250);
                     } else if (clickCnt === 2) {
@@ -552,8 +579,32 @@
             console.log(r);
         }).fail(function(e) {
             info.revert();
-            alert("イベントの更新に失敗しました。");
+            alert("予定の更新に失敗しました。");
         });
+    }
+
+    // イベントの削除
+    function deleteEvent() {
+        var id = $("#modalForClick").attr("event-id");
+        console.log(id);
+        var event = calendar.getEventById(id);
+        if (confirm(`${event.title}の予定を削除してもいいですか？`)) {
+            $.ajax({
+                type: "DELETE",
+                url: `api/events/${event.extendedProps.event_id}`,
+                datatype: "json",
+                data: {
+                    api_token: "{{ \Auth::user()->api_token }}",
+                }
+            }).done(function() {
+                event.remove();
+                $("#modalForClick").modal("hide");
+            }).fail(function(e) {
+                alert("予定の削除に失敗しました。");
+                console.error(e);
+            });
+
+        }
     }
 
     // 今日の日付と比較し、過去の日付ならfalseを返す

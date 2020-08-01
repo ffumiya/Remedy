@@ -162,24 +162,9 @@ class EventService extends BaseService
         );
     }
 
-    public static function payEvent($id)
+    public static function deleteEvent($request, $id)
     {
-        // $event = Event::where("id", $id)->first();
-        // $event->payment_method_id = $id;
-        // $event->update();
-        // return true;
-    }
-
-    public static function applicationEvent($request)
-    {
-        // $date = $request->date["datetime"];
-
-        // $datetime = time();
-        // Event::updateOrCreate(
-        //     ["id" => $datetime],
-        //     ["guest_id" => \Auth::id(), "desired_time" => $date]
-        // );
-        // \Log::channel('trace')->info("Applicated new event");
+        Event::where(Event::EVENT_ID, $id)->delete();
     }
 
     private static function parseEventTimeToDateTime($time)
