@@ -342,6 +342,25 @@
         font-size: 2.0rem;
         font-weight: bold;
     }
+
+    /* スクロールの幅の設定 */
+    .fc-scroller::-webkit-scrollbar {
+        width: 12px;
+        height: 10px;
+    }
+
+    /* スクロールの背景の設定 */
+    .fc-scroller::-webkit-scrollbar-track {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 0 4px #aaa inset;
+    }
+
+    /* スクロールのつまみ部分の設定 */
+    .fc-scroller::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: #006092;
+    }
 </style>
 @endsection
 
@@ -370,6 +389,10 @@
         var calendarEl = document.getElementById("calendar");
         var checkbox = document.getElementById("drop-remove");
 
+        var current_day = new Date();
+        var current_hours = current_day.getHours();
+        var first_scroll_time = current_hours + ":00" + ":00"
+        console.log(first_scroll_time);
 
         // 外部イベントの初期化
         new Draggable(containerEl, {
@@ -393,13 +416,12 @@
                 center: "",
                 right: "prev,today,next"
             },
-            axisFormat: "H:mm",
-            timeFormat: "H:mm",
+            axisFormat: "HH:mm",
+            timeFormat: "HH:mm",
             columnHeaderFormat: {
                weekday: 'short',
                day: 'numeric',
                omitCommas: false,
-
             },
             titleFormat: {
                 year: "numeric",
@@ -413,8 +435,10 @@
             defaultTimedEventDuration: "00:30",
             defaultView: "timeGridWeek",
             slotDuration: "00:10:00",
-            minTime: "9:00",
-            maxTime: "17:00",
+            minTime: "8:00",
+            maxTime: "20:00",
+            contentHeight: 900,
+            scrollTime: first_scroll_time,
             firstDay: 1,
             // locale: "jaLocale",
             editable: true,
