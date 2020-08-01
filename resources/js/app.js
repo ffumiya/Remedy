@@ -8,13 +8,6 @@ require("./bootstrap");
 
 window.Vue = require("vue");
 
-import SkywayRoom from "./components/SkywayRoom.vue";
-import FullCalendarComponent from "./components/CalendarComponent.vue";
-import DoctorHomeComponent from "./components/DoctorHomeComponent.vue";
-import PatientHomeComponent from "./components/PatientHomeComponent.vue";
-
-import router from "./router";
-
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -26,11 +19,6 @@ import router from "./router";
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component("video-component", SkywayRoom);
-Vue.component("calendar-component", FullCalendarComponent);
-Vue.component("doctor-home-component", DoctorHomeComponent);
-Vue.component("patient-home-component", PatientHomeComponent);
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -38,6 +26,5 @@ Vue.component("patient-home-component", PatientHomeComponent);
  */
 
 const app = new Vue({
-    el: "#app",
-    router
+    el: "#app"
 });
