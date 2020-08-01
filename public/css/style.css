@@ -124,7 +124,7 @@
     border: none;
   }
   
-  hr:before {
+  /* hr:before {
     content: " ";
     position: absolute;
     top: 0;
@@ -132,7 +132,7 @@
     width: 50%;
     height: 2px;
     background: #ccc;
-  }
+  } */
   
   a img {
     background: white;
@@ -1138,7 +1138,7 @@
   }
 
   .remedy-logo{
-    width: 100px;
+    width: 70px;
     height: auto;
   }
 
@@ -1167,3 +1167,130 @@
     padding:5px 20px;
     margin-top: 5px;
   }
+
+  .w-15{
+    width: 15%;
+  }
+
+  .w-100{
+    width: 100%;
+    height: auto;
+  }
+
+  hr.blue-line{
+    height: 1px;
+    border: none;
+    border-top: 1px #87CEEB solid;
+    margin: 5px 20px 20px 20px;
+  }
+
+  hr.blu-line::before{
+    height: 0px;
+
+  }
+
+  .remedy-logo-video{
+    padding-top: 40px;
+    width: 50%;
+    height: auto;
+  }
+
+  .w-100-video{
+    width: 100%;
+    height: 65vh;
+  }
+
+  .w-30{
+    width: 33.3%;
+    height: 35vh;
+  }
+
+  .h-32vh{
+    height: 32vh;
+  }
+
+  .nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 0px;
+  }
+
+  .video-time{
+    font-size: 30px;
+    font-weight: bold;
+    color: rgb(0,96,146);
+  }
+
+  .fa-rotate-135 {
+    -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    -o-transform: rotate(135deg);
+    transform: rotate(135deg);
+}
+
+ .my-skyblue{
+    color: skyblue
+ }
+
+ .my-white{
+    color: white; 
+ }
+
+ img.relative{
+    position: relative;
+ }
+
+ .talk-icons{
+    position: absolute;/*絶対配置*/
+    right: 15px;
+    bottom: 20px;
+ }
+
+ .nopadding-right{
+    padding-right: 0;
+ }
+
+
+ .col-xs-8{
+   padding-right: 0px;
+   padding-bottom: 10px;
+ }
+
+ .myform th{
+   font-size: 0.9em;
+   font-weight: normal;
+   text-align: center;
+   width: 30%;
+   padding-bottom: 10px;
+
+ }
+
+ .myform td{
+  font-size: 0.9em;
+  text-align: center;
+  width: 70%;
+}
+
+.icon-img{
+  width:  50px;       /* ※縦横を同値に */
+  height: 50px;       /* ※縦横を同値に */
+  border-radius: 50%;  /* 角丸半径を50%にする(=円形にする) */
+  background-position: center ;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.participant-name{
+  width: 20%;
+  padding-left: 10px;
+  font-size: 0.9em
+}
+
+.mgr-top-10{
+  margint-top: 10px;
+}
+
+.h-50px{
+  height: 50px;
+}
