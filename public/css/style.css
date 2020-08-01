@@ -1317,6 +1317,13 @@ row-100 {
 .h-50px{
   height: 50px;
 }
-=======
+
+.icon-button{
+  border:none;
+  background-color: transparent;
+  border-radius: 30px;
+  /* pointer-events: none; */
 }
->>>>>>> c91f934fb4e10570351ef66b2e9e9ad67bd6ebfb
+button:focus {
+	outline:0;
+}

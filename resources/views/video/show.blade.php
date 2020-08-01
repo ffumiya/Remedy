@@ -7,22 +7,30 @@
             <div class="relative">
                 <img class="w-100-video" src="{{ asset('img/video/doctor-img.jpg') }}">
                 <div class="talk-icons">
-                    <span class="fa-stack fa-lg"  style="color:white;">
-                        <i class="fa fa-circle fa-stack-2x" aria-hidden="true"></i>
-                        <i class="fa fa-microphone fa-stack-1x my-skyblue" aria-hidden="true"></i>
-                    </span>
-                    <span class="fa-stack fa-lg"  style="color:white;">
-                        <i class="fa fa-circle fa-stack-2x"></i>
-                        <i class="fa fa-video-camera fa-stack-1x my-skyblue"></i>
-                    </span><br>
-                    <span class="fa-stack fa-lg"  style="color:white;">
-                        <i class="fa fa-circle fa-stack-2x"></i>
-                        <i class="fa fa-television fa-stack-1x my-skyblue"></i>
-                    </span>
-                    <span class="fa-stack fa-lg"  style="color:red;">
-                        <i class="fa fa-circle fa-stack-2x"></i>
-                        <i class="fa fa-phone fa-stack-1x fa-rotate-135 my-white"></i>
-                    </span>
+                    <button class="icon-button">
+                        <span class="fa-stack fa-lg"  style="color:white;">
+                            <i class="fa fa-circle fa-stack-2x" aria-hidden="true"></i>
+                            <i class="fa fa-microphone fa-stack-1x my-skyblue" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <button class="icon-button">
+                        <span class="fa-stack fa-lg"  style="color:white;">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-video-camera fa-stack-1x my-skyblue"></i>
+                        </span>
+                    </button>
+                    <button class="icon-button">
+                        <span class="fa-stack fa-lg"  style="color:white;">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-television fa-stack-1x my-skyblue"></i>
+                        </span>
+                    </button>
+                    <button class="icon-button">
+                        <span class="fa-stack fa-lg"  style="color:red;">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-phone fa-stack-1x fa-rotate-135 my-white"></i>
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
