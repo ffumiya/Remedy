@@ -33,7 +33,9 @@
 
     <!-- Google Fonts -->
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:Lato:300,400,700,300italic,400italic|Raleway:400,300,700" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:Lato:300,400,700,300italic,400italic|Raleway:400,300,700"
+        rel="stylesheet">
 
     <!-- Bootstrap CSS File -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -121,9 +123,9 @@
     </nav> --}}
 
     <main>
-        @yield('header')
+        @include('header')
         @yield('content')
-        @yield('footer')
+        @include('footer')
     </main>
     </div>
 </body>

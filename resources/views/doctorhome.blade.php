@@ -22,13 +22,13 @@
 
             <div id="external-events">
                 @foreach ($patientList as $patient)
-                <div class="card fc-event">
+                <div class="card fc-event mb-3">
                     <div class="fc-event-main">患者名</div>
                 </div>
                 @endforeach
 
                 {{-- 要素追加時テンプレート --}}
-                <div id="template" class="fc-event fc-ex-event" hidden>
+                <div id="template" class="fc-event fc-ex-event mb-3" hidden>
                     <div class="row p-4 text-center d-flex align-items-center">
                         <div class="col-lg-1 col-md-4 patient-number"></div>
                         <div class="col-lg-4 col-md-8 patient-name"></div>
@@ -58,13 +58,16 @@
             </div>
             <form>
                 <div class="modal-body">
-                    <div class="card">
-                        <input id="name" type="text" name="name" class="form-control" placeholder="患者の名前を入力してください。">
-                        <input id="memo" type="textbox" class="form-control" placeholder="患者メモ">
+                    <div class="m-3">
+                        <input id="name" type="text" name="name" class="form-control mb-3"
+                            placeholder="患者の名前を入力してください。">
+                        <input id="memo" type="textbox" class="form-control mb-3" placeholder="患者メモ">
                     </div>
-                    <button type="button" class="btn btn-primary btn-block" onclick="createNewPatient()">
-                        新規登録
-                    </button>
+                    <div class="m-3">
+                        <button type="button" class="btn btn-primary btn-block" onclick="createNewPatient()">
+                            新規登録
+                        </button>
+                    </div>
                 </div>
                 {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     キャンセル
@@ -388,7 +391,7 @@
             header: {
                 left: "title",
                 center: "",
-                right: "prev,next"
+                right: "prev,today,next"
             },
             axisFormat: "H:mm",
             timeFormat: "H:mm",
@@ -518,7 +521,7 @@
         var eventId = Math.round((new Date()).getTime() / 1000);
         console.log(eventId);
         var name = $('#name').val();
-        // if (name == "") return;
+        if (name == "") return;
         var memo = $('#memo').val();
         var data = {
             api_token: "{{ \Auth::user()->api_token }}",
