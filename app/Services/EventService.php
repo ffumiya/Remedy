@@ -39,7 +39,7 @@ class EventService extends BaseService
          * ORDER BY START ASC
          * LIMIT 1;
          */
-        $addColumns = ['USERS.NAME AS doctor_name', 'CLINICS.NAME AS clinic_name'];
+        $addColumns = ['users.name AS doctor_name', 'clinics.name AS clinic_name'];
         $event = Event::select()
             ->addSelect($addColumns)
             ->leftJoin(User::TABLE_NAME, Event::getHOST_KEY(), '=', User::getEVENT_KEY())
