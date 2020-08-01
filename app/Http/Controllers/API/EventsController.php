@@ -72,18 +72,9 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
-    }
-
-    public function pay($id)
-    {
-        return EventService::payEvent($id);
-    }
-
-    public function application(Request $request)
-    {
-        return EventService::applicationEvent($request);
+        // イベントを削除する
+        return EventService::deleteEvent($request, $id);
     }
 }

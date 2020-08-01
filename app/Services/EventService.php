@@ -39,7 +39,7 @@ class EventService extends BaseService
          * ORDER BY START ASC
          * LIMIT 1;
          */
-        $addColumns = ['USERS.NAME AS doctor_name', 'CLINICS.NAME AS clinic_name'];
+        $addColumns = ['users.name AS doctor_name', 'clinics.name AS clinic_name'];
         $event = Event::select()
             ->addSelect($addColumns)
             ->leftJoin(User::TABLE_NAME, Event::getHOST_KEY(), '=', User::getEVENT_KEY())
@@ -162,24 +162,9 @@ class EventService extends BaseService
         );
     }
 
-    public static function payEvent($id)
+    public static function deleteEvent($request, $id)
     {
-        // $event = Event::where("id", $id)->first();
-        // $event->payment_method_id = $id;
-        // $event->update();
-        // return true;
-    }
-
-    public static function applicationEvent($request)
-    {
-        // $date = $request->date["datetime"];
-
-        // $datetime = time();
-        // Event::updateOrCreate(
-        //     ["id" => $datetime],
-        //     ["guest_id" => \Auth::id(), "desired_time" => $date]
-        // );
-        // \Log::channel('trace')->info("Applicated new event");
+        Event::where(Event::EVENT_ID, $id)->delete();
     }
 
     private static function parseEventTimeToDateTime($time)
