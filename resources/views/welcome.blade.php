@@ -213,8 +213,10 @@
       <div class="remedy-pc">
       <br><br><br><br>
       <section class="section-divider3 textdivider divider13">
-        <div class="col-xs-2 col-xs-offset-5 remedy-pc">
-        <p><a href="/register" target="_blank" class="btn btn-primary rounded-circle p-0 btn-lg" style="font-family: '游ゴシック';">登録はこちらから</a></p>
+        <!-- <div class="col-xs-2 col-xs-offset-5 remedy-pc"> -->
+        <div class="remedy-pc">
+        <!-- <p style="text-align:center;"><a href="/register" target="_blank" class="btn btn-primary rounded-circle p-0 btn-lg" style="font-family: '游ゴシック';">登録はこちらから</a></p> -->
+        <p class="customize" style="text-align:center;"><a href="/register" target="_blank" class="btn btn-primary" style="font-size: 0.6em;"><b>登録はこちらから</b></a></p>
         <br><br><br></br>
         </div>
         </div>
@@ -223,7 +225,8 @@
 
       <!--START UP STUDIO(PC版)ー-->
         <div class="row">
-        <div class="col-xs-4 col-xs-offset-4 centered remedy-pc">
+        <!-- <div class="col-xs-4 col-xs-offset-4 centered remedy-pc"> -->
+        <div class="center-block remedy-pc">
           <br><br><br>
           <p style="color: black; font-size: 40px; font-weight: bold;">お知らせ</p>
         </div>

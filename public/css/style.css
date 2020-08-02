@@ -1147,7 +1147,7 @@ img.logo {
     background-color: #f2f2f2;
 }
 
-row-100 {
+.row-100 {
     width: 100%;
 }
 
@@ -1159,7 +1159,7 @@ row-100 {
     margin-bottom: 10px;
 }
 
-  .remedy-logo{
+.remedy-logo{
     width: 70px;
     height: auto;
 }
@@ -1188,7 +1188,6 @@ row-100 {
     font-size: 20px;
     padding: 5px 20px;
     margin-top: 5px;
-<<<<<<< HEAD
   }
 
   .w-15{
@@ -1212,9 +1211,15 @@ row-100 {
 
   }
 
-  .remedy-logo-video{
+  .remedy-logo-video-pc{
     padding-top: 40px;
     width: 50%;
+    height: auto;
+  }
+
+  .remedy-logo-video-sp{
+    padding-top: 15px;
+    width: 80px;
     height: auto;
   }
 
@@ -1226,6 +1231,10 @@ row-100 {
   .w-30{
     width: 33.3%;
     height: 35vh;
+  }
+
+  .h-10vh{
+    height: 10vh;
   }
 
   .h-32vh{
@@ -1275,7 +1284,7 @@ row-100 {
  }
 
 
- .col-xs-8{
+ div.customize .col-xs-8{
    padding-right: 0px;
    padding-bottom: 10px;
  }
@@ -1311,12 +1320,39 @@ row-100 {
 }
 
 .mgr-top-10{
-  margint-top: 10px;
+  margin-top: 10px;
 }
 
 .h-50px{
   height: 50px;
 }
-=======
+
+.icon-button{
+  border:none;
+  background-color: transparent;
+  border-radius: 30px;
+  /* pointer-events: none; */
 }
->>>>>>> c91f934fb4e10570351ef66b2e9e9ad67bd6ebfb
+div.customize button:focus {
+	outline:0;
+}
+
+.doctor-video-sp{
+  width: 100%;
+  height: 60vh;
+  object-fit: cover; 
+}
+
+.others-video-sp{
+  width: 33.3%;
+  height: 20vh;
+  object-fit: cover; 
+}
+
+.mgn-left-33{
+  margin-left: 23%;
+}
+
+p.customize a.btn{
+  width: 150px;
+}
