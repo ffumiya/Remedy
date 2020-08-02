@@ -35,77 +35,13 @@
 - 決済確認
 - 問い合わせ 
 
-
-# Archtechture
-
-## Frontend 
-
-### Nuxt.js (TypeScript)
-
-```
-
-# 例：RE001CAL0001
-
-App_ID = "RE"
-Page_ID = "000"
-Component_ID
-    {
-        "a" : "CAL0000",
-        "button" : "CBT0000",
-        "form" : "CFR0000",
-        "hn" : "CHN0000",
-        "input" : "CIN0000",
-        "image" : "CIM0000",
-        "p" : "CPa0000",
-        "select" : "CSL0000",
-        "table" : "CTB0000",
-        "textbox" : "CTX0000",
-        "video" : "CVI0000",
-    }
-```
-
-### 外部API
+## 外部API
 
 - ビデオ通話
   - SkyWay
 
 - 決済代行
-  - PayPal
-    > 初期費用：無料  
-    > 月額費用：0円  
-    > 決済手数料：2.4％＋40円〜  
-    > 対応ブランド：VISA / MasterCard / JCB / AmericanExpress / DISCOVER / UnionPayなど
   - Stripe
-    > 初期費用：無料  
-    > 月額費用：無料  
-    > 決済手数料：3.6%    
-    > 対応ブランド：VISA / MasterCard / AmericanExpress
-
-
-## Backend
-
-### SpringBoot (Kotlin)
-
-```
-# クラス命名規則
-Util = "REU000.kt"
-Controller = "REC000.kt"
-Service = "RES000.kt"
-Repository = "RER000.kt"
-
-Message(上りDTO) = "REM000U00DTO.kt"
-Message(下りDTO) = "REM000D00DTO.kt"
-
-```
-
-### AWS 
-
-- EC2
-- S3
-- Cognito
-- Aurora
-- DynamoDB
-- Lambda
 
 ## Data
 
@@ -171,5 +107,3 @@ yyyyMMdd HH:mm:ss [user_id] [doctor_id] [PAY] #,##0
 yyyyMMdd HH:mm:ss [user_id] [doctor_id] [CANCEL] #,##0
 yyyyMMdd HH:mm:ss [user_id] [doctor_id] [RETURN] #,##0
 ```
-
-
