@@ -1159,7 +1159,7 @@ img.logo {
     margin-bottom: 10px;
 }
 
-  .remedy-logo{
+.remedy-logo{
     width: 70px;
     height: auto;
 }
@@ -1333,7 +1333,7 @@ img.logo {
   border-radius: 30px;
   /* pointer-events: none; */
 }
-button:focus {
+div.customize button:focus {
 	outline:0;
 }
 
@@ -1351,4 +1351,8 @@ button:focus {
 
 .mgn-left-33{
   margin-left: 23%;
+}
+
+p.customize a.btn{
+  width: 150px;
 }

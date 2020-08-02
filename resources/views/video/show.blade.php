@@ -142,7 +142,7 @@
 
         <!-- アイコンのあるフッター -->
         <div class="row-100 h-10vh bg-grey">
-        <div style="text-align:center;">            
+        <div class="customize" style="text-align:center;">            
             <button class="icon-button">
                 <span class="fa-stack fa-lg"  style="color:white;">
                     <i class="fa fa-circle fa-stack-2x" aria-hidden="true"></i>
