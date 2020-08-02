@@ -6,11 +6,11 @@
 <div class="login-form">
     <form method="POST" action="{{ route('login') }}"><br><br>
         @csrf
-        <h2 class="text-center">ログイン</h2><br>
+        <h1 style="font-size: 2em; "
+        class="text-center">ログイン</h1><br>
         <div class="form-group">
         	<div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
-
                 <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="メールアドレス" value="{{ old('email') }}" required autocomplete="email" required="required" autofocus>
 
                 @error('email')
