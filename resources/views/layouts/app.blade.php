@@ -123,9 +123,9 @@
     </nav> --}}
 
     <main>
-        @include('header')
+        @yield('header')
         @yield('content')
-        @include('footer')
+        @yield('footer')
     </main>
     </div>
 </body>

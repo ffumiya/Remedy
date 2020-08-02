@@ -4,11 +4,11 @@
     <div class="container">
       <div class="row">
           <div class="col-xs-2 col-xs-offset-5 remedy-pc">
-            <br/>
           <img class="img-responsive" src="{{ asset('img/remedy-pc/footer.png') }}" align="">          </div>
           </div>
-          <div class="col-xs-4 col-xs-offset-4 remedy-sp">
-            <br/>
+          <!-- <div class="col-xs-4 col-xs-offset-4 footer-logo remedy-sp"> -->
+          <div class="center-block footer-logo remedy-sp">
+          <!-- <div class="center-block remedy-sp"> -->
           <img class="img-responsive" src="{{ asset('img/remedy-pc/footer.png') }}" align="">          </div>
           </div>
       </div>

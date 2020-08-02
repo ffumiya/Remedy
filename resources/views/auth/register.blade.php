@@ -6,7 +6,7 @@
 <div class="login-form">
     <form method="POST" action="{{ route('register') }}"><br>
         @csrf
-        <h2 class="text-center">登録</h2><br> 
+        <h1 style="font-size:2em;"class="text-center">新規登録</h1><br> 
         <div class="form-group">
         	<div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>

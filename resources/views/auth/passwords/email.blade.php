@@ -11,7 +11,7 @@
     @endif
     <form method="POST" action="{{ route('password.email') }}"><br>
         @csrf
-        <h3 class="text-center">パスワードの再設定</h3><br> 
+        <h3 class="text-center" style="font-size:1.5em;">パスワードの再設定</h3><br> 
 
         <div class="form-group">
         	<div class="input-group">

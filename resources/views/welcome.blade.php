@@ -383,7 +383,8 @@
 
           <!-- <p style="font-family: YuGothic;"><a class="btn btn-primary rounded-circle p-0 btn-sm" style="font-family: YuGothic;">お問い合わせはこちら</a></p> -->
         <div style="text-align: center;" class="remedy-sp">
-        <p><a href="/register" target="_blank" class="btn-lg btn-primary rounded-circle p-0 btn-lg" style="font-family: '游ゴシック';">登録はこちらから</a></p>
+        <!-- <p><a href="/register" target="_blank" class="btn-lg btn-primary rounded-circle p-0 btn-lg" style="font-family: '游ゴシック';">登録はこちらから</a></p> -->
+        <p class="customize" style="text-align:center;"><a href="/register" target="_blank" class="btn btn-primary" style="font-size: 0.5em;"><b>登録はこちらから</b></a></p>
         </div>
         </div>
       </div>
@@ -769,7 +770,8 @@
   <!-- container -->
 
 <!-- フッター -->
-<div id="copyrights">
+@include('footer')
+<!-- <div id="copyrights">
     <div class="container">
 
       <div class="row">
@@ -778,18 +780,14 @@
           <img class="img-responsive" src="{{ asset('img/remedy-pc/footer.png') }}" align="">          </div>
           </div>
           <div class="col-xs-4 col-xs-offset-4 remedy-sp">
+          <div class="center-block align-center remedy-sp">
             <br/>
-          <img class="img-responsive" src="{{ asset('img/remedy-pc/footer.png') }}" align="">          </div>
+          <img class="img-responsive footer-logo-img-sp" src="{{ asset('img/remedy-pc/footer.png') }}" align="">          </div>
           </div>
       </div>
-      <!-- <p>
-        <a style="color: aliceblue;">セカンドオピニオン特化型</a></br>      
-        <a style="color: aliceblue;">オンライン診療サービス</a></br>    
-        <strong style="font-size: 30px;">Remedy</strong>
-      </p> -->
       </div>
       </div>
-    </div></div>
+    </div></div> -->
 
 
 
