@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- PC版UI -->
+<!-- PC版UI -->
 <div class="remedy-pc">
     <div class="row customize">
 
@@ -22,7 +22,7 @@
                             <i class="fa fa-video-camera fa-stack-1x my-skyblue"></i>
                         </span>
                     </button><br>
-                    <button class="icon-button">
+                    <button class="icon-button" onclick="toggleFullScreen()">
                         <span class="fa-stack fa-lg"  style="color:white;">
                             <i class="fa fa-circle fa-stack-2x"></i>
                             <i class="fa fa-television fa-stack-1x my-skyblue"></i>
@@ -142,35 +142,58 @@
 
         <!-- アイコンのあるフッター -->
         <div class="row-100 h-10vh bg-grey">
-        <div class="customize" style="text-align:center;">            
-            <button class="icon-button">
-                <span class="fa-stack fa-lg"  style="color:white;">
-                    <i class="fa fa-circle fa-stack-2x" aria-hidden="true"></i>
-                    <i class="fa fa-microphone fa-stack-1x my-skyblue" aria-hidden="true"></i>
-                </span>
-            </button>
-            <button class="icon-button">
-                <span class="fa-stack fa-lg"  style="color:white;">
-                    <i class="fa fa-circle fa-stack-2x"></i>
-                    <i class="fa fa-video-camera fa-stack-1x my-skyblue"></i>
-                </span>
-            </button>
-            <button class="icon-button">
-                <span class="fa-stack fa-lg"  style="color:white;">
-                    <i class="fa fa-circle fa-stack-2x"></i>
-                    <i class="fa fa-television fa-stack-1x my-skyblue"></i>
-                </span>
-            </button>
-            <button class="icon-button">
-                <span class="fa-stack fa-lg"  style="color:red;">
-                    <i class="fa fa-circle fa-stack-2x"></i>
-                    <i class="fa fa-phone fa-stack-1x fa-rotate-135 my-white"></i>
-                </span>
-            </button>
+            <div class="customize" style="text-align:center;">            
+                <button class="icon-button">
+                    <span class="fa-stack fa-lg"  style="color:white;">
+                        <i class="fa fa-circle fa-stack-2x" aria-hidden="true"></i>
+                        <i class="fa fa-microphone fa-stack-1x my-skyblue" aria-hidden="true"></i>
+                    </span>
+                </button>
+                <button class="icon-button">
+                    <span class="fa-stack fa-lg"  style="color:white;">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-video-camera fa-stack-1x my-skyblue"></i>
+                    </span>
+                </button>
+                <button class="icon-button" onclick="toggleFullScreen()">
+                    <span class="fa-stack fa-lg"  style="color:white;">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-television fa-stack-1x my-skyblue"></i>
+                    </span>
+                </button>
+                <button class="icon-button">
+                    <span class="fa-stack fa-lg"  style="color:red;">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-phone fa-stack-1x fa-rotate-135 my-white"></i>
+                    </span>
+                </button>
+            </div>
         </div>
-        </div>
-</div>
     </div>
 </div>
+
+<!-- Scripts -->
+<script>
+    function toggleFullScreen() {
+        console.log(screen.width);
+        if(screen.width > 414){
+            var doc = window.document;
+            var docEl = doc.documentElement;
+
+            var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+            var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+            if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+            requestFullScreen.call(docEl);
+            }
+            else {
+            cancelFullScreen.call(doc);
+            }
+        }else{
+            alert('お使いのデバイスは全画面表示に対応しておりません。')
+        }
+    }
+
+</script>
 
 @endsection
