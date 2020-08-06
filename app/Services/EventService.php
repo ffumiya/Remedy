@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
+use DateTimeImmutable;
 
 class EventService extends BaseService
 {
@@ -20,7 +21,7 @@ class EventService extends BaseService
 
     public static function getCurrentPatientEvent($id)
     {
-        $dateTime = new DateTime();
+        $dateTime = new DateTimeImmutable();
 
         /**
          * SELECT events.event_id AS EVENT,
@@ -57,7 +58,7 @@ class EventService extends BaseService
      */
     public static function getPatientEvents($id)
     {
-        $dateTime = new DateTime();
+        $dateTime = new DateTimeImmutable();
         /**
          * SELECT *
          * FROM `EVENTS`
@@ -165,6 +166,30 @@ class EventService extends BaseService
     public static function deleteEvent($request, $id)
     {
         Event::where(Event::EVENT_ID, $id)->delete();
+    }
+
+    // 予定に参加する医師を取得する
+    public static function getHost($id)
+    {
+        $event = Event::where(Event::EVENT_ID, $id)->first();
+        return User::find($event->host_id);
+    }
+
+    // 予定に参加する患者を取得する
+    public static function getGuest($id)
+    {
+        $event = Event::where(Event::EVENT_ID, $id)->first();
+        return User::find($event->guest_id);
+    }
+
+    public static function existsEvent($id)
+    {
+        $count = Event::where(Event::EVENT_ID, $id)
+            ->count();
+        if ($count == 0) {
+            return false;
+        }
+        return true;
     }
 
     private static function parseEventTimeToDateTime($time)
