@@ -34,7 +34,7 @@
         <span style="font-size:8px; color: #FF3366; line-height:0px;">
             お時間になりましたら「ビデオ診察開始」を押してください<br>
         </span>
-        <button class="btn-start" style="margin: 16px;">ビデオ診察開始</button>
+        <a href="video/{{$currentEvent->event_id}}" class="btn btn-start" style="margin: 16px;">ビデオ診察開始</a>
 
     </div>
     @endif
