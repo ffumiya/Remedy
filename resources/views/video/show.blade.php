@@ -218,6 +218,7 @@
 
         console.log("async function main.");
 
+        // デバッグ用にコメントアウト
         // const peerId = {{ \Auth::id() }};
         const peerId = null;
         const peer = new Peer(peerId, {key: "{{ config('skyway.api_key') }}" });
@@ -226,7 +227,7 @@
         joinTrigger.addEventListener('click', async () => {
             const localStream = await navigator.mediaDevices.getUserMedia({
                 audio: false,
-                video: true
+                video: { frameRate: { ideal: 10, max: 15 } }
             }).catch(console.error);
             const newVideo = document.createElement('video');
             newVideo.srcObject = localStream;
@@ -262,7 +263,7 @@
             room.on('stream', async stream => {
                 console.log('get stream.');
 
-                // 自機テスト用
+                // 自機デバッグ用
                 // mainVideo.muted = true;
                 // mainVideo.srcObject = stream;
                 // mainVideo.playsInline = true;
@@ -317,6 +318,8 @@
                     mainVideo.srcObject.getTracks().forEach(track => track.stop());
                     mainVideo.srcObject = null;
                     mainVideo.remove();
+                    document.getElementById('wait-canvas').style.display = 'block';
+                    document.getElementById('wait-message').style.display = 'block';
                 }
                 const remoteVideo = remoteVideos.querySelector(
                     `[data-peer-id="${peerId}"]`
@@ -338,7 +341,9 @@
                 if (mainVideo.srcObject) {
                     mainVideo.srcObject.getTracks().forEach(track => track.stop());
                     mainVideo.srcObject = null;
-                    // mainVideo.remove();
+                    mainVideo.remove();
+                    document.getElementById('wait-canvas').style.display = 'block';
+                    document.getElementById('wait-message').style.display = 'block';
                 }
                 Array.from(remoteVideos.children).forEach(remoteVideo => {
                     if (remoteVideo.srcObject) {
