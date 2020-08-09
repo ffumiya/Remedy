@@ -13,20 +13,28 @@ class ClinicSeeder extends Seeder
     public function run()
     {
         $now = new DateTime();
+        $tel = "000 - 000 - 0000";
+        $address = "○○県○○市○○区○○○○";
 
         Clinic::insert([
             [
-                Clinic::NAME => "clinic1",
+                Clinic::NAME => "日本第一病院",
+                Clinic::TEL => $tel,
+                Clinic::ADDRESS => $address,
                 CLINIC::CREATED_AT => $now,
                 CLINIC::UPDATED_AT => $now
             ],
             [
-                Clinic::NAME => "clinic2",
+                Clinic::NAME => "日本第二病院",
+                Clinic::TEL => $tel,
+                Clinic::ADDRESS => $address,
                 CLINIC::CREATED_AT => $now,
                 CLINIC::UPDATED_AT => $now
             ],
             [
-                Clinic::NAME => "clinic3",
+                Clinic::NAME => "日本第三病院",
+                Clinic::TEL => $tel,
+                Clinic::ADDRESS => $address,
                 CLINIC::CREATED_AT => $now,
                 CLINIC::UPDATED_AT => $now
             ],
