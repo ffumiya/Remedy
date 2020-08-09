@@ -5,7 +5,7 @@
 <div class="continaer">
     @if($currentEvent == null)
     <h4>現在の予定はありません。</h4>
-    <p>医師から診療予定が追加されるまでお待ちください。</p>
+    <h4>医師から診療予定が追加されるまでお待ちください。</h4>
     @else
     <div class="row-100 bg-grey pad-5">
         <img class="center-block img-responsive remedy-logo bg-grey" src="{{ asset('img/remedy-pc/logo.png') }}"
