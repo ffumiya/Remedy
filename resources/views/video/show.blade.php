@@ -60,19 +60,35 @@
                     <td>{{ $guest->name }}</td>
                 <tr class="myform">
                     <th>生年月日</th>
-                    <td>昭和38年12月31日（57歳）</td>
+                    @if($guest->birthday)
+                    <td>{{ $guest->birthday }}</td>
+                    @else
+                    <td>不明</td>
+                    @endif
                 </tr>
                 <tr class="myform">
                     <th>性別</th>
-                    <td>男性</td>
+                    @if($guest->sex)
+                    <td>{{ $guest->sex }}</td>
+                    @else
+                    <td>不明</td>
+                    @endif
                 </tr>
                 <tr class="myform">
                     <th>身長</th>
-                    <td>167cm</td>
+                    @if($guest->height)
+                    <td>{{ $guest->height }}cm</td>
+                    @else
+                    <td>不明</td>
+                    @endif
                 </tr>
                 <tr class="myform">
                     <th>体重</th>
-                    <td>67kg</td>
+                    @if($guest->weight)
+                    <td>{{ $guest->weight }}kg</td>
+                    @else
+                    <td>不明</td>
+                    @endif
                 </tr>
             </table>
         </div>
