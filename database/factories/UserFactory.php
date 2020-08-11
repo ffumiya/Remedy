@@ -18,8 +18,13 @@ use Illuminate\Support\Str;
 */
 
 $factory->define(User::class, function (Faker $faker) {
+    $height = rand(145, 180);
+    $weight = $height * $height / 10000 * rand(18, 25);
     return [
         User::NAME => $faker->name,
+        User::SEX => rand(1, 2),
+        User::HEIGHT => $height,
+        User::WEIGHT => $weight,
         User::EMAIL => $faker->unique()->safeEmail,
         User::EMAIL_VERIFIED_AT => now(),
         User::PASSWORD => Hash::make('password'),

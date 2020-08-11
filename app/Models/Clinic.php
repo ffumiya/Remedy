@@ -16,13 +16,17 @@ class Clinic extends Model
      */
     const ID = "id";
     const NAME = "name";
+    const TEL = "tel";
+    const ADDRESS = "address";
 
 
     protected $fillable = [
-        Clinic::NAME
+        Clinic::NAME, Clinic::TEL, Clinic::ADDRESS
     ];
 
-    protected $guarded = [];
+    protected $guarded = [
+        CliniC::ID
+    ];
 
     public static function getUSER_KEY()
     {

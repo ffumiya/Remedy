@@ -18,8 +18,11 @@ class UserSeeder extends Seeder
         $password = 'password';
         User::insert([
             [
-                User::NAME => 'm-tanaka',
-                User::EMAIL => 'm-tanaka@example.com',
+                User::NAME => 'admin',
+                User::SEX => 1,
+                User::HEIGHT => 170,
+                User::WEIGHT => 65,
+                User::EMAIL => 'admin@example.com',
                 User::EMAIL_VERIFIED_AT => now(),
                 User::PASSWORD => Hash::make($password),
                 User::ROLE => config('role.admin.value'),
@@ -31,6 +34,9 @@ class UserSeeder extends Seeder
             ],
             [
                 User::NAME => 'patient',
+                User::SEX => 1,
+                User::HEIGHT => 170,
+                User::WEIGHT => 65,
                 User::EMAIL => 'patient@example.com',
                 User::EMAIL_VERIFIED_AT => now(),
                 User::PASSWORD => Hash::make($password),
@@ -44,6 +50,9 @@ class UserSeeder extends Seeder
             ],
             [
                 User::NAME => 'doctor',
+                User::SEX => 1,
+                User::HEIGHT => 170,
+                User::WEIGHT => 65,
                 User::EMAIL => 'doctor@example.com',
                 User::EMAIL_VERIFIED_AT => now(),
                 User::PASSWORD => Hash::make($password),

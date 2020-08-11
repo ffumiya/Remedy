@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\EventService;
 use Illuminate\Http\Request;
 
 class VideoController extends Controller
@@ -45,7 +46,13 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        return view('video.show');
+        if (!EventService::existsEvent($id)) {
+            return abort(404);
+        }
+        $host = EventService::getHost($id);
+        $guest = EventService::getGuest($id);
+        $roomKey = "remedy{$id}";
+        return view('video.show', compact(['host', 'guest', 'roomKey']));
     }
 
     /**
