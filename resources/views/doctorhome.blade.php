@@ -47,7 +47,7 @@
 </div>
 
 <!-- Begin modal window for click event -->
-<div id="modalForCreate" class="modal" tabindex="-1" role="dialog">
+<div id="modalForCreate" class="modal p-5" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -79,7 +79,7 @@
 <!-- End modal window -->
 
 <!-- Begin modal window for click event -->
-<div id="modalForClick" class="modal" tabindex="-1" role="dialog">
+<div id="modalForClick" class="modal p-5" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -127,8 +127,8 @@
 <!-- End modal window -->
 
 <!-- Begin modal window for select calendar -->
-<div id="modalForSelect" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+<div id="modalForSelect" class="modal p-5" tabindex="-1" role="dialog">
+    <div class="modal-dialog" r ¥ment">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">診察スケジュール / 新規追加</h5>
@@ -136,21 +136,52 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form>
+            <form onsubmit="return createNewEvent()">
                 <div class="modal-body">
                     <div class="card">
-                        <p class="h4 font-weight-bold">◆診察日程</p>
-                        <p class="select-event-time"></p>
-                        <input id="name" type="text" name="name" class="form-control" placeholder="患者の名前を入力してください。">
+                        <div class="container">
+                            <p class="h2 font-weight-bold mb-3">◆診察日程</p>
+                            <div class="row mb-3">
+                                <div class="col-2">
+                                    <label for="start-time">開始時間</label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="datetime-local" name="start-time" id="search-start-time"
+                                        class="form-control">
+                                </div>
+                                <div class="col-2">
+                                    <label for="end-time">終了時間</label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="datetime-local" name="end-time" id="search-end-time"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <input type="hidden" name="id" id="search-patient-id">
+                                    <input id="search-patient-name" type="text" name="name" class="form-control"
+                                        placeholder="患者の名前を入力してください。" onkeyup="search(this)">
+                                    <div style="z-index: 1060; positon: relative;">
+                                        <table class="table table-hover table-sm">
+                                            <tbody id="search-patient-list">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <div class="m-5">
+                                        <button type="button" class="btn btn-primary btn-block"
+                                            onclick="createNewEvent()">
+                                            新規登録
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">
-                        新規登録
-                    </button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        キャンセル
-                    </button>
                 </div>
             </form>
         </div>
@@ -361,6 +392,10 @@
         border-radius: 5px;
         background: #006092;
     }
+
+    .search-list {
+        cursor: pointer;
+    }
 </style>
 @endsection
 
@@ -373,7 +408,6 @@
 <script src="https://unpkg.com/@fullcalendar/core/locales/ja"></script>
 <script defer>
     var events = @json( $events );
-    console.table(events);
     var calendarHeight = 0;
     var calendar = null;
 
@@ -448,11 +482,12 @@
 
             select: function(info) {
                 // カレンダーセルクリック、範囲指定された時のコールバック
-                console.log("select");
-                console.log(info);
-                // $("#modalForSelect").modal('show');
+                var start = formatDate(new Date(info.start), "yyyy-MM-ddThh:mm");
+                var end = formatDate(new Date(info.end), "yyyy-MM-ddThh:mm");
+                document.getElementById('search-start-time').value = start;
+                document.getElementById('search-end-time').value = end;
+                $("#modalForSelect").modal('show');
             },
-
             eventReceive: function(info) {
                 // 外部イベントがドロップされた時のコールバック
                 console.log(info.event);
@@ -487,7 +522,7 @@
             },
 
             eventRender: function(info) {
-                //wired listener to handle click counts instead of event type
+                // イベントがクリックされた時の処理
                 var clickCnt = 0;
                 info.el.addEventListener("click", function() {
                     clickCnt++;
@@ -578,6 +613,44 @@
 
     // スケジュール新規登録
     function createNewEvent() {
+        var id = $('#search-patient-id').val();
+        if (id == "") {
+            alert("入力された患者は登録されていません。候補から選択してください。");
+            return false;
+        }
+        var eventId = Math.round((new Date()).getTime() / 1000);
+        var name = $('#search-patient-name').val();
+        if (name == "") return;
+        var start = $('#search-start-time').val();
+        var end = $('#search-end-time').val();
+        var data = {
+            api_token: "{{ \Auth::user()->api_token }}",
+            event: {
+                title: `${name}さん`,
+                extendedProps: {
+                    event_id: eventId,
+                    guest_id: id,
+                    host_id: {{\Auth::id()}}
+                },
+                start: new Date(start),
+                end: new Date(end)
+            }
+        };
+        $.ajax({
+            type: "POST",
+            url: `api/events`,
+            datatype: "json",
+            data: data
+        }).done(function(r) {
+            calendar.addEvent(r);
+            $('#search-patient-id').val("");
+            $('#search-patient-name').val("");
+            $('#search-start-time').val("");
+            $('#search-end-time').val("");
+            $("#modalForSelect").modal("hide");
+        }).fail(function (e) {
+            alert("新規予定の作成に失敗しました。");
+        });
     }
 
     // サーバ用のデータに変換する
@@ -634,6 +707,46 @@
         }
     }
 
+    // 患者の検索
+    function search(e) {
+        document.getElementById('search-patient-id').value = "";
+        $.ajax({
+            type: "GET",
+            url: `api/patient?name=${e.value}`,
+            datatype: "json",
+            data: {
+                api_token: "{{ \Auth::user()->api_token }}",
+            }
+        }).done(function(e) {
+            var el = document.getElementById('search-patient-list');
+            while (el.firstChild) {
+                el.removeChild(el.firstChild);
+            }
+            e.forEach(user => {
+                var userName = user.name;
+                var newTr = document.createElement('tr');
+                var newTd = document.createElement('td');
+                newTd.innerText = userName;
+                newTd.setAttribute("search-patient-id", user.id);
+                newTr.appendChild(newTd);
+                newTr.classList.add("search-list");
+                newTr.addEventListener("click", (e) => {
+                    var name = e.target.innerText;
+                    var id = e.target.getAttribute('search-patient-id');
+                    document.getElementById('search-patient-name').value = name;
+                    document.getElementById('search-patient-id').value = id;
+                    var el = document.getElementById('search-patient-list');
+                    while (el.firstChild) {
+                        el.removeChild(el.firstChild);
+                    }
+                })
+                el.appendChild(newTr);
+            });
+        }).fail(function(e) {
+            console.error(e);
+        });
+    }
+
     // 今日の日付と比較し、過去の日付ならfalseを返す
     function lowerThanToday(date) {
         var today = new Date();
@@ -653,6 +766,7 @@
         format = format.replace(/yyyy/g, date.getFullYear());
         format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2));
         format = format.replace(/dd/g, ('0' + date.getDate()).slice(-2));
+        format = format.replace(/hh/g, ('0' + date.getHours()).slice(-2));
         format = format.replace(/H/g, date.getHours());
         format = format.replace(/mm/g, ('0' + date.getMinutes()).slice(-2));
         format = format.replace(/ss/g, ('0' + date.getSeconds()).slice(-2));

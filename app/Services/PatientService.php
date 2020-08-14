@@ -15,4 +15,17 @@ class PatientService extends BaseService
         // \Log::channel('trace')->info("Return patient : id = ${id}");
         return json_encode($patient);
     }
+
+    public static function searchPatient($request)
+    {
+        $name = $request->name;
+        if ($name == "") {
+            return "";
+        }
+        $users = User::select([
+            User::ID,
+            User::NAME
+        ])->where(User::NAME, 'LIKE', "{$name}%")->get();
+        return $users;
+    }
 }

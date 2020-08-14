@@ -13,9 +13,9 @@ class PatientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return PatientService::searchPatient($request);
     }
 
     /**
@@ -47,7 +47,7 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        return PatientService::getPatientInfo($id);
+        // return PatientService::getPatientInfo($id);
         // \Log::channel('debug')->info($request);
     }
 

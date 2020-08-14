@@ -20,12 +20,12 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::middleware('auth:api')->group(function () {
-    Route::resource('user', 'API\UserController')->only(['store']);
+Route::middleware('auth:api')->namespace('API')->group(function () {
+    Route::resource('user', 'UserController')->only(['store']);
     Route::get('/role/{id}', function (Request $request) {
         return $request->user()->role;
         // return config('role.patient.value');
     });
-    Route::resource('/patient', 'API\PatientController')->only(['show']);
-    Route::resource('/events', 'API\EventsController')->only(['index', 'store', 'show', 'update', 'destroy']);
+    Route::resource('/patient', 'PatientController')->only(['show', 'index']);
+    Route::resource('/events', 'EventsController')->only(['index', 'store', 'show', 'update', 'destroy']);
 });

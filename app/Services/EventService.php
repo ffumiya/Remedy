@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\Mail\EventApply;
 use App\Models\Clinic;
 use App\Models\Event;
 use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 use DateTimeImmutable;
+use Illuminate\Support\Facades\Mail;
 
 class EventService extends BaseService
 {
@@ -124,7 +126,7 @@ class EventService extends BaseService
         $start = EventService::parseEventTimeToDateTime($event[Event::START]);
         $end = EventService::parseEventTimeToDateTime($event[Event::END]);
         $title = $event[Event::TITLE];
-        Event::create([
+        $additionalEvent = Event::create([
             Event::EVENT_ID => $eventId,
             Event::HOST_ID => $hostId,
             Event::GUEST_ID => $guestId,
@@ -143,6 +145,11 @@ class EventService extends BaseService
             );
         }
         \Log::channel('trace')->info("Completed store event");
+
+        return $additionalEvent;
+
+        // return new EventApply();
+        // Mail::to(User::find($guestId))->send(new EventApply());
     }
 
     /**
