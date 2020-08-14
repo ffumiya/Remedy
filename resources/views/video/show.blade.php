@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="remedy-pc">
+<!-- <div class="remedy-pc"> -->
     <div class="row customize">
 
         <!-- お医者さん画面 -->
@@ -44,7 +44,7 @@
 
 
         <!-- 現在時間と患者情報 -->
-        <div class="col-xs-4">
+        <div class="col-xs-4 remedy-pc">
             <div class="bg-grey h-32vh">
                 <img class="remedy-logo-video-pc center-block" src="{{ asset('img/remedy-pc/logo.png') }}" align=""><br>
                 <div class="text-center video-time" id="clock">
@@ -96,15 +96,15 @@
 
     <!-- お医者さん以外の映像 -->
     <div class="">
-        <div class="remote-streams col-xs-8 nopadding" id="js-remote-streams">
-        </div>
-        {{-- <img id="guest-canvas" class="w-30 nopadding" src="{{ asset('img/video/nurse-img.png') }}"> --}}
-        {{-- <img class="w-30" src="{{ asset('img/video/patient-img.png') }}"> --}}
-        {{-- <img class="w-30" src="{{ asset('img/video/relative-img.png') }}"> --}}
+        {{-- <div class="remote-streams col-sm-8 nopadding" id="js-remote-streams">
+            <img id="guest-canvas" class="w-30 nopadding" src="{{ asset('img/video/nurse-img.png') }}"> 
+            <img class="w-30" src="{{ asset('img/video/patient-img.png') }}"> 
+            <img class="w-30" src="{{ asset('img/video/relative-img.png') }}"> 
+        </div> --}}
     </div>
 
     <!-- 参加者一覧 -->
-    {{-- <div class="col-xs-4">
+    {{-- <div class="col-xs-4 remedy-pc">
         <br />
         <div style="color:#87CEEB; font-weight: bold; margin-left:20px;">診療参加者</div>
         <hr class="blue-line">
@@ -135,7 +135,7 @@
     </tr>
     </table>
 </div> --}}
-</div>
+<!-- </div> -->
 
 
 <!-- Begin modal window for show message -->
@@ -150,28 +150,30 @@
 
 
 
+
+
 <!-- スマホ版UI -->
-<div class="remedy-sp">
-    <div class="row">
+<!-- <div class="remedy-sp">
+    <div class="row"> -->
 
         <!-- ヘッダー -->
-        <div class="bg-grey h-10vh row-100">
+        <!-- <div class="bg-grey h-10vh row-100">
             <img class="remedy-logo-video-sp center-block" src="{{ asset('img/remedy-pc/logo.png') }}" align=""><br>
-        </div>
+        </div> -->
 
         <!-- お医者さん画面 -->
-        <div class="relative">
+        <!-- <div class="relative">
             <img class="doctor-video-sp" src="{{ asset('img/video/doctor-img.jpg') }}">
-        </div>
+        </div> -->
 
         <!-- お医者さん以外の映像 -->
 
-        <img class="others-video-sp" src="{{ asset('img/video/nurse-img.png') }}">
+        <!-- <img class="others-video-sp" src="{{ asset('img/video/nurse-img.png') }}">
         <img class="others-video-sp" src="{{ asset('img/video/patient-img.png') }}">
-        <img class="others-video-sp" src="{{ asset('img/video/relative-img.png') }}">
+        <img class="others-video-sp" src="{{ asset('img/video/relative-img.png') }}"> -->
 
         <!-- アイコンのあるフッター -->
-        <div class="row-100 h-10vh bg-grey">
+        <!-- <div class="row-100 h-10vh bg-grey">
             <div class="customize" style="text-align:center;">
                 <button class="icon-button">
                     <span class="fa-stack fa-lg" style="color:white;">
@@ -201,7 +203,7 @@
         </div>
     </div>
 </div>
-</div>
+</div> -->
 
 @endsection
 

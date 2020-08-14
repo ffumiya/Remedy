@@ -1437,6 +1437,11 @@ https://www.w3schools.com/howto/howto_css_responsive_header.asp */
   .header-right {
     float: none;
   }
+
+  div.customize .col-xs-8{
+      width: 100%;
+      padding: 0;
+  }
 }
 
 
