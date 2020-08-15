@@ -247,18 +247,20 @@
             console.log(peer);
 
             joinTrigger.addEventListener('click', async () => {
-                var audios = [];
-                var videos = [];
+                var audios = null;
+                var videos = null;
                 await navigator.mediaDevices.enumerateDevices().then(deviceInfos => {
                     for (let i = 0; i !== deviceInfos.length; ++i) {
                     const deviceInfo = deviceInfos[i];
                     console.table(deviceInfo);
                     if (deviceInfo.kind === "audioinput") {
+                        if (audios == null) audios = [];
                         audios.push({
                             text: deviceInfo.label || `Microphone ${audios.length + 1}`,
                             value: deviceInfo.deviceId
                         });
                     } else if (deviceInfo.kind === "videoinput") {
+                        if (videos == null) videos = [];
                         videos.push({
                             text: deviceInfo.label || `Camera ${videos.length + 1}`,
                             value: deviceInfo.deviceId
@@ -266,11 +268,9 @@
                     }
                 }
             });
-            audio = audios[0];
-            video = videos[0];
             const constraints = {
-                audio: audio ? { deviceId: { exact: audio.value } } : false,
-                video: video ? { deviceId: { exact: video.value } } : false
+                audio: audios ? { deviceId: { exact: audios[0].value } } : false,
+                video: videos ? { deviceId: { exact: videos[0].value } } : false
             };
             console.log(constraints);
             const localStream = await navigator.mediaDevices.getUserMedia(constraints).catch(console.error);
