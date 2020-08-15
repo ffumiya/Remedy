@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         if (request()->isSecure()) {
-            \URL::forceSceme('https');
+            \URL::forceScheme('https');
         }
     }
 }
