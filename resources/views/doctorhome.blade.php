@@ -4,18 +4,18 @@
 <div class="container">
     <div class="row">
         <div class="col-4">
-            <h1 class="logo mt-5">Remedy</h1>
-            <h2 class="title mt-3">日程未調整患者リスト</h2>
-            <div class="mt-3">
+            <h1 class="logo mt-5 font-size-24vw">Remedy</h1>
+            <h2 class="title mt-3 font-size-14vw" >日程未調整患者リスト</h2>
+            <div class="mt-3 font-size-10vw">
                 <p>
                     下記リストは「病状説明日程調整」の未対応案件です。
                 </p>
                 <p>
-                    対応可能な日程のスケジューラーに以来案件をドロップしてください。
+                    対応可能な日程のスケジューラーに依頼案件をドロップしてください。
                 </p>
             </div>
             <div class="text-right m-3 mb-5">
-                <button class="btn btn-primary btn-main" data-toggle="modal" data-target="#modalForCreate">
+                <button class="btn btn-primary btn-main font-size-10vw" data-toggle="modal" data-target="#modalForCreate">
                     新規患者登録
                 </button>
             </div>
@@ -59,9 +59,29 @@
             <form>
                 <div class="modal-body">
                     <div class="m-3">
+                        <div class="row mb-3">
+                            <div class="col-2" style="font-size: 15px; padding: 8px 0px 0px 18px !important;">
+                                <label for="start-time">開始時間</label>
+                            </div>
+                            <div class="col-4">
+                                <!-- <input type="datetime-local" name="start-time" id="search-start-time" class="form-control"> -->
+                                <input type="datetime-local" class="form-control">
+                            </div>
+                            <div class="col-2" style="font-size: 15px; padding: 8px 0px 0px 18px !important;">
+                                <label for="end-time">終了時間</label>
+                            </div>
+                            <div class="col-4">
+                                <!-- <input type="datetime-local" name="end-time" id="search-end-time" class="form-control"> -->
+                                <input type="datetime-local" class="form-control">
+                            </div>
+                        </div>
                         <input id="name" type="text" name="name" class="form-control mb-3"
-                            placeholder="患者の名前を入力してください。">
-                        <input id="memo" type="textbox" class="form-control mb-3" placeholder="患者メモ">
+                            placeholder="名前を入力してください。">
+                        <input id="phone" type="text" name="phone" class="form-control mb-3"
+                            placeholder="電話番号を入力してください。">
+                        <input id="email" type="email" name="email" class="form-control mb-3"
+                            placeholder="メールアドレスを入力してください。">
+                        <input id="memo" type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。">
                     </div>
                     <div class="m-3">
                         <button type="button" class="btn btn-primary btn-block" onclick="createNewPatient()">
@@ -160,8 +180,15 @@
                             <div class="row mb-3">
                                 <div class="col">
                                     <input type="hidden" name="id" id="search-patient-id">
-                                    <input id="search-patient-name" type="text" name="name" class="form-control"
+                                    <input id="search-patient-name" type="text" name="name" class="form-control mb-3"
                                         placeholder="患者の名前を入力してください。" onkeyup="search(this)">
+
+                                    <input id="phone" type="text" name="phone" class="form-control mb-3"
+                                        placeholder="電話番号を入力してください。">
+                                    <input id="email" type="email" name="email" class="form-control mb-3"
+                                        placeholder="メールアドレスを入力してください。">
+                                    <input id="memo" type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。">
+
                                     <div style="z-index: 1060; positon: relative;">
                                         <table class="table table-hover table-sm">
                                             <tbody id="search-patient-list">
@@ -239,7 +266,8 @@
     }
 
     .fc-toolbar h2 {
-        font-size: 3.2rem;
+        /* font-size: 3.2rem; */
+        font-size: 2.2vw;
         font-weight: 900;
         font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif;
         color: #006092;
@@ -292,7 +320,8 @@
 
     .fc-day-header {
         color: darkgray;
-        font-size: 3.0rem;
+        /* font-size: 2.5rem; */
+        font-size: 1.5vw;
         font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif;
     }
 
@@ -604,6 +633,11 @@
             newElement.find(".patient-memo").text(`${memo}`);
             newElement.appendTo('#external-events');
             $("#modalForCreate").modal("hide");
+
+            // 成功したときは前回入力値を消す
+            document.getElementById("name").value ="";
+            document.getElementById("memo").value ="";
+
         }).fail(function (e) {
             console.error("ajax failed");
             alert("患者の登録に失敗しました。");

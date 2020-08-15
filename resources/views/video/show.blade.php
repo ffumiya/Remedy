@@ -418,7 +418,6 @@ function toggleMute() {
 <!-- Scripts -->
 <script>
     function toggleFullScreen() {
-        console.log(screen.width);
         if(screen.width > 414){
             var doc = window.document;
             var docEl = doc.documentElement;
