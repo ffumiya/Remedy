@@ -269,11 +269,14 @@
                 }
             });
             const constraints = {
-                audio: audios ? { deviceId: { exact: audios[0].value } } : false,
-                video: videos ? { deviceId: { exact: videos[0].value } } : false
+                audio: audios[0].value ? { deviceId: { exact: audios[0].value } } : false,
+                video: videos[0].value ? { deviceId: { exact: videos[0].value } } : false
             };
             console.log(constraints);
-            const localStream = await navigator.mediaDevices.getUserMedia(constraints).catch(console.error);
+            const localStream = await navigator.mediaDevices.getUserMedia(constraints).catch(function (err) {
+                alert('カメラと音声を取得できませんでした。');
+                console.error();
+            });
             console.log(localStream);
             const newVideo = document.createElement('video');
 
