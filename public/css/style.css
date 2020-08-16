@@ -1156,6 +1156,10 @@ img.logo {
     padding: 5px 0px;
 }
 
+.pad-10 {
+    padding: 10px 0px;
+}
+
 .mgr-btm-5 {
     margin-bottom: 10px;
 }
@@ -1411,10 +1415,10 @@ https://www.w3schools.com/howto/howto_css_responsive_header.asp */
 }
 
 /* Change the background color on mouse-over */
-.header a:hover {
+/* .header a:hover {
   background-color: #ddd;
   color: black;
-}
+} */
 
 /* Style the active/current link*/
 .header a.active {
@@ -1444,5 +1448,16 @@ https://www.w3schools.com/howto/howto_css_responsive_header.asp */
   }
 }
 
+.font-size-14vw{
+    font-size: 1.4vw !important;
+}
+
+.font-size-24vw{
+    font-size: 2.4vw !important;
+}
+
+.font-size-10vw{
+    font-size: 1.2vw !important;
+}
 
 /* 引用終了 */
