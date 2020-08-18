@@ -269,8 +269,8 @@
                 }
             });
             const constraints = {
-                audio: audios[0].value ? { deviceId: { exact: audios[0].value } } : false,
-                video: videos[0].value ? { deviceId: { exact: videos[0].value } } : false
+                audio: audios ? { deviceId: { exact: audios[0].value } } : false,
+                video: videos ? { deviceId: { exact: videos[0].value } } : false
             };
             console.log(constraints);
             const localStream = await navigator.mediaDevices.getUserMedia(constraints).catch(function (err) {
@@ -280,6 +280,7 @@
             console.log(localStream);
             const newVideo = document.createElement('video');
 
+            newVideo.muted = true; // ハウリング防止
             newVideo.srcObject = localStream;
             newVideo.playsInline = true;
             newVideo.classList.add('w-30');
