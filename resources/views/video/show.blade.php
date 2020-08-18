@@ -241,8 +241,8 @@
             console.log("async function main.");
 
             // デバッグ用にコメントアウト
-            // const peerId = {{ \Auth::id() }};
-            const peerId = null;
+            const peerId = {{ \Auth::id() }};
+            // const peerId = null;
             const peer = new Peer(peerId, {key: "{{ config('skyway.api_key') }}" });
             console.log(peer);
 
