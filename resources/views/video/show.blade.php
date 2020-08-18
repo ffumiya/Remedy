@@ -251,27 +251,32 @@
                 var videos = null;
                 await navigator.mediaDevices.enumerateDevices().then(deviceInfos => {
                     for (let i = 0; i !== deviceInfos.length; ++i) {
-                    const deviceInfo = deviceInfos[i];
-                    if (deviceInfo.kind === "audioinput") {
-                        if (audios == null) audios = [];
-                        audios.push({
-                            text: deviceInfo.label || `Microphone ${audios.length + 1}`,
-                            value: deviceInfo.deviceId
-                        });
-                    } else if (deviceInfo.kind === "videoinput") {
-                        if (videos == null) videos = [];
-                        videos.push({
-                            text: deviceInfo.label || `Camera ${videos.length + 1}`,
-                            value: deviceInfo.deviceId
-                        });
+                        const deviceInfo = deviceInfos[i];
+                        if (deviceInfo.deviceId == "") {
+                            continue;
+                        }
+                        if (deviceInfo.kind === "audioinput") {
+                            if (audios == null) audios = [];
+                            audios.push({
+                                text: deviceInfo.label || `Microphone ${audios.length + 1}`,
+                                value: deviceInfo.deviceId
+                            });
+                        } else if (deviceInfo.kind === "videoinput") {
+                            if (videos == null) videos = [];
+                            videos.push({
+                                text: deviceInfo.label || `Camera ${videos.length + 1}`,
+                                value: deviceInfo.deviceId
+                            });
+                        }
                     }
-                }
-            });
+                });
             console.log(audios);
             console.log(videos);
             const constraints = {
-                audio: audios ? { deviceId: { exact: audios[0].value } } : false,
-                video: videos ? { deviceId: { exact: videos[0].value } } : false
+                audio: true,
+                video: true
+                // audio: audios ? { deviceId: { exact: audios[0].value } } : false,
+                // video: videos ? { deviceId: { exact: videos[0].value } } : false
             };
             console.log(constraints);
             const localStream = await navigator.mediaDevices.getUserMedia(constraints).catch(function (err) {
@@ -324,6 +329,7 @@
                 // await mainVideo.play().catch(console.error);
 
                 // 取得したstreamが医師の場合はメインに配置
+                console.log("hostId = {{ $host->id }}, guestId = {{ $guest->id }}");
                 if (stream.peerId == {{ $host->id }}) {
                     document.getElementById('wait-canvas').style.display = 'none';
                     document.getElementById('wait-message').style.display = 'none';
