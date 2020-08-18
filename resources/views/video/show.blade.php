@@ -252,7 +252,6 @@
                 await navigator.mediaDevices.enumerateDevices().then(deviceInfos => {
                     for (let i = 0; i !== deviceInfos.length; ++i) {
                     const deviceInfo = deviceInfos[i];
-                    console.table(deviceInfo);
                     if (deviceInfo.kind === "audioinput") {
                         if (audios == null) audios = [];
                         audios.push({
@@ -268,6 +267,8 @@
                     }
                 }
             });
+            console.log(audios);
+            console.log(videos);
             const constraints = {
                 audio: audios ? { deviceId: { exact: audios[0].value } } : false,
                 video: videos ? { deviceId: { exact: videos[0].value } } : false
