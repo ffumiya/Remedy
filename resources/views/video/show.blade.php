@@ -2,25 +2,25 @@
 
 @section('content')
 <!-- <div class="remedy-pc"> -->
-    <div class="row customize">
+<div class="row customize">
 
-        <!-- お医者さん画面 -->
-        <div class="col-xs-8 ">
-            <div class="relative">
-                {{-- <img id="host-canvas" class="w-100-video" src="{{ asset('img/video/doctor-img.jpg') }}"> --}}
-                <div id="wait-canvas" style="background-color: black" class="w-100-video ">
-                    <p id="wait-message" class="text-white text-center">相手が参加するまでお待ちください。</p>
-                </div>
-                <video id="js-main-stream" class="w-100-video" style="display: none"></video>
-                <div class="talk-icons">
-                    {{-- ミュート --}}
-                    {{-- <button class="icon-button" onclick="toggleMute()">
+    <!-- お医者さん画面 -->
+    <div class="col-xs-8 ">
+        <div class="relative">
+            {{-- <img id="host-canvas" class="w-100-video" src="{{ asset('img/video/doctor-img.jpg') }}"> --}}
+            <div id="wait-canvas" style="background-color: black" class="w-100-video ">
+                <p id="wait-message" class="text-white text-center">相手が参加するまでお待ちください。</p>
+            </div>
+            <video id="js-main-stream" class="w-100-video" style="display: none"></video>
+            <div class="talk-icons">
+                {{-- ミュート --}}
+                {{-- <button class="icon-button" onclick="toggleMute()">
                         <span class="fa-stack fa-lg" style="color:white;">
                             <i class="fa fa-circle fa-stack-2x" aria-hidden="true"></i>
                             <i class="fa fa-microphone fa-stack-1x my-skyblue" aria-hidden="true"></i>
                         </span>
                     </button> --}}
-                    {{-- <button class="icon-button">
+                {{-- <button class="icon-button">
                         <span class="fa-stack fa-lg" style="color:white;">
                             <i class="fa fa-circle fa-stack-2x"></i>
                             <i class="fa fa-video-camera fa-stack-1x my-skyblue"></i>
@@ -32,79 +32,81 @@
                             <i class="fa fa-television fa-stack-1x my-skyblue"></i>
                         </span>
                         </button> --}}
-                    <button id="js-leave-trigger" class="icon-button">
-                        <span class="fa-stack fa-lg" style="color:red;">
-                            <i class="fa fa-circle fa-stack-2x"></i>
-                            <i class="fa fa-phone fa-stack-1x fa-rotate-135 my-white"></i>
-                        </span>
-                    </button>
-                </div>
+                <button id="js-leave-trigger" class="icon-button">
+                    <span class="fa-stack fa-lg" style="color:red;">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-phone fa-stack-1x fa-rotate-135 my-white"></i>
+                    </span>
+                </button>
             </div>
-        </div>
-
-
-        <!-- 現在時間と患者情報 -->
-        <div class="col-xs-4 remedy-pc">
-            <div class="bg-grey h-32vh">
-                <img class="remedy-logo-video-pc center-block" src="{{ asset('img/remedy-pc/logo.png') }}" align=""><br>
-                <div class="text-center video-time" id="clock">
-                </div>
-            </div>
-
-            <br />
-            <div style="color:#87CEEB; font-weight: bold; margin-left:20px;">患者基本情報</div>
-            <hr class="blue-line">
-            <table style="width:100%; margin:0 20px;">
-                <tr class="myform">
-                    <th>氏名</th>
-                    <td>{{ $guest->name }}</td>
-                <tr class="myform">
-                    <th>生年月日</th>
-                    @if($guest->birthday)
-                    <td>{{ $guest->birthday }}</td>
-                    @else
-                    <td>不明</td>
-                    @endif
-                </tr>
-                <tr class="myform">
-                    <th>性別</th>
-                    @if($guest->sex)
-                    <td>{{ $guest->sex }}</td>
-                    @else
-                    <td>不明</td>
-                    @endif
-                </tr>
-                <tr class="myform">
-                    <th>身長</th>
-                    @if($guest->height)
-                    <td>{{ $guest->height }}cm</td>
-                    @else
-                    <td>不明</td>
-                    @endif
-                </tr>
-                <tr class="myform">
-                    <th>体重</th>
-                    @if($guest->weight)
-                    <td>{{ $guest->weight }}kg</td>
-                    @else
-                    <td>不明</td>
-                    @endif
-                </tr>
-            </table>
         </div>
     </div>
 
-    <!-- お医者さん以外の映像 -->
-    <div class="">
-        {{-- <div class="remote-streams col-sm-8 nopadding" id="js-remote-streams">
-            <img id="guest-canvas" class="w-30 nopadding" src="{{ asset('img/video/nurse-img.png') }}"> 
-            <img class="w-30" src="{{ asset('img/video/patient-img.png') }}"> 
-            <img class="w-30" src="{{ asset('img/video/relative-img.png') }}"> 
-        </div> --}}
-    </div>
 
-    <!-- 参加者一覧 -->
-    {{-- <div class="col-xs-4 remedy-pc">
+    <!-- 現在時間と患者情報 -->
+    <div class="col-xs-4 remedy-pc">
+        <div class="bg-grey h-32vh">
+            <img class="remedy-logo-video-pc center-block" src="{{ asset('img/remedy-pc/logo.png') }}" align=""><br>
+            <div class="text-center video-time" id="clock">
+            </div>
+        </div>
+
+        <br />
+        <div style="color:#87CEEB; font-weight: bold; margin-left:20px;">患者基本情報</div>
+        <hr class="blue-line">
+        <table style="width:100%; margin:0 20px;">
+            <tr class="myform">
+                <th>氏名</th>
+                <td>{{ $guest->name }}</td>
+            <tr class="myform">
+                <th>生年月日</th>
+                @if($guest->birthday)
+                <td>{{ $guest->birthday }}</td>
+                @else
+                <td>不明</td>
+                @endif
+            </tr>
+            <tr class="myform">
+                <th>性別</th>
+                @if($guest->sex)
+                <td>{{ $guest->sex }}</td>
+                @else
+                <td>不明</td>
+                @endif
+            </tr>
+            <tr class="myform">
+                <th>身長</th>
+                @if($guest->height)
+                <td>{{ $guest->height }}cm</td>
+                @else
+                <td>不明</td>
+                @endif
+            </tr>
+            <tr class="myform">
+                <th>体重</th>
+                @if($guest->weight)
+                <td>{{ $guest->weight }}kg</td>
+                @else
+                <td>不明</td>
+                @endif
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- お医者さん以外の映像 -->
+<div class="">
+    <div class="remote-streams col-xs-8 nopadding" id="js-remote-streams">
+    </div>
+    {{-- <div class="remote-streams col-sm-8 nopadding" id="js-remote-streams">
+            <img id="guest-canvas" class="w-30 nopadding" src="{{ asset('img/video/nurse-img.png') }}">
+    <img class="w-30" src="{{ asset('img/video/patient-img.png') }}">
+    <img class="w-30" src="{{ asset('img/video/relative-img.png') }}">
+</div> --}}
+</div>
+
+<!-- 参加者一覧 -->
+{{-- <div class="col-xs-4 remedy-pc">
         <br />
         <div style="color:#87CEEB; font-weight: bold; margin-left:20px;">診療参加者</div>
         <hr class="blue-line">
@@ -113,27 +115,27 @@
             <tr>
                 <td class="w-15">
                     <img class="icon-img" src="{{ asset('img/video/doctor-img.jpg') }}">
-    </td>
-    <td class="participant-name">{{ $host->name }}</td>
-    <td class="w-15">
-        <img class="icon-img" src="{{ asset('img/video/nurse-img.png') }}">
-    </td>
-    <td class="participant-name">広瀬 律子</td>
-    </tr>
+</td>
+<td class="participant-name">{{ $host->name }}</td>
+<td class="w-15">
+    <img class="icon-img" src="{{ asset('img/video/nurse-img.png') }}">
+</td>
+<td class="participant-name">広瀬 律子</td>
+</tr>
 
-    <tr>
-        <td class="w-15 h-50px">
-            <img class="icon-img mgr-top-10" src="{{ asset('img/video/patient-img.png') }}">
-        </td>
-        <td style="height: 100px;" class="participant-name">
-            山根 忠政
-        </td>
-        <td class="w-15">
-            <img class="icon-img" src="{{ asset('img/video/relative-img.png') }}">
-        </td>
-        <td class="participant-name">山根 結衣</td>
-    </tr>
-    </table>
+<tr>
+    <td class="w-15 h-50px">
+        <img class="icon-img mgr-top-10" src="{{ asset('img/video/patient-img.png') }}">
+    </td>
+    <td style="height: 100px;" class="participant-name">
+        山根 忠政
+    </td>
+    <td class="w-15">
+        <img class="icon-img" src="{{ asset('img/video/relative-img.png') }}">
+    </td>
+    <td class="participant-name">山根 結衣</td>
+</tr>
+</table>
 </div> --}}
 <!-- </div> -->
 
@@ -156,24 +158,24 @@
 <!-- <div class="remedy-sp">
     <div class="row"> -->
 
-        <!-- ヘッダー -->
-        <!-- <div class="bg-grey h-10vh row-100">
+<!-- ヘッダー -->
+<!-- <div class="bg-grey h-10vh row-100">
             <img class="remedy-logo-video-sp center-block" src="{{ asset('img/remedy-pc/logo.png') }}" align=""><br>
         </div> -->
 
-        <!-- お医者さん画面 -->
-        <!-- <div class="relative">
+<!-- お医者さん画面 -->
+<!-- <div class="relative">
             <img class="doctor-video-sp" src="{{ asset('img/video/doctor-img.jpg') }}">
         </div> -->
 
-        <!-- お医者さん以外の映像 -->
+<!-- お医者さん以外の映像 -->
 
-        <!-- <img class="others-video-sp" src="{{ asset('img/video/nurse-img.png') }}">
+<!-- <img class="others-video-sp" src="{{ asset('img/video/nurse-img.png') }}">
         <img class="others-video-sp" src="{{ asset('img/video/patient-img.png') }}">
         <img class="others-video-sp" src="{{ asset('img/video/relative-img.png') }}"> -->
 
-        <!-- アイコンのあるフッター -->
-        <!-- <div class="row-100 h-10vh bg-grey">
+<!-- アイコンのあるフッター -->
+<!-- <div class="row-100 h-10vh bg-grey">
             <div class="customize" style="text-align:center;">
                 <button class="icon-button">
                     <span class="fa-stack fa-lg" style="color:white;">
@@ -223,6 +225,8 @@
         const sdkSrc = document.querySelector('script[src*=skyway]');
         const clock = document.getElementById('clock');
         var streamCount = 0;
+        var audio = null;
+        var video = null;
 
         clock.innerHTML = getFormatTime(new Date());
         setInterval(function() {
@@ -234,24 +238,51 @@
 
         (async function main() {
 
-        console.log("async function main.");
+            console.log("async function main.");
 
-        // デバッグ用にコメントアウト
-        // const peerId = {{ \Auth::id() }};
-        const peerId = null;
-        const peer = new Peer(peerId, {key: "{{ config('skyway.api_key') }}" });
-        console.log(peer);
+            // デバッグ用にコメントアウト
+            // const peerId = {{ \Auth::id() }};
+            const peerId = null;
+            const peer = new Peer(peerId, {key: "{{ config('skyway.api_key') }}" });
+            console.log(peer);
 
-        joinTrigger.addEventListener('click', async () => {
-            const localStream = await navigator.mediaDevices.getUserMedia({
-                audio: false,
-                video: { frameRate: { ideal: 10, max: 15 } }
-            }).catch(console.error);
+            joinTrigger.addEventListener('click', async () => {
+                var audios = null;
+                var videos = null;
+                await navigator.mediaDevices.enumerateDevices().then(deviceInfos => {
+                    for (let i = 0; i !== deviceInfos.length; ++i) {
+                    const deviceInfo = deviceInfos[i];
+                    console.table(deviceInfo);
+                    if (deviceInfo.kind === "audioinput") {
+                        if (audios == null) audios = [];
+                        audios.push({
+                            text: deviceInfo.label || `Microphone ${audios.length + 1}`,
+                            value: deviceInfo.deviceId
+                        });
+                    } else if (deviceInfo.kind === "videoinput") {
+                        if (videos == null) videos = [];
+                        videos.push({
+                            text: deviceInfo.label || `Camera ${videos.length + 1}`,
+                            value: deviceInfo.deviceId
+                        });
+                    }
+                }
+            });
+            const constraints = {
+                audio: audios ? { deviceId: { exact: audios[0].value } } : false,
+                video: videos ? { deviceId: { exact: videos[0].value } } : false
+            };
+            console.log(constraints);
+            const localStream = await navigator.mediaDevices.getUserMedia(constraints).catch(console.error);
+            console.log(localStream);
             const newVideo = document.createElement('video');
+
             newVideo.srcObject = localStream;
             newVideo.playsInline = true;
             newVideo.classList.add('w-30');
             newVideo.classList.add('nopadding');
+            console.log(newVideo);
+            console.log(remoteVideos);
             remoteVideos.append(newVideo);
             await newVideo.play().catch(console.error);
 
