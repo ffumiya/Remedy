@@ -232,7 +232,9 @@
     }
 
     p {
-        font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif;
+        /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
+        font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
+
     }
 
     #external-events {
@@ -269,13 +271,15 @@
         /* font-size: 3.2rem; */
         font-size: 2.2vw;
         font-weight: 900;
-        font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif;
+        /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
+        font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
         color: #006092;
     }
 
     .fc-event {
         margin-left: -3px;
-        font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif;
+        /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
+        font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
         color: black;
         background-color: whitesmoke;
         border-radius: 3px;
@@ -291,14 +295,16 @@
         border-width: 0;
         border: none;
         background-color: white;
-        font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif;
+        /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
+        font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
     }
 
     .fc-time {
         color: #006092;
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         font-weight: 800;
-        font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif;
+        /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
+        font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
     }
 
     .fc-title {
@@ -322,7 +328,8 @@
         color: darkgray;
         /* font-size: 2.5rem; */
         font-size: 1.5vw;
-        font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif;
+        /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
+        font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
     }
 
     .fc-today {
