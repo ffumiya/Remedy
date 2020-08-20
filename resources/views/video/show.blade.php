@@ -241,8 +241,8 @@
             console.log("async function main.");
 
             // デバッグ用にコメントアウト
-            // const peerId = {{ \Auth::id() }};
-            const peerId = null;
+            const peerId = {{ \Auth::id() }};
+            // const peerId = null;
             const peer = new Peer(peerId, {key: "{{ config('skyway.api_key') }}" });
             console.log(peer);
 
@@ -251,32 +251,42 @@
                 var videos = null;
                 await navigator.mediaDevices.enumerateDevices().then(deviceInfos => {
                     for (let i = 0; i !== deviceInfos.length; ++i) {
-                    const deviceInfo = deviceInfos[i];
-                    console.table(deviceInfo);
-                    if (deviceInfo.kind === "audioinput") {
-                        if (audios == null) audios = [];
-                        audios.push({
-                            text: deviceInfo.label || `Microphone ${audios.length + 1}`,
-                            value: deviceInfo.deviceId
-                        });
-                    } else if (deviceInfo.kind === "videoinput") {
-                        if (videos == null) videos = [];
-                        videos.push({
-                            text: deviceInfo.label || `Camera ${videos.length + 1}`,
-                            value: deviceInfo.deviceId
-                        });
+                        const deviceInfo = deviceInfos[i];
+                        if (deviceInfo.deviceId == "") {
+                            continue;
+                        }
+                        if (deviceInfo.kind === "audioinput") {
+                            if (audios == null) audios = [];
+                            audios.push({
+                                text: deviceInfo.label || `Microphone ${audios.length + 1}`,
+                                value: deviceInfo.deviceId
+                            });
+                        } else if (deviceInfo.kind === "videoinput") {
+                            if (videos == null) videos = [];
+                            videos.push({
+                                text: deviceInfo.label || `Camera ${videos.length + 1}`,
+                                value: deviceInfo.deviceId
+                            });
+                        }
                     }
-                }
-            });
+                });
+            console.log(audios);
+            console.log(videos);
             const constraints = {
-                audio: audios ? { deviceId: { exact: audios[0].value } } : false,
-                video: videos ? { deviceId: { exact: videos[0].value } } : false
+                audio: true,
+                video: true
+                // audio: audios ? { deviceId: { exact: audios[0].value } } : false,
+                // video: videos ? { deviceId: { exact: videos[0].value } } : false
             };
             console.log(constraints);
-            const localStream = await navigator.mediaDevices.getUserMedia(constraints).catch(console.error);
+            const localStream = await navigator.mediaDevices.getUserMedia(constraints).catch(function (err) {
+                alert('カメラと音声を取得できませんでした。');
+                console.error();
+            });
             console.log(localStream);
             const newVideo = document.createElement('video');
 
+            newVideo.muted = true; // ハウリング防止
             newVideo.srcObject = localStream;
             newVideo.playsInline = true;
             newVideo.classList.add('w-30');
@@ -319,6 +329,7 @@
                 // await mainVideo.play().catch(console.error);
 
                 // 取得したstreamが医師の場合はメインに配置
+                console.log("hostId = {{ $host->id }}, guestId = {{ $guest->id }}");
                 if (stream.peerId == {{ $host->id }}) {
                     document.getElementById('wait-canvas').style.display = 'none';
                     document.getElementById('wait-message').style.display = 'none';
