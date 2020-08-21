@@ -15,7 +15,6 @@ class Event extends BaseModel
     const EVENT_ID = "event_id";
     const ID = "id";
     const HOST_ID = "host_id";
-    const CLINIC_ID = "clinic_id";
     const GUEST_ID = "guest_id";
     const DESIRED_TIME = "desired_id";
     const PRICE = "price";
