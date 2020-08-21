@@ -466,10 +466,14 @@
             eventData: function(eventEl) {
                 console.log("ドラッグ開始");
                 console.log(eventEl);
+                var title = eventEl.attributes.title.value;
+                var eventId = btoa(encodeURIComponent(title) + Math.round((new Date()).getTime() / 1000));
+                console.log(eventId);
                 return {
-                    title: eventEl.attributes.title.value,
+                    title: title,
                     // id: eventEl.attributes.id.value,
-                    event_id: Math.round((new Date()).getTime() / 1000),
+                    // event_id: Math.round((new Date()).getTime() / 1000),
+                    event_id: eventId,
                     host_id: parseInt("{{ \Auth::id() }}"),
                     // host_id: eventEl.attributes.guest_id.value,
                     guest_id: eventEl.attributes.guest_id.value,
