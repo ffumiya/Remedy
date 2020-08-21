@@ -144,6 +144,11 @@ class EventService extends BaseService
                 [Event::PAYMENT_METHOD_ID => $paymentMethodId]
             );
         }
+
+        User::where(User::ID, $guestId)->update(
+            [User::FIRST_EVENT => $eventId]
+        );
+
         \Log::channel('trace')->info("Completed store event");
 
         return $additionalEvent;

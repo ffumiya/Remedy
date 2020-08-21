@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->string(User::API_TOKEN, 80)->unique();
             $table->integer(User::ROLE)->default(config('role.patient.value'));
             $table->bigInteger(User::CLINIC_ID)->nullable();
+            $table->bigInteger(User::FIRST_EVENT)->nullable();
             $table->rememberToken()->nullable();
             $table->softDeletes();
             $table->timestamps();

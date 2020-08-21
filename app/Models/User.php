@@ -33,6 +33,7 @@ class User extends Authenticatable
     const API_TOKEN = "api_token";
     const ROLE = "role";
     const CLINIC_ID = "clinic_id";
+    const FIRST_EVENT = "first_event";
 
     #########################
     #  Stripe指定カラム                             #
@@ -57,7 +58,8 @@ class User extends Authenticatable
         User::PASSWORD,
         User::ROLE,
         User::CLINIC_ID,
-        User::API_TOKEN
+        User::API_TOKEN,
+        User::FIRST_EVENT
     ];
 
     /**

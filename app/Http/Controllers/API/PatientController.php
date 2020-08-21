@@ -47,7 +47,7 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        // return PatientService::getPatientInfo($id);
+        return PatientService::getPatientInfo($id);
         // \Log::channel('debug')->info($request);
     }
 

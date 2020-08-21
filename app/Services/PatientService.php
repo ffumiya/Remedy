@@ -12,8 +12,9 @@ class PatientService extends BaseService
     {
         $patient = User::find($id);
         \Log::channel("debug")->debug($patient);
+        return $patient;
         // \Log::channel('trace')->info("Return patient : id = ${id}");
-        return json_encode($patient);
+        // return json_encode($patient);
     }
 
     public static function searchPatient($request)
@@ -26,6 +27,22 @@ class PatientService extends BaseService
             User::ID,
             User::NAME
         ])->where(User::NAME, 'LIKE', "{$name}%")->get();
+        return $users;
+    }
+
+    public static function getNoEventUsers()
+    {
+        /**
+         * SELECT * FROM `users`
+         * WHERE `first_event` IS NULL
+         * AND `role` = 10
+         * AND `clinic_id` = 1
+         */
+        $users = User::whereNull(User::FIRST_EVENT)
+            ->where(User::ROLE, config('role.patient.value'))
+            ->where(User::CLINIC_ID, \Auth::user()->clinic_id)
+            ->get();
+        \Log::channel("debug")->debug($users);
         return $users;
     }
 }

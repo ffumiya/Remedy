@@ -4,8 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-4">
-            <h1 class="logo mt-5 font-size-24vw">Remedy</h1>
-            <h2 class="title mt-3 font-size-14vw" >日程未調整患者リスト</h2>
+            <h2 class="title mt-3 font-size-14vw">日程未調整患者リスト</h2>
             <div class="mt-3 font-size-10vw">
                 <p>
                     下記リストは「病状説明日程調整」の未対応案件です。
@@ -15,15 +14,25 @@
                 </p>
             </div>
             <div class="text-right m-3 mb-5">
-                <button class="btn btn-primary btn-main font-size-10vw" data-toggle="modal" data-target="#modalForCreate">
+                <button class="btn btn-primary btn-main font-size-10vw" data-toggle="modal"
+                    data-target="#modalForCreate">
                     新規患者登録
                 </button>
             </div>
 
             <div id="external-events">
                 @foreach ($patientList as $patient)
-                <div class="card fc-event mb-3">
-                    <div class="fc-event-main">患者名</div>
+                <div class="fc-ex-event fc-event mb-3" id="user{{$patient->id}}" guest_id="{{ $patient->id }}"
+                    title="{{ $patient->name }}さん">
+                    <div class="row p-4 text-center d-flex align-items-center">
+                        <div class="col-lg-1 col-md-4 patient-number">
+                            {{ $patient->id }}
+                        </div>
+                        <div class="col-lg-4 col-md-8 patient-name">
+                            {{ $patient->name }}
+                        </div>
+                        <div class="col-lg-2 patient-city"></div>
+                    </div>
                 </div>
                 @endforeach
 
@@ -33,9 +42,10 @@
                         <div class="col-lg-1 col-md-4 patient-number"></div>
                         <div class="col-lg-4 col-md-8 patient-name"></div>
                         <div class="col-lg-2 patient-city"></div>
-                        <div class="col-lg-5 patient-memo"></div>
+                        {{-- <div class="col-lg-5 patient-memo"></div> --}}
                     </div>
                 </div>
+
             </div>
         </div>
         <div class="col-8">
@@ -64,24 +74,21 @@
                                 <label for="start-time">開始時間</label>
                             </div>
                             <div class="col-4">
-                                <!-- <input type="datetime-local" name="start-time" id="search-start-time" class="form-control"> -->
                                 <input type="datetime-local" class="form-control">
                             </div>
                             <div class="col-2" style="font-size: 15px; padding: 8px 0px 0px 18px !important;">
                                 <label for="end-time">終了時間</label>
                             </div>
                             <div class="col-4">
-                                <!-- <input type="datetime-local" name="end-time" id="search-end-time" class="form-control"> -->
                                 <input type="datetime-local" class="form-control">
                             </div>
                         </div>
-                        <input id="name" type="text" name="name" class="form-control mb-3"
-                            placeholder="名前を入力してください。">
+                        <input id="name" type="text" name="name" class="form-control mb-3" placeholder="名前を入力してください。">
                         <input id="phone" type="text" name="phone" class="form-control mb-3"
                             placeholder="電話番号を入力してください。">
                         <input id="email" type="email" name="email" class="form-control mb-3"
                             placeholder="メールアドレスを入力してください。">
-                        <input id="memo" type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。">
+                        {{-- <input id="memo" type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。"> --}}
                     </div>
                     <div class="m-3">
                         <button type="button" class="btn btn-primary btn-block" onclick="createNewPatient()">
@@ -89,9 +96,6 @@
                         </button>
                     </div>
                 </div>
-                {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    キャンセル
-                </button> --}}
             </form>
         </div>
     </div>
@@ -127,6 +131,9 @@
                 </div>
                 <div class="row m-5">
                     <div class="col">
+                        <a href="mailto:" id="mail-to">
+                            <button class="btn btn-success btn-block mb-3" id="mail-button">メール送信する</button>
+                        </a>
                         <a id="video-link">
                             <button class="btn btn-primary btn-block" id="video-button">診察を開始する</button>
                             <button class="btn btn-secondary btn-block" id="video-dummy-button"
@@ -136,11 +143,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    閉じる
-                </button>
-            </div> --}}
         </div>
     </div>
 </div>
@@ -148,7 +150,7 @@
 
 <!-- Begin modal window for select calendar -->
 <div id="modalForSelect" class="modal p-5" tabindex="-1" role="dialog">
-    <div class="modal-dialog" r ¥ment">
+    <div class="modal-dialog" style="max-width: 800px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">診察スケジュール / 新規追加</h5>
@@ -182,12 +184,6 @@
                                     <input type="hidden" name="id" id="search-patient-id">
                                     <input id="search-patient-name" type="text" name="name" class="form-control mb-3"
                                         placeholder="患者の名前を入力してください。" onkeyup="search(this)">
-
-                                    <input id="phone" type="text" name="phone" class="form-control mb-3"
-                                        placeholder="電話番号を入力してください。">
-                                    <input id="email" type="email" name="email" class="form-control mb-3"
-                                        placeholder="メールアドレスを入力してください。">
-                                    <input id="memo" type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。">
 
                                     <div style="z-index: 1060; positon: relative;">
                                         <table class="table table-hover table-sm">
@@ -461,11 +457,14 @@
         new Draggable(containerEl, {
             itemSelector: ".fc-event",
             eventData: function(eventEl) {
+                console.log("ドラッグ開始");
+                console.log(eventEl);
                 return {
-                    title: `${eventEl.attributes.title.value}`,
-                    id: eventEl.attributes.id.value,
-                    event_id: eventEl.attributes.id.value,
-                    host_id: "{{ \Auth::id() }}",
+                    title: eventEl.attributes.title.value,
+                    // id: eventEl.attributes.id.value,
+                    event_id: Math.round((new Date()).getTime() / 1000),
+                    host_id: parseInt("{{ \Auth::id() }}"),
+                    // host_id: eventEl.attributes.guest_id.value,
                     guest_id: eventEl.attributes.guest_id.value,
                 };
             }
@@ -501,7 +500,7 @@
             minTime: "8:00",
             maxTime: "20:00",
             contentHeight: 900,
-            scrollTime: first_scroll_time,
+            // scrollTime: first_scroll_time,
             firstDay: 1,
             // locale: "jaLocale",
             editable: true,
@@ -530,7 +529,7 @@
                     }
                 }).done(function (r) {
                     console.log("cteated event.");
-                    $(`#${info.event.id}`).remove();
+                    $(`#user${info.event.extendedProps.guest_id}`).remove();
                 }).fail(function(e) {
                     // 予定の削除
                     calendar.getEventById(info.event.id).remove();
@@ -580,11 +579,32 @@
                                 $("#video-link").attr("href", null);
                                 $("#video-button").prop("hidden", true);
                                 $("#video-dummy-button").prop("hidden", false);
+                                $("#mail-button").prop("hidden", true);
                             } else {
                                 // 今日以後のイベントは診察対象
                                 $("#video-link").attr("href", `video/${info.event.extendedProps.event_id}`);
                                 $("#video-button").prop("hidden", false);
                                 $("#video-dummy-button").prop("hidden", true);
+                                $("#mail-button").prop("hidden", false);
+                                // メール作成
+                                var email = "";
+                                $.ajax({
+                                    type: "GET",
+                                    url: `api/patient/${info.event.extendedProps.guest_id}`,
+                                    datatype: "json",
+                                    data: {
+                                        api_token: "{{ \Auth::user()->api_token }}"
+                                    }
+                                }).done(function(user) {
+                                    email = user.email;
+                                    console.log(`${info.event.title}さんのeamil: ${email}`);
+                                    var mailto = `${email}`;
+                                    var subject = `{{ $clinicName }}よりお知らせ`;
+                                    var body = `${info.event.title}%0D%0A%0D%0Aオンライン診療の時間が設定されました。下記詳細をご確認ください。%0D%0A%0D%0A診療時間：${formatDate(info.event.start, 'yyyy-MM-ddThh:mm')} - ${formatDate(info.event.end, 'yyyy-MM-ddThh:mm')}%0D%0AURL：https://re-medy.jp/video/${info.event.extendedProps.event_id}`;
+                                    $("#mail-to").attr("href", `mailto:${mailto}?subject=${subject}&body=${body}`);
+                                }).fail(function (e) {
+                                    alert("新規予定の作成に失敗しました。");
+                                });
                             }
                             // イベント削除用にIDを仕込み
                             $("#modalForClick").attr("event-id", `${info.event.id}`);
@@ -606,16 +626,25 @@
 
     // 患者情報の新規登録
     function createNewPatient() {
-        var eventId = Math.round((new Date()).getTime() / 1000);
-        console.log(eventId);
+        const reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
+        // var eventId = Math.round((new Date()).getTime() / 1000);
+        // console.log(eventId);
         var name = $('#name').val();
-        if (name == "") return;
-        var memo = $('#memo').val();
+        if (name == "") {
+            alert("名前を入力してください。");
+            return;
+        }
+        var email = $('#email').val();
+        if (!reg.test(email)) {
+            alert("正しいメールアドレスを入力してください。");
+            return;
+        }
+        // var memo = $('#memo').val();
         var data = {
             api_token: "{{ \Auth::user()->api_token }}",
             name: name,
-            email: eventId + "@example.com",
-            password: eventId
+            email: email,
+            password: cutDomain(email)
         }
         $.ajax({
             type: 'POST',
@@ -624,19 +653,15 @@
             data: data
         }).done(function(r) {
             var newElement = $('#template').clone(true);
-            newElement.attr("id", eventId);
+            newElement.attr("id", `user${r.id}`);
             newElement.attr("guest_id", r.id);
             newElement.attr("title", `${name}さん`);
             newElement.prop('hidden', false);
             newElement.find(".patient-number").text(`${r.id}`);
             newElement.find(".patient-name").text(`${name}`);
-            newElement.find(".patient-memo").text(`${memo}`);
+            // newElement.find(".patient-memo").text(`${memo}`);
             newElement.appendTo('#external-events');
             $("#modalForCreate").modal("hide");
-
-            // 成功したときは前回入力値を消す
-            document.getElementById("name").value ="";
-            document.getElementById("memo").value ="";
 
         }).fail(function (e) {
             console.error("ajax failed");
@@ -652,7 +677,7 @@
             alert("入力された患者は登録されていません。候補から選択してください。");
             return false;
         }
-        var eventId = Math.round((new Date()).getTime() / 1000);
+        // var eventId = Math.round((new Date()).getTime() / 1000);
         var name = $('#search-patient-name').val();
         if (name == "") return;
         var start = $('#search-start-time').val();
@@ -662,9 +687,9 @@
             event: {
                 title: `${name}さん`,
                 extendedProps: {
-                    event_id: eventId,
+                    // event_id: eventId,
                     guest_id: id,
-                    host_id: {{\Auth::id()}}
+                    host_id: {{\Auth::id()}},
                 },
                 start: new Date(start),
                 end: new Date(end)
@@ -703,7 +728,7 @@
     function updateEvent(info) {
         $.ajax({
             type: "PUT",
-            url: `api/events/${info.event.id}`,
+            url: `api/events/${info.event.extendedProps.event_id}`,
             datatype: "json",
             data: {
                 api_token: "{{ \Auth::user()->api_token }}",
@@ -807,6 +832,15 @@
         format = format.replace(/SSS/g, ('00' + date.getMilliseconds()).slice(-3));
         return format;
     };
+
+    function cutDomain(email) {
+        console.log(email);
+        var index =  String(email).indexOf("@");
+        console.log(index);
+        var str = String(email).substring(0, index);
+        console.log(str);
+        return str;
+    }
 
 </script>
 @endsection

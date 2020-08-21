@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clinic;
 use App\Services\EventService;
-use Illuminate\Http\Request;
+use App\Services\PatientService;
 
 class HomeController extends Controller
 {
@@ -28,15 +29,16 @@ class HomeController extends Controller
         $role = \Auth::user()->role;
         $currentEvent = EventService::getCurrentPatientEvent($id);
         $events = EventService::getDoctorEvents($id);
-        $patientList = [];
+        $patientList = PatientService::getNoEventUsers();
+        $clinicName = Clinic::find(\Auth::user()->clinic_id)->name;
         switch ($role) {
             case config('role.patient.value'):
                 return view('patienthome', compact(['currentEvent']));
             case config('role.doctor.value'):
-                return view('doctorhome', compact(['patientList', 'events']));
+                return view('doctorhome', compact(['patientList', 'events', 'clinicName']));
             case config('role.admin.value'):
                 // return view('patienthome', compact(['currentEvent']));
-                return view('doctorhome', compact(['patientList', 'events']));
+                return view('doctorhome', compact(['patientList', 'events', 'clinicName']));
         }
     }
 }

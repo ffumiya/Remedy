@@ -14,7 +14,8 @@ class UserController extends Controller
         $user = User::create([
             User::NAME => $request->name,
             User::EMAIL => $request->email,
-            User::PASSWORD => Hash::make($request->password),
+            User::PASSWORD => $request->password,
+            User::CLINIC_ID => \Auth::user()->clinic_id,
             User::API_TOKEN => str_random(80),
         ]);
         return $user;
