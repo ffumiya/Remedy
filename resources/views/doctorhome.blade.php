@@ -467,9 +467,10 @@
                 console.log("ドラッグ開始");
                 console.log(eventEl);
                 var title = eventEl.attributes.title.value;
-                var eventId = btoa(encodeURIComponent(title) + Math.round((new Date()).getTime() / 1000));
+                console.log(title);
+                var eventId = createEventId(title);
                 console.log(eventId);
-                return {
+                var data =  {
                     title: title,
                     // id: eventEl.attributes.id.value,
                     // event_id: Math.round((new Date()).getTime() / 1000),
@@ -478,6 +479,8 @@
                     // host_id: eventEl.attributes.guest_id.value,
                     guest_id: eventEl.attributes.guest_id.value,
                 };
+                console.log(data);
+                return data;
             }
         });
 
@@ -693,12 +696,13 @@
         if (name == "") return;
         var start = $('#search-start-time').val();
         var end = $('#search-end-time').val();
+        var title = `${name}さん`;
         var data = {
             api_token: "{{ \Auth::user()->api_token }}",
             event: {
-                title: `${name}さん`,
+                title: title,
                 extendedProps: {
-                    // event_id: eventId,
+                    event_id: createEventId(title),
                     guest_id: id,
                     host_id: {{\Auth::id()}},
                 },
@@ -851,6 +855,10 @@
         var str = String(email).substring(0, index);
         console.log(str);
         return str;
+    }
+
+    function createEventId(title) {
+        return btoa(encodeURIComponent(title) + Math.round((new Date()).getTime() / 1000));
     }
 
 </script>
