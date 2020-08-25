@@ -26,6 +26,7 @@ class User extends Authenticatable
     const SEX = "sex";
     const HEIGHT = "height";
     const WEIGHT = "weight";
+    const PHONE = "phone";
     const EMAIL = "email";
     const EMAIL_VERIFIED_AT = "email_verified_at";
     const PASSWORD = "password";
@@ -54,6 +55,7 @@ class User extends Authenticatable
         User::SEX,
         User::HEIGHT,
         User::WEIGHT,
+        User::PHONE,
         User::EMAIL,
         User::PASSWORD,
         User::ROLE,

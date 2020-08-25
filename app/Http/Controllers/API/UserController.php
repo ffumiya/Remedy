@@ -13,6 +13,7 @@ class UserController extends Controller
     {
         $user = User::create([
             User::NAME => $request->name,
+            User::PHONE => $request->phone,
             User::EMAIL => $request->email,
             User::PASSWORD => Hash::make($request->password),
             User::CLINIC_ID => \Auth::user()->clinic_id,

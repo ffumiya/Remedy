@@ -23,7 +23,7 @@
             <div id="external-events">
                 @foreach ($patientList as $patient)
                 <div class="fc-ex-event fc-event mb-3" id="user{{$patient->id}}" guest_id="{{ $patient->id }}"
-                    title="{{ $patient->name }}さん">
+                    title="{{ $patient->name }}さん" onclick="showPatient({{$patient}})">
                     <div class="row p-4 text-center d-flex align-items-center">
                         <div class="col-lg-1 col-md-4 patient-number">
                             {{ $patient->id }}
@@ -69,7 +69,7 @@
             <form>
                 <div class="modal-body">
                     <div class="m-3">
-                        <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                             <div class="col-2" style="font-size: 15px; padding: 8px 0px 0px 18px !important;">
                                 <label for="start-time">開始時間</label>
                             </div>
@@ -82,12 +82,13 @@
                             <div class="col-4">
                                 <input type="datetime-local" class="form-control">
                             </div>
-                        </div>
-                        <input id="name" type="text" name="name" class="form-control mb-3" placeholder="名前を入力してください。">
+                        </div> --}}
+                        <input id="name" type="text" name="name" class="form-control mb-3"
+                            placeholder="(必須) 名前を入力してください。">
                         <input id="phone" type="text" name="phone" class="form-control mb-3"
-                            placeholder="電話番号を入力してください。">
+                            placeholder="(必須) 電話番号を入力してください。">
                         <input id="email" type="email" name="email" class="form-control mb-3"
-                            placeholder="メールアドレスを入力してください。">
+                            placeholder="(必須) メールアドレスを入力してください。">
                         {{-- <input id="memo" type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。"> --}}
                     </div>
                     <div class="m-3">
@@ -648,6 +649,11 @@
             alert("名前を入力してください。");
             return;
         }
+        var phone = $('#phone').val();
+        if (phone == "") {
+            alert("電話番号を入力してください。");
+            return;
+        }
         var email = $('#email').val();
         if (!reg.test(email)) {
             alert("正しいメールアドレスを入力してください。");
@@ -657,8 +663,9 @@
         var data = {
             api_token: "{{ \Auth::user()->api_token }}",
             name: name,
+            phone: phone,
             email: email,
-            password: cutDomain(email)
+            password: cutDomain(email),
         }
         $.ajax({
             type: 'POST',
@@ -673,15 +680,18 @@
             newElement.prop('hidden', false);
             newElement.find(".patient-number").text(`${r.id}`);
             newElement.find(".patient-name").text(`${name}`);
+            // newElement.on("click", showPatient(r));
             // newElement.find(".patient-memo").text(`${memo}`);
             newElement.appendTo('#external-events');
             $("#modalForCreate").modal("hide");
-
+            // フォームの初期化
+            $('#name').val("");
+            $('#phone').val("");
+            $('#email').val("");
         }).fail(function (e) {
             console.error("ajax failed");
             alert("患者の登録に失敗しました。");
         });
-
     }
 
     // スケジュール新規登録
@@ -860,6 +870,10 @@
     function createEventId(title) {
         return btoa(encodeURIComponent(title) + Math.round((new Date()).getTime() / 1000));
     }
+
+    // function showPatient(patient) {
+    //     console.log(patient);
+    // }
 
 </script>
 @endsection

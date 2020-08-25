@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->integer(User::SEX)->nullable();
             $table->integer(User::HEIGHT)->nullable();
             $table->integer(User::WEIGHT)->nullable();
+            $table->string(User::PHONE)->nullable();
             $table->string(User::EMAIL)->unique()->nullable();
             $table->timestamp(User::EMAIL_VERIFIED_AT)->nullable();
             $table->string(User::PASSWORD)->nullable();
