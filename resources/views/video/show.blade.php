@@ -57,8 +57,8 @@
         <table style="width:100%; margin:0 20px;">
             <tr class="myform">
                 <th>氏名</th>
-                <td>{{ $guest->name }}</td>
-            <tr class="myform">
+                <td>{{ $guest->name }} さん</td>
+                {{-- <tr class="myform">
                 <th>生年月日</th>
                 @if($guest->birthday)
                 <td>{{ $guest->birthday }}</td>
@@ -89,7 +89,7 @@
                 @else
                 <td>不明</td>
                 @endif
-            </tr>
+            </tr> --}}
         </table>
     </div>
 </div>
