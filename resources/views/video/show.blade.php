@@ -333,6 +333,7 @@
                 if (stream.peerId == {{ $host->id }}) {
                     document.getElementById('wait-canvas').style.display = 'none';
                     document.getElementById('wait-message').style.display = 'none';
+                    mainVideo.setAttribute('peerId', stream.peerId);
                     mainVideo.style.display = 'block';
                     mainVideo.srcObject = stream;
                     mainVideo.playsInline = true;
@@ -344,6 +345,7 @@
                 if (stream.peerId == {{ $guest->id }} && {{ \Auth::user()->role }} == {{ config('role.doctor.value') }}) {
                     document.getElementById('wait-canvas').style.display = 'none';
                     document.getElementById('wait-message').style.display = 'none';
+                    mainVideo.setAttribute('peerId', stream.peerId);
                     mainVideo.style.display = 'block';
                     mainVideo.srcObject = stream;
                     mainVideo.playsInline = true;
@@ -374,14 +376,14 @@
 
             // 他人が退室した際の処理
             room.on('peerLeave', peerId => {
-                if (mainVideo.srcObject) {
+                if (mainVideo.getAttribute('peerId', peerId)) {
                     mainVideo.srcObject.getTracks().forEach(track => track.stop());
                     mainVideo.srcObject = null;
                     mainVideo.remove();
                     document.getElementById('wait-canvas').style.display = 'block';
                     document.getElementById('wait-message').style.display = 'block';
                 }
-                const remoteVideo = remoteVideos.querySelector(
+                var remoteVideo = remoteVideos.querySelector(
                     `[data-peer-id="${peerId}"]`
                 );
                 if (remoteVideo.srcObject) {
