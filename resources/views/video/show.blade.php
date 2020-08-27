@@ -376,7 +376,9 @@
 
             // 他人が退室した際の処理
             room.on('peerLeave', peerId => {
-                if (mainVideo.getAttribute('peerId', peerId)) {
+                console.log(`peerId${peerId}が退室しました。`);
+                console.log(`メイン映像のpeerIdは${mainVideo.getAttribute('peerId')}です。`);
+                if (mainVideo.getAttribute('peerId') == peerId) {
                     mainVideo.srcObject.getTracks().forEach(track => track.stop());
                     mainVideo.srcObject = null;
                     mainVideo.remove();
