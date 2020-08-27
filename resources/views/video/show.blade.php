@@ -95,15 +95,14 @@
 </div>
 
 <!-- お医者さん以外の映像 -->
-<div class="">
-    <div class="remote-streams col-xs-8 nopadding" id="js-remote-streams">
+    <div class="remote-streams col-xs-8 nopadding video-responsive" id="js-remote-streams">
     </div>
     {{-- <div class="remote-streams col-sm-8 nopadding" id="js-remote-streams">
             <img id="guest-canvas" class="w-30 nopadding" src="{{ asset('img/video/nurse-img.png') }}">
     <img class="w-30" src="{{ asset('img/video/patient-img.png') }}">
     <img class="w-30" src="{{ asset('img/video/relative-img.png') }}">
 </div> --}}
-</div>
+
 
 <!-- 参加者一覧 -->
 {{-- <div class="col-xs-4 remedy-pc">

@@ -1464,4 +1464,10 @@ https://www.w3schools.com/howto/howto_css_responsive_header.asp */
     font-size: 1.3vw !important;
 }
 
+@media only screen and (max-width: 750px) {
+    .video-responsive{
+        width: 100% !important;
+    }
+}
+
 /* 引用終了 */
