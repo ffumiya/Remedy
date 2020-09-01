@@ -381,7 +381,8 @@
                 if (mainVideo.getAttribute('peerId') == peerId) {
                     mainVideo.srcObject.getTracks().forEach(track => track.stop());
                     mainVideo.srcObject = null;
-                    mainVideo.remove();
+                    mainVideo.style.display = 'none';
+                    // mainVideo.remove();
                     document.getElementById('wait-canvas').style.display = 'block';
                     document.getElementById('wait-message').style.display = 'block';
                 }
