@@ -391,9 +391,9 @@
                 );
                 if (remoteVideo.srcObject) {
                     remoteVideo.srcObject.getTracks().forEach(track => track.stop());
-                    remoteVideo.srcObject = null;
+                    remoteVideo.style.display = 'none';
+                    // remoteVideo.srcObject = null;
                     remoteVideo.remove();
-                    remoteVideo = null;
                     console.log(remoteVideo);
                     streamCount--;
                 }
@@ -406,7 +406,8 @@
                 if (mainVideo.srcObject) {
                     mainVideo.srcObject.getTracks().forEach(track => track.stop());
                     mainVideo.srcObject = null;
-                    mainVideo.remove();
+                    mainVideo.style.display = 'none';
+                    // mainVideo.remove();
                     document.getElementById('wait-canvas').style.display = 'block';
                     document.getElementById('wait-message').style.display = 'block';
                 }
