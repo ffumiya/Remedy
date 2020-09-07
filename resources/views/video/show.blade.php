@@ -395,7 +395,7 @@
                     var remoteVideo = remoteVideos.querySelector(
                         `[data-peer-id="${peerId}"]`
                     );
-                    if (remoteVideo.srcObject) {
+                    if (remoteVideo !＝ null) {
                         remoteVideo.srcObject.getTracks().forEach(track => track.stop());
                         remoteVideo.style.display = 'none';
                         // remoteVideo.srcObject = null;
