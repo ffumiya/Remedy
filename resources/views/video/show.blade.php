@@ -4,7 +4,7 @@
 <!-- <div class="remedy-pc"> -->
 <div class="row customize">
 
-    <!-- お医者さん画面 -->
+    <!-- メイン映像 -->
     <div class="col-xs-8 ">
         <div class="relative">
             {{-- <img id="host-canvas" class="w-100-video" src="{{ asset('img/video/doctor-img.jpg') }}"> --}}
@@ -96,7 +96,7 @@
 
 <!-- お医者さん以外の映像 -->
 <div class="">
-    <div class="remote-streams col-xs-8 nopadding" id="js-remote-streams">
+    <div class="remote-streams col-xs-12 col-md-8 nopadding" id="js-remote-streams">
     </div>
     {{-- <div class="remote-streams col-sm-8 nopadding" id="js-remote-streams">
             <img id="guest-canvas" class="w-30 nopadding" src="{{ asset('img/video/nurse-img.png') }}">
@@ -236,13 +236,19 @@
 
         $('#modalForMessage').modal('show');
 
+        // 画面サイズが変更された時の処理
+        // $(window).resize(function() {
+        //     var windowHeight = $(window).height();
+        //     console.log(`Windowの高さは${windowHeight}pxです。`);
+        //     var windowWidth = $(window).width();
+        //     console.log(`Windowの幅は${windowWidth}pxです。`);
+        // });
+
         (async function main() {
 
             console.log("async function main.");
 
-            // デバッグ用にコメントアウト
             const peerId = {{ \Auth::id() }};
-            // const peerId = null;
             const peer = new Peer(peerId, {key: "{{ config('skyway.api_key') }}" });
             console.log(peer);
 
@@ -270,196 +276,196 @@
                         }
                     }
                 });
-            console.log(audios);
-            console.log(videos);
-            const constraints = {
-                audio: true,
-                video: true
-                // audio: audios ? { deviceId: { exact: audios[0].value } } : false,
-                // video: videos ? { deviceId: { exact: videos[0].value } } : false
-            };
-            console.log(constraints);
-            const localStream = await navigator.mediaDevices.getUserMedia(constraints).catch(function (err) {
-                alert('カメラと音声を取得できませんでした。');
-                console.error();
-            });
-            console.log(localStream);
-            const newVideo = document.createElement('video');
+                console.log(audios);
+                console.log(videos);
+                const constraints = {
+                    audio: false,
+                    video: {width: 640, height: 480}
+                    // audio: audios ? { deviceId: { exact: audios[0].value } } : false,
+                    // video: videos ? { deviceId: { exact: videos[0].value } } : false
+                };
+                console.log(constraints);
+                const localStream = await navigator.mediaDevices.getUserMedia(constraints).catch(function (err) {
+                    alert('カメラと音声を取得できませんでした。');
+                    console.error();
+                });
+                console.log(localStream);
+                const newVideo = document.createElement('video');
 
-            newVideo.muted = true; // ハウリング防止
-            newVideo.srcObject = localStream;
-            newVideo.playsInline = true;
-            newVideo.classList.add('w-30');
-            newVideo.classList.add('nopadding');
-            console.log(newVideo);
-            console.log(remoteVideos);
-            remoteVideos.append(newVideo);
-            await newVideo.play().catch(console.error);
+                newVideo.muted = true; // ハウリング防止
+                newVideo.srcObject = localStream;
+                newVideo.playsInline = true;
+                newVideo.classList.add('w-30');
+                newVideo.classList.add('nopadding');
+                console.log(newVideo);
+                console.log(remoteVideos);
+                remoteVideos.append(newVideo);
+                await newVideo.play().catch(console.error);
 
-            $('#modalForMessage').modal('hide');
-            if (!peer.open) {
-                return;
-            }
-            if (!peer.options.key) {
-                alert("通信エラーが発生しました。");
-                // リダイレクトする？
-            }
-
-            const room = peer.joinRoom(roomKey, {
-                mode: "mesh",
-                stream: localStream
-            });
-
-            room.once('open', () => {
-                console.log("you joined.");
-            });
-
-            room.on('peerJoin', peerId => {
-                console.log(`${peerId} joined.`);
-            })
-
-            // streamを取得した際の処理
-            room.on('stream', async stream => {
-                console.log('get stream.');
-
-                // 自機デバッグ用
-                // mainVideo.muted = true;
-                // mainVideo.srcObject = stream;
-                // mainVideo.playsInline = true;
-                // await mainVideo.play().catch(console.error);
-
-                // 取得したstreamが医師の場合はメインに配置
-                console.log("hostId = {{ $host->id }}, guestId = {{ $guest->id }}");
-                if (stream.peerId == {{ $host->id }}) {
-                    document.getElementById('wait-canvas').style.display = 'none';
-                    document.getElementById('wait-message').style.display = 'none';
-                    mainVideo.setAttribute('peerId', stream.peerId);
-                    mainVideo.style.display = 'block';
-                    mainVideo.srcObject = stream;
-                    mainVideo.playsInline = true;
-                    await mainVideo.play().catch(console.error);
-                    return ;
-                }
-                // 取得したstreamが患者かつ、ユーザーが医師の場合はメインに配置
-                console.log("{{\Auth::user()->role}}");
-                if (stream.peerId == {{ $guest->id }} && {{ \Auth::user()->role }} == {{ config('role.doctor.value') }}) {
-                    document.getElementById('wait-canvas').style.display = 'none';
-                    document.getElementById('wait-message').style.display = 'none';
-                    mainVideo.setAttribute('peerId', stream.peerId);
-                    mainVideo.style.display = 'block';
-                    mainVideo.srcObject = stream;
-                    mainVideo.playsInline = true;
-                    await mainVideo.play().catch(console.error);
+                $('#modalForMessage').modal('hide');
+                if (!peer.open) {
                     return;
                 }
-                // その他のstreamはlocalStreamの横に順に配置
-                if (streamCount < 3) {
-                    streamCount++;
-                    const newVideo = document.createElement('video');
-                    newVideo.srcObject = stream;
-                    newVideo.playsInline = true;
-                    newVideo.setAttribute('data-peer-id', stream.peerId);
-                    newVideo.classList.add('w-30');
-                    remoteVideos.append(newVideo);
-                    await newVideo.play().catch(console.error);
-                } else {
-                    console.log("人数オーバーです。");
-                    return;
+                if (!peer.options.key) {
+                    alert("通信エラーが発生しました。");
+                    // リダイレクトする？
                 }
-            })
 
-            // チャット受信
-            // room.on('data', ({data, src}) => {
-            //     console.log(data);
-            //     console.log(src);
-            // })
+                const room = peer.joinRoom(roomKey, {
+                    mode: "mesh",
+                    stream: localStream
+                });
 
-            // 他人が退室した際の処理
-            room.on('peerLeave', peerId => {
-                console.log(`peerId${peerId}が退室しました。`);
-                console.log(`メイン映像のpeerIdは${mainVideo.getAttribute('peerId')}です。`);
-                if (mainVideo.getAttribute('peerId') == peerId) {
-                    mainVideo.srcObject.getTracks().forEach(track => track.stop());
-                    mainVideo.srcObject = null;
-                    mainVideo.style.display = 'none';
-                    // mainVideo.remove();
-                    document.getElementById('wait-canvas').style.display = 'block';
-                    document.getElementById('wait-message').style.display = 'block';
-                }
-                var remoteVideo = remoteVideos.querySelector(
-                    `[data-peer-id="${peerId}"]`
-                );
-                if (remoteVideo.srcObject) {
-                    remoteVideo.srcObject.getTracks().forEach(track => track.stop());
-                    remoteVideo.style.display = 'none';
-                    // remoteVideo.srcObject = null;
-                    remoteVideo.remove();
-                    console.log(remoteVideo);
-                    streamCount--;
-                }
-                console.log('leave other member.');
-            })
+                room.once('open', () => {
+                    console.log("you joined.");
+                });
 
-            // 自分が退室した際の処理
-            room.once('close', () => {
-                console.log('close yourself.');
-                if (mainVideo.srcObject) {
-                    mainVideo.srcObject.getTracks().forEach(track => track.stop());
-                    mainVideo.srcObject = null;
-                    mainVideo.style.display = 'none';
-                    // mainVideo.remove();
-                    document.getElementById('wait-canvas').style.display = 'block';
-                    document.getElementById('wait-message').style.display = 'block';
-                }
-                Array.from(remoteVideos.children).forEach(remoteVideo => {
+                room.on('peerJoin', peerId => {
+                    console.log(`${peerId} joined.`);
+                })
+
+                // streamを取得した際の処理
+                room.on('stream', async stream => {
+                    console.log('get stream.');
+
+                    // 自機デバッグ用
+                    // mainVideo.muted = true;
+                    // mainVideo.srcObject = stream;
+                    // mainVideo.playsInline = true;
+                    // await mainVideo.play().catch(console.error);
+
+                    // 取得したstreamが医師の場合はメインに配置
+                    console.log("hostId = {{ $host->id }}, guestId = {{ $guest->id }}");
+                    if (stream.peerId == {{ $host->id }}) {
+                        document.getElementById('wait-canvas').style.display = 'none';
+                        document.getElementById('wait-message').style.display = 'none';
+                        mainVideo.setAttribute('peerId', stream.peerId);
+                        mainVideo.style.display = 'block';
+                        mainVideo.srcObject = stream;
+                        mainVideo.playsInline = true;
+                        await mainVideo.play().catch(console.error);
+                        return ;
+                    }
+                    // 取得したstreamが患者かつ、ユーザーが医師の場合はメインに配置
+                    console.log("{{\Auth::user()->role}}");
+                    if (stream.peerId == {{ $guest->id }} && {{ \Auth::user()->role }} == {{ config('role.doctor.value') }}) {
+                        document.getElementById('wait-canvas').style.display = 'none';
+                        document.getElementById('wait-message').style.display = 'none';
+                        mainVideo.setAttribute('peerId', stream.peerId);
+                        mainVideo.style.display = 'block';
+                        mainVideo.srcObject = stream;
+                        mainVideo.playsInline = true;
+                        await mainVideo.play().catch(console.error);
+                        return;
+                    }
+                    // その他のstreamはlocalStreamの横に順に配置
+                    if (streamCount < 3) {
+                        streamCount++;
+                        const newVideo = document.createElement('video');
+                        newVideo.srcObject = stream;
+                        newVideo.playsInline = true;
+                        newVideo.setAttribute('data-peer-id', stream.peerId);
+                        newVideo.classList.add('w-30');
+                        remoteVideos.append(newVideo);
+                        await newVideo.play().catch(console.error);
+                    } else {
+                        console.log("人数オーバーです。");
+                        return;
+                    }
+                })
+
+                // チャット受信
+                // room.on('data', ({data, src}) => {
+                //     console.log(data);
+                //     console.log(src);
+                // })
+
+                // 他人が退室した際の処理
+                room.on('peerLeave', peerId => {
+                    console.log(`peerId${peerId}が退室しました。`);
+                    console.log(`メイン映像のpeerIdは${mainVideo.getAttribute('peerId')}です。`);
+                    if (mainVideo.getAttribute('peerId') == peerId) {
+                        mainVideo.srcObject.getTracks().forEach(track => track.stop());
+                        mainVideo.srcObject = null;
+                        mainVideo.style.display = 'none';
+                        // mainVideo.remove();
+                        document.getElementById('wait-canvas').style.display = 'block';
+                        document.getElementById('wait-message').style.display = 'block';
+                    }
+                    var remoteVideo = remoteVideos.querySelector(
+                        `[data-peer-id="${peerId}"]`
+                    );
                     if (remoteVideo.srcObject) {
                         remoteVideo.srcObject.getTracks().forEach(track => track.stop());
-                        remoteVideo.srcObject = null;
+                        remoteVideo.style.display = 'none';
+                        // remoteVideo.srcObject = null;
                         remoteVideo.remove();
+                        console.log(remoteVideo);
+                        streamCount--;
                     }
-                });
-                streamCount = 0;
-                $('#modalForMessage').modal('show');
-            })
+                    console.log('leave other member.');
+                })
 
-            leaveTrigger.addEventListener('click', () => room.close(), {once: true});
+                // 自分が退室した際の処理
+                room.once('close', () => {
+                    console.log('close yourself.');
+                    if (mainVideo.srcObject) {
+                        mainVideo.srcObject.getTracks().forEach(track => track.stop());
+                        mainVideo.srcObject = null;
+                        mainVideo.style.display = 'none';
+                        // mainVideo.remove();
+                        document.getElementById('wait-canvas').style.display = 'block';
+                        document.getElementById('wait-message').style.display = 'block';
+                    }
+                    Array.from(remoteVideos.children).forEach(remoteVideo => {
+                        if (remoteVideo.srcObject) {
+                            remoteVideo.srcObject.getTracks().forEach(track => track.stop());
+                            remoteVideo.srcObject = null;
+                            remoteVideo.remove();
+                        }
+                    });
+                    streamCount = 0;
+                    $('#modalForMessage').modal('show');
+                })
 
-            // チャット送信
-            // sendTrigger.addEventListener('click', onClickSend);
-            // function onClickSend() {
-            //     room.send(localText.value);
-            //     console.log('send message.');
-            // }
+                leaveTrigger.addEventListener('click', () => room.close(), {once: true});
 
-        });
+                // チャット送信
+                // sendTrigger.addEventListener('click', onClickSend);
+                // function onClickSend() {
+                //     room.send(localText.value);
+                //     console.log('send message.');
+                // }
 
-        peer.on('error', console.error);
+            });
 
-    }) ();
-}
+            peer.on('error', console.error);
 
-function getFormatTime(dt) {
-    var h = dt.getHours();
-        var m = dt.getMinutes();
-        var s = dt.getSeconds();
-
-        if (h < 10) h='0' + h;
-        if (m < 10) m='0' + m;
-        // if (s < 10) s='0' + s;
-
-        var hm=h + ':' + m;
-        return hm;
-}
-
-function toggleMute() {
-    var localVideo = document.getElementById('js-local-stream');
-    if (localVideo.muted) {
-        localVideo.muted = false;
-    } else {
-        localVideo.muted = true;
+        }) ();
     }
-    console.log(`ミュート：${localVideo.muted}`);
-}
+
+    function getFormatTime(dt) {
+        var h = dt.getHours();
+            var m = dt.getMinutes();
+            var s = dt.getSeconds();
+
+            if (h < 10) h='0' + h;
+            if (m < 10) m='0' + m;
+            // if (s < 10) s='0' + s;
+
+            var hm=h + ':' + m;
+            return hm;
+    }
+
+    function toggleMute() {
+        var localVideo = document.getElementById('js-local-stream');
+        if (localVideo.muted) {
+            localVideo.muted = false;
+        } else {
+            localVideo.muted = true;
+        }
+        console.log(`ミュート：${localVideo.muted}`);
+    }
 
 </script>
 
