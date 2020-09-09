@@ -279,7 +279,7 @@
                 console.log(audios);
                 console.log(videos);
                 const constraints = {
-                    audio: false,
+                    audio: true,
                     video: {width: 640, height: 480}
                     // audio: audios ? { deviceId: { exact: audios[0].value } } : false,
                     // video: videos ? { deviceId: { exact: videos[0].value } } : false
@@ -339,7 +339,7 @@
                     if (stream.peerId == {{ $host->id }}) {
                         document.getElementById('wait-canvas').style.display = 'none';
                         document.getElementById('wait-message').style.display = 'none';
-                        mainVideo.setAttribute('peerId', stream.peerId);
+                        mainVideo.setAttribute('data-peer-id', stream.peerId);
                         mainVideo.style.display = 'block';
                         mainVideo.srcObject = stream;
                         mainVideo.playsInline = true;
@@ -351,7 +351,7 @@
                     if (stream.peerId == {{ $guest->id }} && {{ \Auth::user()->role }} == {{ config('role.doctor.value') }}) {
                         document.getElementById('wait-canvas').style.display = 'none';
                         document.getElementById('wait-message').style.display = 'none';
-                        mainVideo.setAttribute('peerId', stream.peerId);
+                        mainVideo.setAttribute('data-peer-id', stream.peerId);
                         mainVideo.style.display = 'block';
                         mainVideo.srcObject = stream;
                         mainVideo.playsInline = true;
@@ -383,8 +383,8 @@
                 // 他人が退室した際の処理
                 room.on('peerLeave', peerId => {
                     console.log(`peerId${peerId}が退室しました。`);
-                    console.log(`メイン映像のpeerIdは${mainVideo.getAttribute('peerId')}です。`);
-                    if (mainVideo.getAttribute('peerId') == peerId) {
+                    console.log(`メイン映像のpeerIdは${mainVideo.getAttribute('data-peer-id')}です。`);
+                    if (mainVideo.getAttribute('data-peer-id') == peerId) {
                         mainVideo.srcObject.getTracks().forEach(track => track.stop());
                         mainVideo.srcObject = null;
                         mainVideo.style.display = 'none';
