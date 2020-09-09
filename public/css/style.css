@@ -18,7 +18,8 @@ textarea {
 }
 
 body {
-    font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
+    font-family: "メイリオ", "Meiryo", "Yu Gothic", "游ゴシック", YuGothic,
+        "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
     font-size: 1em;
     line-height: 1.4;
 }
@@ -81,7 +82,8 @@ body {
 
 body {
     /* font-family: "Lato"; */
-    font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif !important ;
+    font-family: "メイリオ", "Meiryo", "Yu Gothic", "游ゴシック", YuGothic,
+        "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif !important ;
     font-weight: 300;
     font-size: 16px;
     color: #555;
@@ -116,18 +118,12 @@ body {
     /* background-color: #003366; */
 }
 
-
-
-
-
-
-
 hr {
     position: relative;
     border: none;
-  }
-  
-  /* hr:before {
+}
+
+/* hr:before {
     content: " ";
     position: absolute;
     top: 0;
@@ -136,8 +132,8 @@ hr {
     height: 2px;
     background: #ccc;
   } */
-  
-  a img {
+
+a img {
     background: white;
 }
 
@@ -154,7 +150,8 @@ h4,
 h5,
 h6 {
     /* font-family: "Raleway"; */
-    font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
+    font-family: "メイリオ", "Meiryo", "Yu Gothic", "游ゴシック", YuGothic,
+        "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
     font-weight: 300;
     color: #333;
 }
@@ -163,7 +160,8 @@ h6 {
 
 p {
     /* font-family: "YuGothic", "Yu Gothic", "Meiryo", "ヒラギノ角ゴ", "sans-serif"; */
-    font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
+    font-family: "メイリオ", "Meiryo", "Yu Gothic", "游ゴシック", YuGothic,
+        "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
     line-height: 28px;
     margin-bottom: 25px;
 }
@@ -1058,7 +1056,7 @@ img.logo {
     border-radius: 2px;
 }
 
-.input-group-addon{
+.input-group-addon {
     padding-right: 20px;
     padding-top: 10px;
 }
@@ -1168,7 +1166,7 @@ img.logo {
     margin-bottom: 10px;
 }
 
-.remedy-logo{
+.remedy-logo {
     width: 70px;
     height: auto;
 }
@@ -1197,72 +1195,65 @@ img.logo {
     font-size: 20px;
     padding: 5px 20px;
     margin-top: 5px;
-  }
+}
 
-  .w-15{
+.w-15 {
     width: 15%;
-  }
+}
 
-  .w-100{
+.w-100 {
     width: 100%;
     height: auto;
-  }
+}
 
-  hr.blue-line{
+hr.blue-line {
     height: 1px;
     border: none;
-    border-top: 1px #87CEEB solid;
+    border-top: 1px #87ceeb solid;
     margin: 5px 20px 20px 20px;
-  }
+}
 
-  hr.blu-line::before{
+hr.blu-line::before {
     height: 0px;
+}
 
-  }
-
-  .remedy-logo-video-pc{
+.remedy-logo-video-pc {
     padding-top: 40px;
     width: 50%;
     height: auto;
-  }
+}
 
-  .remedy-logo-video-sp{
+.remedy-logo-video-sp {
     padding-top: 15px;
     width: 80px;
     height: auto;
-  }
+}
 
-  .w-100-video{
+.w-100-video {
     width: 100%;
     height: 65vh;
-  }
+}
 
-  .w-30{
+/* .w-30 {
     width: 33.3%;
     height: 35vh;
-  }
+} */
 
-  .h-10vh{
+.h-10vh {
     height: 10vh;
-  }
+}
 
-  .h-32vh{
+.h-32vh {
     height: 32vh;
-  }
+}
 
-  .nopadding {
-    padding: 0 !important;
-    margin: 0 !important;
-    font-size: 0px;
-  }
-
-  .video-time{
+.video-time {
     font-size: 30px;
     font-weight: bold;
-    color: rgb(0,96,146);
-  }
+    color: rgb(0, 96, 146);
+}
 
-  .fa-rotate-135 {
+.fa-rotate-135 {
     -webkit-transform: rotate(135deg);
     -moz-transform: rotate(135deg);
     -ms-transform: rotate(135deg);
@@ -1270,152 +1261,150 @@ img.logo {
     transform: rotate(135deg);
 }
 
- .my-skyblue{
-    color: skyblue
- }
+.my-skyblue {
+    color: skyblue;
+}
 
- .my-white{
-    color: white; 
- }
+.my-white {
+    color: white;
+}
 
- img.relative{
+img.relative {
     position: relative;
- }
+}
 
- .talk-icons{
-    position: absolute;/*絶対配置*/
+.talk-icons {
+    position: absolute; /*絶対配置*/
     right: 15px;
     bottom: 20px;
- }
+}
 
- .nopadding-right{
+.nopadding-right {
     padding-right: 0;
- }
-
-
- div.customize .col-xs-8{
-   padding-right: 0px;
-   padding-bottom: 10px;
- }
-
- .myform th{
-   font-size: 0.9em;
-   font-weight: normal;
-   text-align: center;
-   width: 30%;
-   padding-bottom: 10px;
-
- }
-
- .myform td{
-  font-size: 0.9em;
-  text-align: center;
-  width: 70%;
 }
 
-.icon-img{
-  width:  50px;       /* ※縦横を同値に */
-  height: 50px;       /* ※縦横を同値に */
-  border-radius: 50%;  /* 角丸半径を50%にする(=円形にする) */
-  background-position: center ;
-  display: inline-block;
-  margin-left: 5px;
+div.customize .col-xs-8 {
+    padding-right: 0px;
+    padding-bottom: 10px;
 }
 
-.participant-name{
-  width: 20%;
-  padding-left: 10px;
-  font-size: 0.9em
+.myform th {
+    font-size: 0.9em;
+    font-weight: normal;
+    text-align: center;
+    width: 30%;
+    padding-bottom: 10px;
 }
 
-.mgr-top-10{
-  margin-top: 10px;
+.myform td {
+    font-size: 0.9em;
+    text-align: center;
+    width: 70%;
 }
 
-.h-50px{
-  height: 50px;
+.icon-img {
+    width: 50px; /* ※縦横を同値に */
+    height: 50px; /* ※縦横を同値に */
+    border-radius: 50%; /* 角丸半径を50%にする(=円形にする) */
+    background-position: center;
+    display: inline-block;
+    margin-left: 5px;
 }
 
-.icon-button{
-  border:none;
-  background-color: transparent;
-  border-radius: 30px;
-  /* pointer-events: none; */
+.participant-name {
+    width: 20%;
+    padding-left: 10px;
+    font-size: 0.9em;
+}
+
+.mgr-top-10 {
+    margin-top: 10px;
+}
+
+.h-50px {
+    height: 50px;
+}
+
+.icon-button {
+    border: none;
+    background-color: transparent;
+    border-radius: 30px;
+    /* pointer-events: none; */
 }
 div.customize button:focus {
-	outline:0;
+    outline: 0;
 }
 
-.doctor-video-sp{
-  width: 100%;
-  height: 60vh;
-  object-fit: cover; 
+.doctor-video-sp {
+    width: 100%;
+    height: 60vh;
+    object-fit: cover;
 }
 
-.others-video-sp{
-  width: 33.3%;
-  height: 20vh;
-  object-fit: cover; 
+.others-video-sp {
+    width: 33.3%;
+    height: 20vh;
+    object-fit: cover;
 }
 
-.mgn-left-33{
-  margin-left: 23%;
+.mgn-left-33 {
+    margin-left: 23%;
 }
 
-p.customize a.btn{
-  width: 150px;
+p.customize a.btn {
+    width: 150px;
 }
 
-.footer-logo{
-  /* margin-top: 100px; */
-  width: 25%;
+.footer-logo {
+    /* margin-top: 100px; */
+    width: 25%;
 }
 
-.footer-logo-img-sp{
-  text-align: center;
-  width: 100px;
-  height: auto;
+.footer-logo-img-sp {
+    text-align: center;
+    width: 100px;
+    height: auto;
 }
 
-.header-logo{
-  width: 100px;
-  height: auto;
-  background-color: transparent;
+.header-logo {
+    width: 100px;
+    height: auto;
+    background-color: transparent;
 }
 
-div.customize .header{
-  padding: 0 20px;
+div.customize .header {
+    padding: 0 20px;
 }
 
 /* 以下、ヘッダー作成のため、CODEOPENより引用
 https://www.w3schools.com/howto/howto_css_responsive_header.asp */
 
 .header {
-  overflow: hidden;
-  /* background-color: #f1f1f1; */
+    overflow: hidden;
+    /* background-color: #f1f1f1; */
     /* background-color: #f2f2f2; */
 
     background-color: #f8f8f8;
-  /* background-color: white; */
-  padding: 20px 10px;
+    /* background-color: white; */
+    padding: 20px 10px;
 }
 
 /* Style the header links */
 .header a {
-  float: left;
-  color: black;
-  text-align: center;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 18px;
-  line-height: 25px;
-  border-radius: 4px;
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 25px;
+    border-radius: 4px;
 }
 
 /* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
 .header a.logo {
-  font-size: 25px;
-  font-weight: bold;
+    font-size: 25px;
+    font-weight: bold;
 }
 
 /* Change the background color on mouse-over */
@@ -1426,41 +1415,41 @@ https://www.w3schools.com/howto/howto_css_responsive_header.asp */
 
 /* Style the active/current link*/
 .header a.active {
-  background-color: dodgerblue;
-  color: white;
+    background-color: dodgerblue;
+    color: white;
 }
 
 /* Float the link section to the right */
 .header-right {
-  float: right;
+    float: right;
 }
 
 /* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
 @media screen and (max-width: 500px) {
-  .header a {
-    float: none;
-    display: block;
-    text-align: left;
-  }
-  .header-right {
-    float: none;
-  }
+    .header a {
+        float: none;
+        display: block;
+        text-align: left;
+    }
+    .header-right {
+        float: none;
+    }
 
-  div.customize .col-xs-8{
-      width: 100%;
-      padding: 0;
-  }
+    div.customize .col-xs-8 {
+        width: 100%;
+        padding: 0;
+    }
 }
 
-.font-size-14vw{
+.font-size-14vw {
     font-size: 1.4vw !important;
 }
 
-.font-size-24vw{
+.font-size-24vw {
     font-size: 2.4vw !important;
 }
 
-.font-size-10vw{
+.font-size-10vw {
     font-size: 1.3vw !important;
 }
 

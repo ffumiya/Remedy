@@ -5,7 +5,7 @@
 <div class="row customize">
 
     <!-- メイン映像 -->
-    <div class="col-xs-8 ">
+    <div class="col-xs-8 p-0">
         <div class="relative">
             {{-- <img id="host-canvas" class="w-100-video" src="{{ asset('img/video/doctor-img.jpg') }}"> --}}
             <div id="wait-canvas" style="background-color: black" class="w-100-video ">
@@ -95,11 +95,15 @@
 </div>
 
 <!-- お医者さん以外の映像 -->
-<div class="">
-    <div class="remote-streams col-xs-12 col-md-8 nopadding" id="js-remote-streams">
+<div class="row">
+    <div class="col-xs-12 col-md-8 p-0">
+        <div class="row remote-streams p-0" id="js-remote-streams">
+
+        </div>
     </div>
-    {{-- <div class="remote-streams col-sm-8 nopadding" id="js-remote-streams">
-            <img id="guest-canvas" class="w-30 nopadding" src="{{ asset('img/video/nurse-img.png') }}">
+    <div class="col-md-4"></div>
+    {{-- <div class="remote-streams col-sm-8 p-0" id="js-remote-streams">
+            <img id="guest-canvas" class="w-30 p-0" src="{{ asset('img/video/nurse-img.png') }}">
     <img class="w-30" src="{{ asset('img/video/patient-img.png') }}">
     <img class="w-30" src="{{ asset('img/video/relative-img.png') }}">
 </div> --}}
@@ -279,8 +283,8 @@
                 console.log(audios);
                 console.log(videos);
                 const constraints = {
-                    audio: true,
-                    video: {width: 640, height: 480}
+                    audio: false,
+                    video: {width: 320, height: 240, frameRate: 10}
                     // audio: audios ? { deviceId: { exact: audios[0].value } } : false,
                     // video: videos ? { deviceId: { exact: videos[0].value } } : false
                 };
@@ -290,16 +294,21 @@
                     console.error();
                 });
                 console.log(localStream);
+                const newDiv = document.createElement('div');
                 const newVideo = document.createElement('video');
 
                 newVideo.muted = true; // ハウリング防止
                 newVideo.srcObject = localStream;
                 newVideo.playsInline = true;
-                newVideo.classList.add('w-30');
-                newVideo.classList.add('nopadding');
+                newVideo.classList.add('p-0');
+                newVideo.classList.add('w-100');
                 console.log(newVideo);
                 console.log(remoteVideos);
-                remoteVideos.append(newVideo);
+                newDiv.classList.add('col-4');
+                newDiv.classList.add('p-0');
+                newDiv.classList.add('bg-dark');
+                newDiv.append(newVideo);
+                remoteVideos.append(newDiv);
                 await newVideo.play().catch(console.error);
 
                 $('#modalForMessage').modal('hide');
@@ -365,7 +374,7 @@
                         newVideo.srcObject = stream;
                         newVideo.playsInline = true;
                         newVideo.setAttribute('data-peer-id', stream.peerId);
-                        newVideo.classList.add('w-30');
+                        newVideo.classList.add('col-4');
                         remoteVideos.append(newVideo);
                         await newVideo.play().catch(console.error);
                     } else {
@@ -395,7 +404,7 @@
                     var remoteVideo = remoteVideos.querySelector(
                         `[data-peer-id="${peerId}"]`
                     );
-                    if (remoteVideo !＝ null) {
+                    if (remoteVideo != null) {
                         remoteVideo.srcObject.getTracks().forEach(track => track.stop());
                         remoteVideo.style.display = 'none';
                         // remoteVideo.srcObject = null;
