@@ -405,7 +405,7 @@
                         `[data-peer-id="${peerId}"]`
                     );
                     if (remoteVideo != null) {
-                        remoteVideo.srcObject.getTracks().forEach(track => track.stop());
+                        remoteVideo.video.srcObject.getTracks().forEach(track => track.stop());
                         remoteVideo.style.display = 'none';
                         // remoteVideo.srcObject = null;
                         remoteVideo.remove();
@@ -426,12 +426,15 @@
                         document.getElementById('wait-canvas').style.display = 'block';
                         document.getElementById('wait-message').style.display = 'block';
                     }
-                    Array.from(remoteVideos.children).forEach(remoteVideo => {
+                    Array.from(remoteVideos.children).forEach(remoteDiv => {
+                        Array.from(remoteDiv.children).forEach(remoteVideo => {
                         if (remoteVideo.srcObject) {
                             remoteVideo.srcObject.getTracks().forEach(track => track.stop());
                             remoteVideo.srcObject = null;
                             remoteVideo.remove();
                         }
+                        });
+                        remoteDiv.remove();
                     });
                     streamCount = 0;
                     $('#modalForMessage').modal('show');
