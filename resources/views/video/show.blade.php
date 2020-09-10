@@ -11,7 +11,9 @@
             <div id="wait-canvas" style="background-color: black" class="w-100-video ">
                 <p id="wait-message" class="text-white text-center">相手が参加するまでお待ちください。</p>
             </div>
-            <video id="js-main-stream" class="w-100-video" style="display: none"></video>
+            <div class="mainDiv">
+                <video id="js-main-stream" class="w-100-video" style="display: none"></video>
+            </div>
             <div class="talk-icons">
                 {{-- ミュート --}}
                 {{-- <button class="icon-button" onclick="toggleMute()">
@@ -94,7 +96,7 @@
     </div>
 </div>
 
-<!-- お医者さん以外の映像 -->
+<!-- メイン以外の映像 -->
 <div class="row">
     <div class="col-xs-12 col-md-8 p-0">
         <div class="row remote-streams p-0" id="js-remote-streams">
@@ -348,7 +350,7 @@
                     if (stream.peerId == {{ $host->id }}) {
                         document.getElementById('wait-canvas').style.display = 'none';
                         document.getElementById('wait-message').style.display = 'none';
-                        mainVideo.setAttribute('data-peer-id', stream.peerId);
+                        document.getElementById('mainDiv').setAttribute('data-peer-id', stream.peerId);
                         mainVideo.style.display = 'block';
                         mainVideo.srcObject = stream;
                         mainVideo.playsInline = true;
@@ -361,27 +363,25 @@
                         document.getElementById('wait-canvas').style.display = 'none';
                         document.getElementById('wait-message').style.display = 'none';
                         mainVideo.setAttribute('data-peer-id', stream.peerId);
+                        document.getElementById('mainDiv').setAttribute('data-peer-id', stream.peerId);
                         mainVideo.style.display = 'block';
                         mainVideo.srcObject = stream;
                         mainVideo.playsInline = true;
                         await mainVideo.play().catch(console.error);
                         return;
                     }
+
                     // その他のstreamはlocalStreamの横に順に配置
-                    if (streamCount < 3) {
-                        streamCount++;
-                        const newVideo = document.createElement('video');
-                        newVideo.srcObject = stream;
-                        newVideo.playsInline = true;
-                        newVideo.setAttribute('data-peer-id', stream.peerId);
-                        newVideo.classList.add('col-4');
-                        remoteVideos.append(newVideo);
-                        await newVideo.play().catch(console.error);
-                    } else {
-                        console.log("人数オーバーです。");
-                        return;
-                    }
-                })
+                    var newDiv = document.createElement('div');
+                    var newVideo = document.createElement('video');
+                    newVideo.srcObject = stream;
+                    newVideo.playsInline = true;
+                    newDiv.setAttribute('data-peer-id', stream.peerId);
+                    newDiv.classList.add('col-4');
+                    newDiv.append(newVideo);
+                    remoteVideos.append(newDiv);
+                    await newVideo.play().catch(console.error);
+                });
 
                 // チャット受信
                 // room.on('data', ({data, src}) => {
@@ -393,11 +393,10 @@
                 room.on('peerLeave', peerId => {
                     console.log(`peerId${peerId}が退室しました。`);
                     console.log(`メイン映像のpeerIdは${mainVideo.getAttribute('data-peer-id')}です。`);
-                    if (mainVideo.getAttribute('data-peer-id') == peerId) {
+                    if (document.getElementById('mainDiv').getAttribute('data-peer-id') == peerId) {
                         mainVideo.srcObject.getTracks().forEach(track => track.stop());
                         mainVideo.srcObject = null;
                         mainVideo.style.display = 'none';
-                        // mainVideo.remove();
                         document.getElementById('wait-canvas').style.display = 'block';
                         document.getElementById('wait-message').style.display = 'block';
                     }
@@ -405,12 +404,12 @@
                         `[data-peer-id="${peerId}"]`
                     );
                     if (remoteVideo != null) {
-                        remoteVideo.video.srcObject.getTracks().forEach(track => track.stop());
-                        remoteVideo.style.display = 'none';
-                        // remoteVideo.srcObject = null;
+                        Array.from(remoteVideo).forEach(video => {
+                            video.srcObject.getTracks().forEach(track => track.stop());
+                            video.style.display = 'none';
+                            video.remove();
+                        });
                         remoteVideo.remove();
-                        console.log(remoteVideo);
-                        streamCount--;
                     }
                     console.log('leave other member.');
                 })
@@ -422,7 +421,6 @@
                         mainVideo.srcObject.getTracks().forEach(track => track.stop());
                         mainVideo.srcObject = null;
                         mainVideo.style.display = 'none';
-                        // mainVideo.remove();
                         document.getElementById('wait-canvas').style.display = 'block';
                         document.getElementById('wait-message').style.display = 'block';
                     }
