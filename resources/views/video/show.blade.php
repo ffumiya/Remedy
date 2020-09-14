@@ -216,17 +216,15 @@
 @endsection
 
 @section('style')
+<style>
+    .w-100 {
+        height: 32vh;
+    }
 
-.w-100 {
-height: 32vh;
-}
-
-.bg-black {
-background-color: black;
-}
-
-
-
+    .bg-black {
+        background-color: black;
+    }
+</style>
 @endsection
 
 
