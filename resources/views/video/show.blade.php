@@ -11,7 +11,7 @@
             <div id="wait-canvas" style="background-color: black" class="w-100-video ">
                 <p id="wait-message" class="text-white text-center">相手が参加するまでお待ちください。</p>
             </div>
-            <div class="mainDiv">
+            <div id="mainDiv" class="bg-black">
                 <video id="js-main-stream" class="w-100-video" style="display: none"></video>
             </div>
             <div class="talk-icons">
@@ -215,6 +215,21 @@
 
 @endsection
 
+@section('style')
+
+.w-100 {
+height: 32vh;
+}
+
+.bg-black {
+background-color: black;
+}
+
+
+
+@endsection
+
+
 @section('script')
 <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
 <script defer>
@@ -308,7 +323,8 @@
                 console.log(remoteVideos);
                 newDiv.classList.add('col-4');
                 newDiv.classList.add('p-0');
-                newDiv.classList.add('bg-dark');
+                newDiv.classList.add('bg-black');
+                newDiv.classList.add('text-center');
                 newDiv.append(newVideo);
                 remoteVideos.append(newDiv);
                 await newVideo.play().catch(console.error);
@@ -376,8 +392,11 @@
                     var newVideo = document.createElement('video');
                     newVideo.srcObject = stream;
                     newVideo.playsInline = true;
+                    newVideo.classList('w-100');
                     newDiv.setAttribute('data-peer-id', stream.peerId);
                     newDiv.classList.add('col-4');
+                    newDiv.classList.add('p-0');
+                    newDiv.classList.add('text-center');
                     newDiv.append(newVideo);
                     remoteVideos.append(newDiv);
                     await newVideo.play().catch(console.error);
