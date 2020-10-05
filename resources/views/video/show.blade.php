@@ -307,6 +307,7 @@
                 const localStream = await navigator.mediaDevices.getUserMedia(constraints).catch(function (err) {
                     alert('カメラと音声を取得できませんでした。');
                     console.error();
+                    return;
                 });
                 console.log(localStream);
                 const newDiv = document.createElement('div');
@@ -390,7 +391,7 @@
                     var newVideo = document.createElement('video');
                     newVideo.srcObject = stream;
                     newVideo.playsInline = true;
-                    newVideo.classList('w-100');
+                    newVideo.classList.add('w-100');
                     newDiv.setAttribute('data-peer-id', stream.peerId);
                     newDiv.classList.add('col-4');
                     newDiv.classList.add('p-0');

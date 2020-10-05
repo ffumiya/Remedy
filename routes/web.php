@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('payment', 'PaymentController')->only(["show", "update"]);
     Route::post('payment', 'PaymentController@charge')->name('payment.charge');
     Route::resource('video', 'VideoController')->only(['show']);
+    Route::resource('mail', 'MailController');
 
     // 医師ユーザー
     Route::middleware('can:doctor')->group(function () {

@@ -30,7 +30,9 @@ class HomeController extends Controller
         $currentEvent = EventService::getCurrentPatientEvent($id);
         $events = EventService::getDoctorEvents($id);
         $patientList = PatientService::getNoEventUsers();
-        $clinicName = Clinic::find(\Auth::user()->clinic_id)->name;
+        // $clinicName = Clinic::find(\Auth::user()->clinic_id)->name;
+        $clinicName = "";
+
         switch ($role) {
             case config('role.patient.value'):
                 return view('patienthome', compact(['currentEvent']));
