@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ZoomNotification;
+use App\Models\Zoom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -15,11 +16,12 @@ class MailController extends Controller
      */
     public function index()
     {
-        $sendEmail = 'masayoshi108justin@gmail.com';
-        Mail::to($sendEmail)->send(new ZoomNotification());
-        $result = 1 == 0;
-        $resultStr = $result ? "true" : "false";
-        return view('mail.index', compact(['resultStr']));
+        // $sendEmail = 'masayoshi108justin@gmail.com';
+        // Mail::to($sendEmail)->send(new ZoomNotification());
+        $zoom = new Zoom();
+        $a = $zoom->createMeeting();
+        dump($a);
+        return view('mail.index');
     }
 
     /**
