@@ -19,8 +19,8 @@ class ZoomChangeTimeNotification extends ZoomNotification
     {
         $start = $this->event[Event::START];
         $end = $this->event[Event::END];
-        $id = $this->event[Event::GUEST_ID];
-        $middleware_url = "http://localhost:8000/zoom/${id}";
+        $event_id = $this->event[Event::EVENT_ID];
+        $middleware_url = $this->getMiddlewareURL($event_id);
         $zoom_url = $this->event[Event::ZOOM_URL];
 
         return $this->from($this->fromEmail)

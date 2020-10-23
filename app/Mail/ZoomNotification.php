@@ -21,7 +21,6 @@ class ZoomNotification extends Mailable
     public function __construct($event)
     {
         $this->event = $event;
-        \Log::channel('debug')->info($event);
         $this->fromEmail = 'noreply@re-medy.jp';
     }
 
@@ -33,5 +32,10 @@ class ZoomNotification extends Mailable
     public function build()
     {
         return null;
+    }
+
+    public function getMiddlewareURL($id)
+    {
+        return "http://localhost:8000/zoom/${id}";
     }
 }
