@@ -16,9 +16,8 @@ class EventService extends BaseService
 
     public static function getEvent($id)
     {
-        // $event = Event::where("id", $id)->first();
-        // \Log::channel('debug')->info($event);
-        // return $event;
+        $event = Event::where(Event::EVENT_ID, $id)->first();
+        return $event;
     }
 
     public static function getCurrentPatientEvent($id)
@@ -26,7 +25,7 @@ class EventService extends BaseService
         $dateTime = new DateTimeImmutable();
 
         /**
-         * SELECT events.event_id AS EVENT,
+         * SELECT EVENTS.event_id AS EVENT,
          * EVENTS.id AS ID,
          * EVENTS.host_id AS HOST_ID,
          * EVENTS.`start` AS START,
@@ -126,6 +125,7 @@ class EventService extends BaseService
         $start = EventService::parseEventTimeToDateTime($event[Event::START]);
         $end = EventService::parseEventTimeToDateTime($event[Event::END]);
         $title = $event[Event::TITLE];
+        $zoom_url = $event[Event::EXTENDED_PROPS][Event::ZOOM_URL];
         $additionalEvent = Event::create([
             Event::EVENT_ID => $eventId,
             Event::HOST_ID => $hostId,
@@ -133,7 +133,8 @@ class EventService extends BaseService
             Event::START => $start,
             Event::END => $end,
             Event::TITLE => $title,
-            Event::PRICE => $price
+            Event::PRICE => $price,
+            Event::ZOOM_URL => $zoom_url,
         ]);
 
         if ($price == 0) {

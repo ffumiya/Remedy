@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ZoomChangeTimeNotification;
+use App\Mail\ZoomDeleteNotification;
+use App\Mail\ZoomNewCreationNotification;
+use App\Models\Event;
 use App\Models\User;
 use App\Services\EventService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class EventsController extends Controller
 {
@@ -39,7 +44,14 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        return EventService::storeEvent($request->event);
+        $event = EventService::storeEvent($request->event);
+        if ($event != null) {
+            $userId = $event[Event::GUEST_ID];
+            $sendEmail = User::find($userId)[User::EMAIL];
+            Mail::to($sendEmail)
+                ->send(new ZoomNewCreationNotification($event));
+        }
+        return $event;
     }
 
     /**
@@ -63,7 +75,13 @@ class EventsController extends Controller
      */
     public function update(Request $request)
     {
-        return EventService::updateEvent($request);
+        EventService::updateEvent($request);
+        $event = EventService::getEvent($request->event[Event::EXTENDED_PROPS][Event::EVENT_ID]);
+        $userId = $event[Event::GUEST_ID];
+        $sendEmail = User::find($userId)[User::EMAIL];
+        Mail::to($sendEmail)
+            ->send(new ZoomChangeTimeNotification($event));
+        return null;
     }
 
     /**
@@ -75,6 +93,15 @@ class EventsController extends Controller
     public function destroy(Request $request, $id)
     {
         // イベントを削除する
-        return EventService::deleteEvent($request, $id);
+        $event = EventService::getEvent($id);
+        EventService::deleteEvent($request, $id);
+        \Log::channel("debug")->info($event);
+        $userId = $event[Event::GUEST_ID];
+        \Log::channel("debug")->info($userId);
+        $sendEmail = User::find($userId)[User::EMAIL];
+        \Log::channel("debug")->info($sendEmail);
+        Mail::to($sendEmail)
+            ->send(new ZoomDeleteNotification($event));
+        return null;
     }
 }

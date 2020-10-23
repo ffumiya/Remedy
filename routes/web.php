@@ -27,6 +27,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('payment', 'PaymentController@charge')->name('payment.charge');
     Route::resource('video', 'VideoController')->only(['show']);
     Route::resource('mail', 'MailController');
+    Route::get('zoom/{id}', function () {
+        return redirect()->away('https://www.google.com');
+    });
+    Route::get('ms', function () {
+    });
 
     // 医師ユーザー
     Route::middleware('can:doctor')->group(function () {

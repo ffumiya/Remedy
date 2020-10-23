@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -12,14 +11,17 @@ class ZoomNotification extends Mailable
     use Queueable, SerializesModels;
 
     public $fromEmail;
+    public $event;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($event)
     {
+        $this->event = $event;
+        \Log::channel('debug')->info($event);
         $this->fromEmail = 'noreply@re-medy.jp';
     }
 
@@ -30,7 +32,6 @@ class ZoomNotification extends Mailable
      */
     public function build()
     {
-        return $this->from($this->fromEmail)
-            ->view('mail.index');
+        return null;
     }
 }

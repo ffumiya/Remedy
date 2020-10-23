@@ -19,6 +19,7 @@ class Event extends BaseModel
     const DESIRED_TIME = "desired_id";
     const PRICE = "price";
     const STRIPE_METHOD_ID = "payment_method_id";
+    const ZOOM_URL = "zoom_url";
 
     /*
      * FullCalendar 指定のカラム

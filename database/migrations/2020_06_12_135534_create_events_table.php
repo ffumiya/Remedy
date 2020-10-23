@@ -43,6 +43,7 @@ class CreateEventsTable extends Migration
             $table->string(Event::SOURCE)->nullable();
             $table->bigInteger(Event::PRICE)->default(0);
             $table->string(Event::PAYMENT_METHOD_ID)->nullable();
+            $table->string(Event::ZOOM_URL)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

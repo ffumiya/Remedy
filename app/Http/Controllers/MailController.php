@@ -18,9 +18,9 @@ class MailController extends Controller
     {
         // $sendEmail = 'masayoshi108justin@gmail.com';
         // Mail::to($sendEmail)->send(new ZoomNotification());
-        $zoom = new Zoom();
-        $a = $zoom->createMeeting();
-        dump($a);
+        // $zoom = new Zoom();
+        // $a = $zoom->createMeeting();
+        // dump($a);
         return view('mail.index');
     }
 

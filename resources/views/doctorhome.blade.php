@@ -130,16 +130,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="row m-5">
+                <div class="row m-3">
                     <div class="col">
-                        <a href="mailto:" id="mail-to">
+                        <div class="card p-3">
+                            <p>
+                                ◆オンライン診療URL
+                            </p>
+                            <div>
+                                <a id="zoom-url" href=""></a>
+                            </div>
+                        </div>
+                        {{-- <a href="mailto:" id="mail-to">
                             <button class="btn btn-success btn-block mb-3" id="mail-button">メール送信する</button>
                         </a>
                         <a id="video-link">
                             <button class="btn btn-primary btn-block" id="video-button">診察を開始する</button>
                             <button class="btn btn-secondary btn-block" id="video-dummy-button"
                                 hidden>この診察は終了しました。</button>
-                        </a>
+                        </a> --}}
                         <button class="btn-delete btn btn-block mt-3" onclick="deleteEvent()">削除する</button>
                     </div>
                 </div>
@@ -213,7 +221,7 @@
 </div>
 <!-- End modal window -->
 @endsection
-@include('footer')
+{{-- @include('footer') --}}
 
 
 @section('style')
@@ -471,6 +479,8 @@
                 console.log(title);
                 var eventId = createEventId(title);
                 console.log(eventId);
+                var url = createZoomEvent();
+                console.log(url);
                 var data =  {
                     title: title,
                     // id: eventEl.attributes.id.value,
@@ -479,6 +489,7 @@
                     host_id: parseInt("{{ \Auth::id() }}"),
                     // host_id: eventEl.attributes.guest_id.value,
                     guest_id: eventEl.attributes.guest_id.value,
+                    zoom_url: url,
                 };
                 console.log(data);
                 return data;
@@ -514,7 +525,7 @@
             slotDuration: "00:10:00",
             minTime: "8:00",
             maxTime: "20:00",
-            contentHeight: 900,
+            contentHeight: 750,
             // scrollTime: first_scroll_time,
             firstDay: 1,
             // locale: "jaLocale",
@@ -582,6 +593,9 @@
                             var to = formatDate(new Date(info.event.end), "H:mm");
                             $(".select-event-time").html(`${month}月${day}日 ${from}～${to}`);
                             $("#patient-name").html(`${info.event.title}`);
+                            var zoom_url = info.event.extendedProps.zoom_url
+                            $("#zoom-url").html(`${zoom_url}`);
+                            $("#zoom-url").attr("href", `${zoom_url}`);
                             const isSmallerThanToday = (date) => {
                                 var today = new Date();
                                 if (date.getFullYear() < today.getFullYear())  return true;
@@ -591,35 +605,35 @@
                             }
                             if (isSmallerThanToday(info.event.start)) {
                                 // 昨日以前のイベントは診察対象外
-                                $("#video-link").attr("href", null);
-                                $("#video-button").prop("hidden", true);
-                                $("#video-dummy-button").prop("hidden", false);
-                                $("#mail-button").prop("hidden", true);
+                                // $("#video-link").attr("href", null);
+                                // $("#video-button").prop("hidden", true);
+                                // $("#video-dummy-button").prop("hidden", false);
+                                // $("#mail-button").prop("hidden", true);
                             } else {
                                 // 今日以後のイベントは診察対象
-                                $("#video-link").attr("href", `video/${info.event.extendedProps.event_id}`);
-                                $("#video-button").prop("hidden", false);
-                                $("#video-dummy-button").prop("hidden", true);
-                                $("#mail-button").prop("hidden", false);
+                                // $("#video-link").attr("href", `video/${info.event.extendedProps.event_id}`);
+                                // $("#video-button").prop("hidden", false);
+                                // $("#video-dummy-button").prop("hidden", true);
+                                // $("#mail-button").prop("hidden", false);
                                 // メール作成
-                                var email = "";
-                                $.ajax({
-                                    type: "GET",
-                                    url: `api/patient/${info.event.extendedProps.guest_id}`,
-                                    datatype: "json",
-                                    data: {
-                                        api_token: "{{ \Auth::user()->api_token }}"
-                                    }
-                                }).done(function(user) {
-                                    email = user.email;
-                                    console.log(`${info.event.title}さんのeamil: ${email}`);
-                                    var mailto = `${email}`;
-                                    var subject = `{{ $clinicName }}よりお知らせ`;
-                                    var body = `${info.event.title}%0D%0A%0D%0Aオンライン診療の時間が設定されました。下記詳細をご確認ください。%0D%0A%0D%0A診療時間：${formatDate(info.event.start, 'yyyy-MM-ddThh:mm')} - ${formatDate(info.event.end, 'yyyy-MM-ddThh:mm')}%0D%0AURL：https://re-medy.jp/video/${info.event.extendedProps.event_id}`;
-                                    $("#mail-to").attr("href", `mailto:${mailto}?subject=${subject}&body=${body}`);
-                                }).fail(function (e) {
-                                    alert("新規予定の作成に失敗しました。");
-                                });
+                                // var email = "";
+                                // $.ajax({
+                                //     type: "GET",
+                                //     url: `api/patient/${info.event.extendedProps.guest_id}`,
+                                //     datatype: "json",
+                                //     data: {
+                                //         api_token: "{{ \Auth::user()->api_token }}"
+                                //     }
+                                // }).done(function(user) {
+                                //     email = user.email;
+                                //     console.log(`${info.event.title}さんのeamil: ${email}`);
+                                //     var mailto = `${email}`;
+                                //     var subject = `{{ $clinicName }}よりお知らせ`;
+                                //     var body = `${info.event.title}%0D%0A%0D%0Aオンライン診療の時間が設定されました。下記詳細をご確認ください。%0D%0A%0D%0A診療時間：${formatDate(info.event.start, 'yyyy-MM-ddThh:mm')} - ${formatDate(info.event.end, 'yyyy-MM-ddThh:mm')}%0D%0AURL：https://re-medy.jp/video/${info.event.extendedProps.event_id}`;
+                                //     $("#mail-to").attr("href", `mailto:${mailto}?subject=${subject}&body=${body}`);
+                                // }).fail(function (e) {
+                                //     alert("新規予定の作成に失敗しました。");
+                                // });
                             }
                             // イベント削除用にIDを仕込み
                             $("#modalForClick").attr("event-id", `${info.event.id}`);
@@ -715,6 +729,7 @@
                     event_id: createEventId(title),
                     guest_id: id,
                     host_id: {{\Auth::id()}},
+                    zoom_url: createZoomEvent(),
                 },
                 start: new Date(start),
                 end: new Date(end)
@@ -869,6 +884,17 @@
 
     function createEventId(title) {
         return btoa(encodeURIComponent(title) + Math.round((new Date()).getTime() / 1000));
+    }
+
+    function createZoomEvent() {
+        return "https://re-medy.jp/zoom/23";
+        // $.ajax({
+
+        // }).done(function() {
+
+        // }).fail(function (e) {
+        //     console.error(e);
+        // });
     }
 
     // function showPatient(patient) {
