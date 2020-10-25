@@ -38,17 +38,17 @@ class Zoom
         return $user_id;
     }
 
-    function createMeeting()
+    function createMeeting($start_time, $duration)
     {
         $user_id = $this->getUserId();
         $params = [
-            'topic' => 'テスト',
+            'topic' => 'オンライン診療',
             'type' => 1,
-            // 'start_time' => '2020-10-06 T 14:00:00',
-            // 'duration' => '',
+            'start_time' => $start_time,
+            'duration' => $duration,
             // 'schedule_for' => 'zoomユーザーIDもしくはemailアドレス',
             'time_zone' => 'Asia/Tokyo',
-            'agenda' => 'ズームAPIを試す',
+            'agenda' => 'オンライン診療',
             'settings' => [
                 'host_video' => true,
                 'participant_video' => true,

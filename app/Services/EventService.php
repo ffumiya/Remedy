@@ -125,7 +125,7 @@ class EventService extends BaseService
         $start = EventService::parseEventTimeToDateTime($event[Event::START]);
         $end = EventService::parseEventTimeToDateTime($event[Event::END]);
         $title = $event[Event::TITLE];
-        $zoom_url = $event[Event::EXTENDED_PROPS][Event::ZOOM_URL];
+        // $zoom_url = $event[Event::EXTENDED_PROPS][Event::ZOOM_START_URL];
         $additionalEvent = Event::create([
             Event::EVENT_ID => $eventId,
             Event::HOST_ID => $hostId,
@@ -134,7 +134,7 @@ class EventService extends BaseService
             Event::END => $end,
             Event::TITLE => $title,
             Event::PRICE => $price,
-            Event::ZOOM_URL => $zoom_url,
+            // Event::ZOOM_START_URL => $zoom_url,
         ]);
 
         if ($price == 0) {

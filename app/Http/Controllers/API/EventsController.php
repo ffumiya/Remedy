@@ -8,6 +8,7 @@ use App\Mail\ZoomDeleteNotification;
 use App\Mail\ZoomNewCreationNotification;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\Zoom;
 use App\Services\EventService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -45,6 +46,15 @@ class EventsController extends Controller
     public function store(Request $request)
     {
         $event = EventService::storeEvent($request->event);
+        $zoom = new Zoom();
+        $meeting = $zoom->createMeeting($event[Event::START], 30);
+        if ($meeting != null) {
+            $event->zoom_start_url = $meeting["start_url"];
+            $event->zoom_join_url = $meeting["join_url"];
+            $event->zoom_password = $meeting["password"];
+            $event->save();
+        }
+
         if ($event != null) {
             $userId = $event[Event::GUEST_ID];
             $sendEmail = User::find($userId)[User::EMAIL];

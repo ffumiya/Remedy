@@ -132,22 +132,24 @@
                 </div>
                 <div class="row m-3">
                     <div class="col">
-                        <div class="card p-3">
-                            <p>
+                        <div class="card p-3 mb-3">
+                            {{-- <p>
                                 ◆オンライン診療URL
                             </p>
                             <div>
                                 <a id="zoom-url" href=""></a>
-                            </div>
+                            </div> --}}
+                            <p>◆Zoom参加パスワード</p>
+                            <p id="zoom-password"></p>
                         </div>
                         {{-- <a href="mailto:" id="mail-to">
                             <button class="btn btn-success btn-block mb-3" id="mail-button">メール送信する</button>
-                        </a>
+                        </a> --}}
                         <a id="video-link">
                             <button class="btn btn-primary btn-block" id="video-button">診察を開始する</button>
                             <button class="btn btn-secondary btn-block" id="video-dummy-button"
                                 hidden>この診察は終了しました。</button>
-                        </a> --}}
+                        </a>
                         <button class="btn-delete btn btn-block mt-3" onclick="deleteEvent()">削除する</button>
                     </div>
                 </div>
@@ -593,9 +595,10 @@
                             var to = formatDate(new Date(info.event.end), "H:mm");
                             $(".select-event-time").html(`${month}月${day}日 ${from}～${to}`);
                             $("#patient-name").html(`${info.event.title}`);
-                            var zoom_url = info.event.extendedProps.zoom_url
-                            $("#zoom-url").html(`${zoom_url}`);
-                            $("#zoom-url").attr("href", `${zoom_url}`);
+                            // var zoom_url = info.event.extendedProps.zoom_start_url
+                            // $("#zoom-url").html(`${zoom_url}`);
+                            // $("#zoom-url").attr("href", `${zoom_url}`);
+                            $("#zoom-password").html(`${info.event.extendedProps.zoom_password}`);
                             const isSmallerThanToday = (date) => {
                                 var today = new Date();
                                 if (date.getFullYear() < today.getFullYear())  return true;
@@ -605,16 +608,16 @@
                             }
                             if (isSmallerThanToday(info.event.start)) {
                                 // 昨日以前のイベントは診察対象外
-                                // $("#video-link").attr("href", null);
-                                // $("#video-button").prop("hidden", true);
-                                // $("#video-dummy-button").prop("hidden", false);
-                                // $("#mail-button").prop("hidden", true);
+                                $("#video-link").attr("href", null);
+                                $("#video-button").prop("hidden", true);
+                                $("#video-dummy-button").prop("hidden", false);
+                                $("#mail-button").prop("hidden", true);
                             } else {
                                 // 今日以後のイベントは診察対象
-                                // $("#video-link").attr("href", `video/${info.event.extendedProps.event_id}`);
-                                // $("#video-button").prop("hidden", false);
-                                // $("#video-dummy-button").prop("hidden", true);
-                                // $("#mail-button").prop("hidden", false);
+                                $("#video-link").attr("href", `${info.event.extendedProps.zoom_start_url}`);
+                                $("#video-button").prop("hidden", false);
+                                $("#video-dummy-button").prop("hidden", true);
+                                $("#mail-button").prop("hidden", false);
                                 // メール作成
                                 // var email = "";
                                 // $.ajax({

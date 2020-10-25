@@ -21,7 +21,7 @@ class ZoomNewCreationNotification extends ZoomNotification
         $end = $this->event[Event::END];
         $event_id = $this->event[Event::EVENT_ID];
         $middleware_url = $this->getMiddlewareURL($event_id);
-        $zoom_url = $this->event[Event::ZOOM_URL];
+        $zoom_url = $this->event[Event::ZOOM_JOIN_URL];
 
         return $this->from($this->fromEmail)
             ->subject('Remedy事務局よりお知らせ')
