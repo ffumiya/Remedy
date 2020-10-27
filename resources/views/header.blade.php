@@ -8,14 +8,26 @@
         </div>
         @if(\Auth::check())
         <div>
-            <a class="pt-4" href="{{ route('logout') }}"
-                onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                style="color: #006092; font-weight: bold;">
-                ログアウト
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
+            <div class="row-100 d-flex justify-content-between">
+                <div>
+                    <p class="pt-4" style="color: #006092; font-weight: bold;">
+                        <span>
+                            {{ \Auth::user()->clinic->name }}
+                        </span>
+                        <span>
+                            {{ \Auth::user()->name }}
+                        </span>
+                    </p>
+                </div>
+                <a class="pt-4" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();document.getElementById('logout-form').submit();"
+                    style="color: #006092; font-weight: bold;">
+                    ログアウト
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </div>
         </div>
         @endif
     </div>

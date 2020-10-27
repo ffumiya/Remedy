@@ -97,4 +97,9 @@ class User extends Authenticatable
     {
         return User::TABLE_NAME . '.' . User::CLINIC_ID;
     }
+
+    public function clinic()
+    {
+        return $this->belongsTo(Clinic::class);
+    }
 }

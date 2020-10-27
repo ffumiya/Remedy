@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         $password = 'password';
         User::insert([
             [
-                User::NAME => 'admin',
+                User::NAME => '管理者用アカウント',
                 User::SEX => 1,
                 User::HEIGHT => 170,
                 User::WEIGHT => 65,
@@ -28,12 +28,12 @@ class UserSeeder extends Seeder
                 User::ROLE => config('role.admin.value'),
                 User::API_TOKEN => str_random(60),
                 User::REMEMBER_TOKEN => Str::random(10),
-                User::CLINIC_ID => 0,
+                User::CLINIC_ID => 1,
                 USER::CREATED_AT => $now,
                 USER::UPDATED_AT => $now
             ],
             [
-                User::NAME => 'patient',
+                User::NAME => '患者用テストアカウント',
                 User::SEX => 1,
                 User::HEIGHT => 170,
                 User::WEIGHT => 65,
@@ -49,7 +49,7 @@ class UserSeeder extends Seeder
                 USER::UPDATED_AT => $now
             ],
             [
-                User::NAME => 'doctor',
+                User::NAME => '医師用テストアカウント',
                 User::SEX => 1,
                 User::HEIGHT => 170,
                 User::WEIGHT => 65,

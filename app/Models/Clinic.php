@@ -26,6 +26,11 @@ class Clinic extends BaseModel
         CliniC::ID
     ];
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
     public static function getUSER_KEY()
     {
         return Clinic::TABLE_NAME . '.' . Clinic::ID;
