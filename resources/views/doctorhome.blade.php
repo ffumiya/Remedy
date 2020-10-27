@@ -139,8 +139,8 @@
                             <div>
                                 <a id="zoom-url" href=""></a>
                             </div> --}}
-                            <p>◆Zoom参加パスワード</p>
-                            <p id="zoom-password"></p>
+                            <p class="mb-2">◆Zoom参加パスワード</p>
+                            <p class="mb-2 pl-4" id="zoom-password"></p>
                         </div>
                         {{-- <a href="mailto:" id="mail-to">
                             <button class="btn btn-success btn-block mb-3" id="mail-button">メール送信する</button>
@@ -454,9 +454,9 @@
     var calendarHeight = 0;
     var calendar = null;
 
-    document.addEventListener("resize", function() {
-        calendarHeight = `${innerHeight}px`;
-    });
+    // document.addEventListener("resize", function() {
+        // calendarHeight = `${innerHeight}px`;
+    // });
 
     document.addEventListener("DOMContentLoaded", function() {
         var Calendar = FullCalendar.Calendar;
@@ -517,7 +517,7 @@
                 year: "numeric",
                 month: "numeric",
             },
-            height: calendarHeight,
+            // height: calendarHeight,
             allDaySlot: false,
             weekends: true,
             weekMode: 'liquid',
@@ -527,10 +527,13 @@
             slotDuration: "00:10:00",
             minTime: "8:00",
             maxTime: "20:00",
+            calendarHeight: 750,
+            height: 750,
             contentHeight: 750,
-            // scrollTime: first_scroll_time,
+            scrollTime: first_scroll_time,
             firstDay: 1,
             // locale: "jaLocale",
+            nowIndicator: true,
             editable: true,
             selectable: true,
             droppable: true, // this allows things to be dropped onto the calendar
@@ -631,7 +634,7 @@
                                 //     email = user.email;
                                 //     console.log(`${info.event.title}さんのeamil: ${email}`);
                                 //     var mailto = `${email}`;
-                                //     var subject = `{{ $clinicName }}よりお知らせ`;
+                                //     var subject = ``;
                                 //     var body = `${info.event.title}%0D%0A%0D%0Aオンライン診療の時間が設定されました。下記詳細をご確認ください。%0D%0A%0D%0A診療時間：${formatDate(info.event.start, 'yyyy-MM-ddThh:mm')} - ${formatDate(info.event.end, 'yyyy-MM-ddThh:mm')}%0D%0AURL：https://re-medy.jp/video/${info.event.extendedProps.event_id}`;
                                 //     $("#mail-to").attr("href", `mailto:${mailto}?subject=${subject}&body=${body}`);
                                 // }).fail(function (e) {
@@ -653,6 +656,7 @@
 
         });
 
+        // calendar.updateEvent;
         calendar.render();
     });
 
