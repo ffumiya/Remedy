@@ -3,7 +3,10 @@
 namespace App\Services;
 
 use App\Models\Event;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Laravel\Cashier\Cashier;
 use Stripe\Price;
 
@@ -15,15 +18,15 @@ class PaymentService extends BaseService
             $event_id = $request->id;
             $paymentMethodId = $request->paymentMethodId;
             $price = PriceService::calcIncludeTax($request->price);
-            \Log::channel("debug")->debug($paymentMethodId);
+            Log::channel("debug")->debug($paymentMethodId);
 
-            $stripeId = \Auth::user()->stripe_id;
+            $stripeId = Auth::user()->stripe_id;
             $user = Cashier::findBillable($stripeId);
 
 
             $stripeCharge = $user->charge($price, $paymentMethodId);
         } catch (Exception $e) {
-            \Log::channel("debug")->debug($e);
+            Log::channel("debug")->debug($e);
         }
     }
 }

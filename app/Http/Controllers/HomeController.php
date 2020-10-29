@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Clinic;
 use App\Services\EventService;
 use App\Services\PatientService;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -25,8 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $id = \Auth::id();
-        $role = \Auth::user()->role;
+        $id = Auth::id();
+        $role = Auth::user()->role;
         $currentEvent = EventService::getCurrentPatientEvent($id);
         $events = EventService::getDoctorEvents($id);
         $patientList = PatientService::getNoEventUsers();

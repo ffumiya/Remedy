@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use phpDocumentor\Reflection\Types\Boolean;
 
 class RequestLogger
@@ -19,13 +20,13 @@ class RequestLogger
     {
         $canWriteTrace = $this->canWriteTrace($request);
         if ($canWriteTrace) {
-            \Log::channel('trace')->info("Request {$request->method()} url={$request->fullurl()}");
+            Log::channel('trace')->info("Request {$request->method()} url={$request->fullurl()}");
         }
 
         $canWriteBody = $this->canWriteBody($request);
         if ($canWriteBody) {
-            \Log::channel('debug')->info("Request {$request->method()} url={$request->fullurl()}");
-            \Log::channel('debug')->info($request);
+            Log::channel('debug')->info("Request {$request->method()} url={$request->fullurl()}");
+            Log::channel('debug')->info($request);
         }
         return $next($request);
     }

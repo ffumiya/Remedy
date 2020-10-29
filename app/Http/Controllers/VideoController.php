@@ -46,13 +46,13 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        if (!EventService::existsEvent($id)) {
-            return abort(404);
-        }
-        $host = EventService::getHost($id);
-        $guest = EventService::getGuest($id);
-        $roomKey = "remedy{$id}";
-        return view('video.show', compact(['host', 'guest', 'roomKey']));
+        // if (!EventService::existsEvent($id)) {
+        //     return abort(404);
+        // }
+        // $host = EventService::getHost($id);
+        // $guest = EventService::getGuest($id);
+        // $roomKey = "remedy{$id}";
+        // return view('video.show', compact(['host', 'guest', 'roomKey']));
     }
 
     /**
