@@ -24,14 +24,8 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
     // 一般ユーザー
     Route::get('home', 'HomeController@index')->name('home.index');
-    Route::resource('payment', 'PaymentController')->only(["show", "update"]);
-    Route::post('payment', 'PaymentController@charge')->name('payment.charge');
-    Route::resource('video', 'VideoController')->only(['show']);
-    Route::resource('mail', 'MailController');
     Route::get('zoom/{id}', function () {
         return redirect()->away('https://www.google.com');
-    });
-    Route::get('ms', function () {
     });
 
     // 医師ユーザー
