@@ -26,10 +26,6 @@
             <th>Zoom URL</th>
             <td><a href="{{ $middleware_url }}">{{ $zoom_url }}</a></td>
         </tr>
-        <tr>
-            <th>Zoom参加パスワード</th>
-            <td>{{ $zoom_password }}</td>
-        </tr>
     </table>
 </body>
 

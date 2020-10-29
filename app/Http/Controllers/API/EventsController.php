@@ -54,7 +54,7 @@ class EventsController extends Controller
         Log::channel("debug")->info($meeting);
         if ($meeting != null) {
             $event->zoom_start_url = $meeting["start_url"];
-            $event->zoom_join_url = strtok($meeting["join_url"], '?');
+            $event->zoom_join_url = $meeting["join_url"];
             $event->zoom_start_password = $meeting["password"];
             $event->zoom_join_password = $meeting["encrypted_password"];
             $event->save();
