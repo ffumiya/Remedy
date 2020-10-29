@@ -114,19 +114,12 @@ class EventService extends BaseService
      */
     public static function storeEvent($event)
     {
-        if (empty($event[Event::PRICE])) {
-            $price = 0;
-        } else {
-            $price = $event[Event::PRICE];
-        }
-
         $eventId = $event[Event::EXTENDED_PROPS][Event::EVENT_ID];
         $hostId = $event[Event::EXTENDED_PROPS][Event::HOST_ID];
         $guestId = $event[Event::EXTENDED_PROPS][Event::GUEST_ID];
         $start = EventService::parseEventTimeToDateTime($event[Event::START]);
         $end = EventService::parseEventTimeToDateTime($event[Event::END]);
         $title = $event[Event::TITLE];
-        // $zoom_url = $event[Event::EXTENDED_PROPS][Event::ZOOM_START_URL];
         $additionalEvent = Event::create([
             Event::EVENT_ID => $eventId,
             Event::HOST_ID => $hostId,
@@ -134,18 +127,7 @@ class EventService extends BaseService
             Event::START => $start,
             Event::END => $end,
             Event::TITLE => $title,
-            Event::PRICE => $price,
-            // Event::ZOOM_START_URL => $zoom_url,
         ]);
-
-        if ($price == 0) {
-            $datetime = new Carbon();
-            $paymentMethodId = "0price{$datetime}";
-            Event::updateOrCreate(
-                [Event::EVENT_ID => $eventId],
-                [Event::PAYMENT_METHOD_ID => $paymentMethodId]
-            );
-        }
 
         User::where(User::ID, $guestId)->update(
             [User::FIRST_EVENT => $eventId]
@@ -155,8 +137,6 @@ class EventService extends BaseService
 
         return $additionalEvent;
 
-        // return new EventApply();
-        // Mail::to(User::find($guestId))->send(new EventApply());
     }
 
     /**

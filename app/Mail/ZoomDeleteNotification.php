@@ -22,6 +22,7 @@ class ZoomDeleteNotification extends ZoomNotification
         $event_id = $this->event[Event::EVENT_ID];
         $middleware_url = $this->getMiddlewareURL($event_id);
         $zoom_url = $this->event[Event::ZOOM_JOIN_URL];
+        
         return $this->from($this->fromEmail)
             ->subject('Remedy事務局よりお知らせ')
             ->view('mail.delete_schedule', compact(['start', 'end', 'middleware_url', 'zoom_url']));

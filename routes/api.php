@@ -26,6 +26,7 @@ Route::middleware('auth:api')->namespace('API')->group(function () {
         return $request->user()->role;
         // return config('role.patient.value');
     });
+    Route::resource('/zoom', 'ZoomController')->only(['store']);
     Route::resource('/patient', 'PatientController')->only(['show', 'index']);
     Route::resource('/events', 'EventsController')->only(['index', 'store', 'show', 'update', 'destroy']);
 });

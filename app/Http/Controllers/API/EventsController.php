@@ -10,7 +10,10 @@ use App\Models\Event;
 use App\Models\User;
 use App\Models\Zoom;
 use App\Services\EventService;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class EventsController extends Controller
@@ -22,7 +25,7 @@ class EventsController extends Controller
      */
     public function index(Request $request)
     {
-        $id = \Auth::id();
+        $id = Auth::id();
         $role = User::find($id)->role;
         $events = null;
 
@@ -33,7 +36,7 @@ class EventsController extends Controller
             $events = EventService::getPatientEvents($id);
         }
 
-        \Log::channel('debug')->info($events);
+        Log::channel('debug')->info($events);
         return $events;
     }
 
@@ -48,12 +51,15 @@ class EventsController extends Controller
         $event = EventService::storeEvent($request->event);
         $zoom = new Zoom();
         $meeting = $zoom->createMeeting($event[Event::START], 30);
+        Log::channel("debug")->info($meeting);
         if ($meeting != null) {
             $event->zoom_start_url = $meeting["start_url"];
-            $event->zoom_join_url = $meeting["join_url"];
-            $event->zoom_password = $meeting["password"];
+            $event->zoom_join_url = strtok($meeting["join_url"], '?');
+            $event->zoom_start_password = $meeting["password"];
+            $event->zoom_join_password = $meeting["encrypted_password"];
             $event->save();
         }
+
 
         if ($event != null) {
             $userId = $event[Event::GUEST_ID];
@@ -105,13 +111,13 @@ class EventsController extends Controller
         // イベントを削除する
         $event = EventService::getEvent($id);
         EventService::deleteEvent($request, $id);
-        \Log::channel("debug")->info($event);
-        $userId = $event[Event::GUEST_ID];
-        \Log::channel("debug")->info($userId);
-        $sendEmail = User::find($userId)[User::EMAIL];
-        \Log::channel("debug")->info($sendEmail);
-        Mail::to($sendEmail)
-            ->send(new ZoomDeleteNotification($event));
-        return null;
+        $date = new DateTime();
+        $event_date = new DateTime($event[Event::START]);
+        if ($date < $event_date) {
+            $userId = $event[Event::GUEST_ID];
+            $sendEmail = User::find($userId)[User::EMAIL];
+            Mail::to($sendEmail)
+                ->send(new ZoomDeleteNotification($event));
+        }
     }
 }

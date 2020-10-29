@@ -21,7 +21,8 @@ class Event extends BaseModel
     const STRIPE_METHOD_ID = "payment_method_id";
     const ZOOM_START_URL = "zoom_start_url";
     const ZOOM_JOIN_URL = "zoom_join_url";
-    const ZOOM_PASSWORD = "zoom_password";
+    const ZOOM_START_PASSWORD = "zoom_start_password";
+    const ZOOM_JOIN_PASSWORD = "zoom_join_password";
 
     /*
      * FullCalendar 指定のカラム
