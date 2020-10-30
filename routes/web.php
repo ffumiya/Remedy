@@ -14,22 +14,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+const INDEX = 'index';
+const CREATE = 'create';
+const STORE = 'store';
+const SHOW = 'show';
+const UPDATE = 'update';
+const DESTROY = 'destroy';
+
 // 公開ページ
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::resource('survey', 'SurveyController')->only([CREATE, STORE]);
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
     // 一般ユーザー
-    Route::get('home', 'HomeController@index')->name('home.index');
-    Route::get('zoom/{id}', function () {
-        return redirect()->away('https://www.google.com');
-    });
+    Route::resource('home', 'HomeController')->only(INDEX);
 
     // 医師ユーザー
     Route::middleware('can:doctor')->group(function () {
-        Route::resource('/user', 'UserController');
+        Route::resource('survey', 'SurveyController')->only([INDEX, SHOW, UPDATE,]);
     });
 });
