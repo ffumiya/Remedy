@@ -468,7 +468,6 @@
                     event_id: createEventId(title),
                     guest_id: id,
                     host_id: {{\Auth::id()}},
-                    zoom_url: createZoomEvent(),
                 },
                 start: new Date(start),
                 end: new Date(end)
@@ -508,13 +507,11 @@
         console.log(event);
         var title = event.attributes.title.value;
         var eventId = createEventId(title);
-        var url = createZoomEvent();
         var data =  {
             title: title,
             event_id: eventId,
             host_id: parseInt("{{ \Auth::id() }}"),
             guest_id: event.attributes.guest_id.value,
-            zoom_url: url,
         };
         console.log(data);
         return data;
@@ -630,17 +627,6 @@
 
     function createEventId(title) {
         return btoa(encodeURIComponent(title) + Math.round((new Date()).getTime() / 1000));
-    }
-
-    function createZoomEvent() {
-        return "https://re-medy.jp/zoom/23";
-        // $.ajax({
-
-        // }).done(function() {
-
-        // }).fail(function (e) {
-        //     console.error(e);
-        // });
     }
 
 </script>
