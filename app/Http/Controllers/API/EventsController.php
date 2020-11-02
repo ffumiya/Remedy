@@ -13,6 +13,7 @@ use App\Services\EventService;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -57,6 +58,7 @@ class EventsController extends Controller
             $event->zoom_join_url = $meeting["join_url"];
             $event->zoom_start_password = $meeting["password"];
             $event->zoom_join_password = $meeting["encrypted_password"];
+            $event->survey_token = Hash::make($meeting["encrypted_password"]);
             $event->save();
         }
 

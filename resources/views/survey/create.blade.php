@@ -17,24 +17,27 @@
                     ※このアンケートは病院側に提出されます。
                 </small>
             </div>
-            <form action="">
+            <form action="{{ route('survey.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="survey_token" value="{{ $survey_token }}">
                 <div class="form-group">
-                    <label for="range">問１：本日の診療はどの程度ご理解できましたか？</label>
+                    <label for="satisfaction_level">問１：本日の診療はどの程度ご理解できましたか？</label>
                     <div class="row justify-content-between mt-3">
                         <div class="col text-left">
-                            <label for="range">
+                            <label for="satisfaction_level">
                                 1(全く分からなかった)
                             </label>
                         </div>
                         <div class="col text-right">
-                            <label for="range">(完全に理解した)10</label>
+                            <label for="satisfaction_level">(完全に理解した)10</label>
                         </div>
                     </div>
-                    <input type="range" class="custom-range" min="1" max="10" id="range">
+                    <input type="range" class="custom-range" min="1" max="10" id="satisfaction_level"
+                        name="satisfaction_level">
                 </div>
                 <div class="form-group">
-                    <label for="box1">問２：追加で質問したいことはありますか？</label>
-                    <textarea class="form-control" name="box1" id="box1" cols="30" rows="10"></textarea>
+                    <label for="comment1">問２：追加で質問したいことはありますか？</label>
+                    <textarea class="form-control" name="comment1" id="comment1" cols="30" rows="10"></textarea>
                 </div>
                 <div class="text-center">
                     <input type="submit" class="btn btn-primary btn-lg" value="送信">

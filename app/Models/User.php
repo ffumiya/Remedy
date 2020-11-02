@@ -83,6 +83,16 @@ class User extends Authenticatable
         User::EMAIL_VERIFIED_AT
     ];
 
+    public function clinic()
+    {
+        return $this->belongsTo(Clinic::class);
+    }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class, Event::GUEST_ID);
+    }
+
     public function scopeRole($query, $role)
     {
         return $query->where(User::ROLE, $role);
@@ -96,10 +106,5 @@ class User extends Authenticatable
     public static function getCLINIC_KEY()
     {
         return User::TABLE_NAME . '.' . User::CLINIC_ID;
-    }
-
-    public function clinic()
-    {
-        return $this->belongsTo(Clinic::class);
     }
 }
