@@ -78,7 +78,7 @@
                 <td>{{ $event->survey_received_at }}</td>
                 <td>
                     @if ($event->survey_comment_1 != null | $event->survey_comment_2 != null)
-                    <a href="survey/{{ $event->id }}" class="btn btn-success"><span
+                    <a href="{{ route('survey.show', $event->id) }}" class="btn btn-success"><span
                             class="font-weight-bold">詳細</span></a>
                     @endif
                 </td>

@@ -27,6 +27,7 @@ class SurveyController extends Controller
         ])
             ->join('users', 'events.guest_id', '=', 'users.id')
             ->whereRaw('events.start <= NOW()')
+            ->where('users.clinic_id', Auth::user()->clinic_id)
             ->where('users.name', 'LIKE', "${name}%")
             ->paginate(20);
 
