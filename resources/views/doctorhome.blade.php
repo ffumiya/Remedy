@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@include('header')
 @section('content')
 <div class="container">
     <div class="row">
@@ -214,8 +213,6 @@
 </div>
 <!-- End modal window -->
 @endsection
-{{-- @include('footer') --}}
-
 
 @section('style')
 <link href="https://unpkg.com/@fullcalendar/core@4.3.1/main.min.css" rel="stylesheet" />

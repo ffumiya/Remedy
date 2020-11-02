@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@include('header')
-
 @section('content')
 
 <div class="continaer m-5">
