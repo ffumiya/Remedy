@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@include('header')
-
 @section('content')
 <section class="bg-img1">
     <div class="text-center">
