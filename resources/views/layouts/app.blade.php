@@ -49,7 +49,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/header.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/content.css') }}" rel="stylesheet">
     @yield('style')
 </head>
 
@@ -59,9 +59,15 @@
 <body>
     <div id="app">
         <main>
-            @include('layouts.header')
-            @yield('content')
-            @yield('footer')
+            <div style="height: 10vh;">
+                @include('layouts.header')
+            </div>
+            <div style="height: 75vh;">
+                @yield('content')
+            </div>
+            <div style="height: 15vh;">
+                @yield('footer')
+            </div>
         </main>
     </div>
 </body>
