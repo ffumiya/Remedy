@@ -5,36 +5,33 @@
     <div class="">
         <h1>アンケート詳細画面</h1>
     </div>
-    <div class="list-group">
+    @foreach($surveys as $survey)
+    <div class="list-group mt-5">
         <div class="list-group-item">
-            <p>患者名：{{ $event->name }}</p>
+            <p>
+                患者名：{{ $survey->name }}
+                @if ($survey->role == config('role.patient.value'))
+                (ご本人)
+                @endif
+            </p>
         </div>
         <div class="list-group-item">
             <p>診療日時：{{ $event->start }}</p>
         </div>
         <div class="list-group-item">
-            <p>回答日時：{{ $event->survey_received_at }}</p>
+            <p>更新日時：{{ $survey->updated_at }}</p>
         </div>
         <div class="list-group-item">
-            <p>満足度：{{ $event->survey_satisfaction_level }}</p>
+            <p>満足度：{{ $survey->satisfaction_level }}</p>
         </div>
         <div class="list-group-item">
-            <p>コメント１</p>
+            <p>コメント</p>
             <p>
-                @isset($event->survey_comment_1)
-                {{ $event->survey_comment_1}}
-                @endisset
-            </p>
-        </div>
-        <div class="list-group-item">
-            <p>コメント２</p>
-            <p>
-                @isset($event->survey_comment_2)
-                {{ $event->survey_comment_2}}
-                @endisset
+                {{ $survey->comment}}
             </p>
         </div>
     </div>
+    @endforeach
 </div>
 @endsection
 

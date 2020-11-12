@@ -32,7 +32,7 @@
                     </div> --}}
                     <div class="col">
                         <input type="text" name="name" id="name" class="form-control" placeholder="患者名を入力してください"
-                            value="{{ old('name', $name) }}">
+                            value="{{ old('name', '') }}">
                     </div>
                     <div class="col-auto">
                         <input type="submit" class="btn btn-lg btn-primary" value="検索">
@@ -43,52 +43,47 @@
     </div>
 
     <div class="mt-5 mb-5">
-        <table class="table table-striped text-center">
+        <table class="table table-hover text-center">
             <tr>
-                <th></th>
+                <th>新着</th>
                 <th>No.</th>
                 <th>患者名</th>
-                <th>満足度</th>
-                <th>コメント</th>
+                <th>患者本人</th>
+                <th>患者以外</th>
                 <th>診療日時</th>
-                <th>回答日時</th>
-                <th></th>
+                <th>更新日時</th>
             </tr>
-            @foreach ($events as $event) <tr>
+            @foreach ($surveys as $survey)
+            <tr onclick="location.href='{{$survey->event_id}}'">
                 <td>
-                    @if ($event->survey_received_at == null)
-                    未回収
-                    @elseif ($event->survey_checked_at == null)
-                    未読
+                </td>
+                <td>{{ $survey->event_id }}</td>
+                <td>{{ $survey->name }}</td>
+                <td>
+                    @if ($survey->count > 0)
+                    回答あり
+                    @else
+                    未回答
                     @endif
                 </td>
-                <td>{{ $event->id }}</td>
-                <td>{{ $event->name }}</td>
                 <td>
-                    {{ $event->survey_satisfaction_level }}
-                </td>
-                <td>
-                    @if ($event->survey_comment_1 != null | $event->survey_comment_2 != null)
-                    あり
+                    @if ($survey->otder_count > 0)
+                    回答あり({{ $survey->otder_count }})
+                    @else
+                    未回答
                     @endif
                 </td>
-                <td>{{ $event->start }}</td>
-                <td>{{ $event->survey_received_at }}</td>
-                <td>
-                    @if ($event->survey_comment_1 != null | $event->survey_comment_2 != null)
-                    <a href="{{ route('survey.show', $event->id) }}" class="btn btn-success"><span
-                            class="font-weight-bold">詳細</span></a>
-                    @endif
-                </td>
+                <td>{{ $survey->start }}</td>
+                <td>{{ $survey->updated_at }}</td>
             </tr>
             @endforeach
-            @if (count($events) == 0)
+            @if (count($surveys) == 0)
             <tr>
                 <td colspan="7">該当するアンケートが存在しません。</td>
             </tr>
             @endif
         </table>
-        {{ $events->links() }}
+        {{ $surveys->links() }}
     </div>
 </div>
 @endsection

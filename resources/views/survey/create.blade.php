@@ -18,6 +18,11 @@
             <form action="{{ route('survey.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="survey_token" value="{{ $survey_token }}">
+                <input type="hidden" name="role" value="{{ $role }}">
+                <div class="form-group">
+                    <label for="name">お名前を入力してください</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="例：山田花子">
+                </div>
                 <div class="form-group">
                     <label for="satisfaction_level">問１：本日の診療はどの程度ご理解できましたか？</label>
                     <div class="row justify-content-between mt-3">
@@ -34,8 +39,9 @@
                         name="satisfaction_level">
                 </div>
                 <div class="form-group">
-                    <label for="comment1">問２：追加で質問したいことはありますか？</label>
-                    <textarea class="form-control" name="comment1" id="comment1" cols="30" rows="10"></textarea>
+                    <label for="comment1">問２：追加で質問したいことはありますか？(300文字以内)</label>
+                    <textarea class="form-control" name="comment1" id="comment1" cols="30" rows="10" maxlength="300"
+                        placeholder="質問したいことを入力してください。"></textarea>
                 </div>
                 <div class="text-center">
                     <input type="submit" class="btn btn-primary btn-lg" value="送信">

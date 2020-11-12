@@ -72,6 +72,11 @@ class Event extends BaseModel
         return $this->belongsTo(User::class, User::ID, Event::GUEST_ID);
     }
 
+    public function Surveys()
+    {
+        return $this->hasMany(Survey::class);
+    }
+
     public static function getGUEST_KEY()
     {
         return Event::TABLE_NAME . "." . Event::GUEST_ID;
