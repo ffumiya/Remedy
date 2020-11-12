@@ -65,9 +65,13 @@ class EventsController extends Controller
 
         if ($event != null) {
             $userId = $event[Event::GUEST_ID];
-            $sendEmail = User::find($userId)[User::EMAIL];
-            Mail::to($sendEmail)
-                ->send(new ZoomNewCreationNotification($event));
+            $user = User::find($userId);
+            Mail::to($user[User::EMAIL])
+                ->send(new ZoomNewCreationNotification($event, config('role.patient.value')));
+            if ($user[User::SECOND_EMAIL]) {
+                Mail::to($user[User::SECOND_EMAIL])
+                    ->send(new ZoomNewCreationNotification($event, config('role.family.value')));
+            }
         }
         return $event;
     }
@@ -96,9 +100,13 @@ class EventsController extends Controller
         EventService::updateEvent($request);
         $event = EventService::getEvent($request->event[Event::EXTENDED_PROPS][Event::EVENT_ID]);
         $userId = $event[Event::GUEST_ID];
-        $sendEmail = User::find($userId)[User::EMAIL];
-        Mail::to($sendEmail)
-            ->send(new ZoomChangeTimeNotification($event));
+        $user = User::find($userId);
+        Mail::to($user[User::EMAIL])
+            ->send(new ZoomChangeTimeNotification($event, config('role.patient.value')));
+        if ($user[User::SECOND_EMAIL]) {
+            Mail::to($user[User::SECOND_EMAIL])
+                ->send(new ZoomChangeTimeNotification($event, config('role.family.value')));
+        }
         return null;
     }
 
@@ -117,9 +125,13 @@ class EventsController extends Controller
         $event_date = new DateTime($event[Event::START]);
         if ($date < $event_date) {
             $userId = $event[Event::GUEST_ID];
-            $sendEmail = User::find($userId)[User::EMAIL];
-            Mail::to($sendEmail)
-                ->send(new ZoomDeleteNotification($event));
+            $user = User::find($userId);
+            Mail::to($user[User::EMAIL])
+                ->send(new ZoomDeleteNotification($event, config('role.patient.value')));
+            if ($user[User::SECOND_EMAIL]) {
+                Mail::to($user[User::SECOND_EMAIL])
+                    ->send(new ZoomDeleteNotification($event, config('role.family.value')));
+            }
         }
     }
 }

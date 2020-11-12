@@ -13,16 +13,18 @@ class ZoomNotification extends Mailable
 
     public $fromEmail;
     public $event;
+    public $role;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($event)
+    public function __construct($event, $role)
     {
         $this->event = $event;
         $this->fromEmail = 'noreply@re-medy.jp';
+        $this->role = $role;
     }
 
     /**
@@ -40,6 +42,7 @@ class ZoomNotification extends Mailable
         $base_url = env('APP_URL', 'http://localhost:8000');
         $id = $this->event[Event::EVENT_ID];
         $token = $this->event[Event::SURVEY_TOKEN];
-        return "${base_url}/survey/create?id=${id}&token=${token}";
+        $role = $this->role;
+        return "${base_url}/survey/create?id=${id}&token=${token}&role=${role}";
     }
 }
