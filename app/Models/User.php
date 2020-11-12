@@ -29,6 +29,7 @@ class User extends Authenticatable
     const PHONE = "phone";
     const EMAIL = "email";
     const EMAIL_VERIFIED_AT = "email_verified_at";
+    const SECOND_EMAIL = "second_email";
     const PASSWORD = "password";
     const REMEMBER_TOKEN = "remember_token";
     const API_TOKEN = "api_token";
@@ -57,6 +58,7 @@ class User extends Authenticatable
         User::WEIGHT,
         User::PHONE,
         User::EMAIL,
+        User::SECOND_EMAIL,
         User::PASSWORD,
         User::ROLE,
         User::CLINIC_ID,

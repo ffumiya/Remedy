@@ -87,7 +87,9 @@
                         <input id="phone" type="text" name="phone" class="form-control mb-3"
                             placeholder="(必須) 電話番号を入力してください。">
                         <input id="email" type="email" name="email" class="form-control mb-3"
-                            placeholder="(必須) メールアドレスを入力してください。">
+                            placeholder="(必須) 患者のメールアドレスを入力してください。">
+                        <input id="second_email" type="email" name="second_email" class="form-control mb-3"
+                            placeholder="(任意) ご家族のメールアドレスを入力してください。">
                         {{-- <input id="memo" type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。"> --}}
                     </div>
                     <div class="m-3">
@@ -410,14 +412,22 @@
         }
         var email = $('#email').val();
         if (!reg.test(email)) {
-            alert("正しいメールアドレスを入力してください。");
+            alert("患者のメールアドレスを正しく入力してください。");
             return;
+        }
+        var second_email = $('#second_email').val();
+        if (second_email) {
+            if (!reg.test(second_email)) {
+                alert("ご家族のメールアドレスを正しく入力してください。");
+            return;
+            }
         }
         var data = {
             api_token: "{{ \Auth::user()->api_token }}",
             name: name,
             phone: phone,
             email: email,
+            second_email: second_email,
             password: cutDomain(email),
         }
         $.ajax({
@@ -439,6 +449,7 @@
             $('#name').val("");
             $('#phone').val("");
             $('#email').val("");
+            $('#second_email').val("");
         }).fail(function (e) {
             console.error("ajax failed");
             alert("患者の登録に失敗しました。");

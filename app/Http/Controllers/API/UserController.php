@@ -21,6 +21,9 @@ class UserController extends Controller
         $user->remember_token = $user->remember_token ?? Str::random(10);
         $user->clinic_id = Auth::user()->clinic_id;
         $user->api_token = $user->api_token ?? str_random(80);
+        if ($request->second_email) {
+            $user->second_email = $request->second_email;
+        }
         $user->save();
         return $user;
     }
