@@ -66,7 +66,7 @@
                 @yield('content')
             </div>
             <div style="height: 15vh;">
-                @yield('footer')
+                {{-- @yield('footer') --}}
             </div>
         </main>
     </div>

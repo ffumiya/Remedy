@@ -9,7 +9,7 @@
     <div class="list-group mt-5">
         <div class="list-group-item">
             <p>
-                患者名：{{ $survey->name }}
+                お名前：{{ $survey->name }}
                 @if ($survey->role == config('role.patient.value'))
                 (ご本人)
                 @endif

@@ -32,7 +32,7 @@
                     </div> --}}
                     <div class="col">
                         <input type="text" name="name" id="name" class="form-control" placeholder="患者名を入力してください"
-                            value="{{ old('name', '') }}">
+                            value="{{ old('name', $name) }}">
                     </div>
                     <div class="col-auto">
                         <input type="submit" class="btn btn-lg btn-primary" value="検索">
@@ -54,7 +54,7 @@
                 <th>更新日時</th>
             </tr>
             @foreach ($surveys as $survey)
-            <tr onclick="location.href='{{$survey->event_id}}'">
+            <tr onclick="location.href='/survey/{{$survey->event_id}}'">
                 <td>
                 </td>
                 <td>{{ $survey->event_id }}</td>

@@ -37,7 +37,7 @@ class SurveyController extends Controller
             ])
             ->orderBy('events.start', 'asc')->paginate(20);
 
-        return view('survey.index', compact(['surveys']));
+        return view('survey.index', compact(['surveys', 'name']));
     }
 
     public function create(Request $request)
