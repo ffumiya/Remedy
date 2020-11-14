@@ -24,7 +24,9 @@
         </tr>
         <tr>
             <th>Zoom URL</th>
-            <td><a href="{{ $remedy_url }}">{{ $zoom_url }}</a></td>
+            <td>
+                <a href="{{ $remedy_url }}" target="_blank">{{ $zoom_url }}</a>
+            </td>
         </tr>
     </table>
 </body>

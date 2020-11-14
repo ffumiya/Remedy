@@ -68,6 +68,8 @@
         document.getElementById("comment-length").innerHTML = str.length + "文字";
     }
     document.addEventListener( 'DOMContentLoaded' , function( e ) {
+        window.open("{{$zoom_url}}");
+
         var elem = document.getElementById('satisfaction_level');
         var target = document.getElementById('slider-value');
         var rangeValue = (elem, target) => {

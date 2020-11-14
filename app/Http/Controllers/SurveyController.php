@@ -44,6 +44,8 @@ class SurveyController extends Controller
     {
         $event_id = $request->id;
         $event = Event::where(Event::EVENT_ID, $event_id)->first();
+        $zoom_url = $event[Event::ZOOM_JOIN_URL];
+        dump($zoom_url);
 
         $receive_token = $request->token;
         $survey_token = $event->survey_token;
@@ -59,11 +61,11 @@ class SurveyController extends Controller
                 ->where(Survey::ROLE, $role)
                 ->count();
             if ($survey == 0) {
-                return view('survey.create', compact(['survey_token', 'role']));
+                return view('survey.create', compact(['survey_token', 'role', 'zoom_url']));
             }
         } elseif ($role == config('role.family.value')) {
             // 家族(患者以外の場合)
-            return view('survey.create', compact(['survey_token', 'role']));
+            return view('survey.create', compact(['survey_token', 'role', 'zoom_url']));
         }
 
         return abort(404);
