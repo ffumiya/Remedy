@@ -11,14 +11,32 @@ p {
 }
 
 #external-events {
-    z-index: 2;
-    top: 20px;
-    left: 20px;
+    height: 380px;
+    overflow: scroll;
+}
+
+/* スクロールの幅の設定 */
+#external-events::-webkit-scrollbar {
+    width: 12px;
+    height: 10px;
+}
+
+/* スクロールの背景の設定 */
+#external-events::-webkit-scrollbar-track:vertical {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 0 4px #aaa inset;
+}
+
+/* スクロールのつまみ部分の設定 */
+#external-events::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #006092;
 }
 
 #external-events .fc-event {
     cursor: grab;
-    margin: 3px 0;
+    margin: 3px 6px;
 }
 
 #calendar-container {
