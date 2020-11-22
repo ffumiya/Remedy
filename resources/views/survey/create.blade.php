@@ -21,7 +21,8 @@
                 <input type="hidden" name="role" value="{{ $role }}">
                 <div class="form-group mt-5 mb-5">
                     <label for="name">お名前を入力してください</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="例：山田花子">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="例：山田花子"
+                        value="{{ old('name', $name) }}">
                 </div>
                 <div class="form-group mt-5 mb-5">
                     <label for="satisfaction_level">問１：本日の診療はどの程度ご理解できましたか？</label>
