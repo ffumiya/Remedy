@@ -22,11 +22,6 @@ class User extends Authenticatable
     #########################
     const ID = "id";
     const NAME = "name";
-    const BIRTHDAY = "birthday";
-    const SEX = "sex";
-    const HEIGHT = "height";
-    const WEIGHT = "weight";
-    const PHONE = "phone";
     const EMAIL = "email";
     const EMAIL_VERIFIED_AT = "email_verified_at";
     const SECOND_EMAIL = "second_email";
@@ -37,14 +32,6 @@ class User extends Authenticatable
     const CLINIC_ID = "clinic_id";
     const FIRST_EVENT = "first_event";
 
-    #########################
-    #  Stripe指定カラム                             #
-    #########################
-    const STRIPE_ID = "stripe_id";
-    const CARD_BRAND = "card_brand";
-    const CARD_LAST_FOUR = "card_last_four";
-    const TRIAL_ENDS_AT = "trial_ends_at";
-
     /**
      * The attributes that are mass assignable.
      *
@@ -52,11 +39,6 @@ class User extends Authenticatable
      */
     protected $fillable = [
         User::NAME,
-        User::BIRTHDAY,
-        User::SEX,
-        User::HEIGHT,
-        User::WEIGHT,
-        User::PHONE,
         User::EMAIL,
         User::SECOND_EMAIL,
         User::PASSWORD,

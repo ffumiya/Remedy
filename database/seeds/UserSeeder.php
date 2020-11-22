@@ -21,9 +21,6 @@ class UserSeeder extends Seeder
         User::insert([
             [
                 User::NAME => '管理者用アカウント',
-                User::SEX => 1,
-                User::HEIGHT => 170,
-                User::WEIGHT => 65,
                 User::EMAIL => 'admin@example.com',
                 User::EMAIL_VERIFIED_AT => now(),
                 User::PASSWORD => Hash::make($password),
@@ -35,26 +32,7 @@ class UserSeeder extends Seeder
                 USER::UPDATED_AT => $now
             ],
             [
-                User::NAME => '患者用テストアカウント',
-                User::SEX => 1,
-                User::HEIGHT => 170,
-                User::WEIGHT => 65,
-                User::EMAIL => 'patient@example.com',
-                User::EMAIL_VERIFIED_AT => now(),
-                User::PASSWORD => Hash::make($password),
-                User::ROLE => config('role.patient.value'),
-                User::API_TOKEN => null,
-                User::REMEMBER_TOKEN => Str::random(10),
-                User::API_TOKEN => str_random(60),
-                User::CLINIC_ID => 1,
-                USER::CREATED_AT => $now,
-                USER::UPDATED_AT => $now
-            ],
-            [
                 User::NAME => '医師用テストアカウント',
-                User::SEX => 1,
-                User::HEIGHT => 170,
-                User::WEIGHT => 65,
                 User::EMAIL => 'doctor@example.com',
                 User::EMAIL_VERIFIED_AT => now(),
                 User::PASSWORD => Hash::make($password),
