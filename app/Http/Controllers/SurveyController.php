@@ -17,7 +17,9 @@ class SurveyController extends Controller
     public function index(Request $request)
     {
         $name = $request->name ?? '';
-        // select event_id, role, count(role) as count, max(checked_at) as checked_at, max(updated_at) as updated_at from surveys group by event_id,role;
+        /*
+            select surveys.event_id, users.name, count(surveys.role=10 or null) as count, count(surveys.role=20 or null) as other_count, max(checked_at or null) as checked_at, events.start, max(surveys.updated_at) as updated_at from `surveys` inner join `events` on `events`.`id` = `surveys`.`event_id` inner join `users` on `users`.`id` = `events`.`guest_id` group by `surveys`.`event_id` order by `events`.`start` asc;
+        */
 
         $patient_role = config('role.patient.value');
         $other_role = config('role.family.value');
@@ -35,7 +37,9 @@ class SurveyController extends Controller
             ))->groupBy([
                 "surveys.event_id",
             ])
-            ->orderBy('events.start', 'asc')->paginate(20);
+            ->where('users.name', 'LIKE', $name . '%')
+            ->orderBy('events.start', 'asc')
+            ->paginate(20);
 
         return view('survey.index', compact(['surveys', 'name']));
     }
@@ -95,12 +99,15 @@ class SurveyController extends Controller
             ->orderBy(Survey::ROLE, 'asc')
             ->orderBy(Survey::UPDATED_AT, 'asc')
             ->get();
+        foreach ($surveys as $item) {
+            $survey = Survey::find($item->id);
+            if ($survey->checked_at == null) {
+                $survey->checked_at = new Carbon();
+                $survey->save();
+            }
+        }
         $event = Event::find($event_id);
-        // if ($event->clinic_id == Auth::user()->clinic_id) {
         return view('survey.show', compact(['surveys', 'event']));
-        // } else {
-        // abort(404);
-        // }
     }
 
     public function edit($id)
