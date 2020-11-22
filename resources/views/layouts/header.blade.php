@@ -32,7 +32,12 @@
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        {{Auth::user()->clinic->name }}{{ Auth::user()->name }}
+                        <span class="mr-2">
+                            {{Auth::user()->clinic->name }}
+                        </span>
+                        <span>
+                            {{ Auth::user()->name }}
+                        </span>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
