@@ -84,8 +84,6 @@
                         </div> --}}
                         <input id="name" type="text" name="name" class="form-control mb-3"
                             placeholder="(必須) 名前を入力してください。">
-                        <input id="phone" type="text" name="phone" class="form-control mb-3"
-                            placeholder="(必須) 電話番号を入力してください。">
                         <input id="email" type="email" name="email" class="form-control mb-3"
                             placeholder="(必須) 患者のメールアドレスを入力してください。">
                         <input id="second_email" type="email" name="second_email" class="form-control mb-3"
@@ -405,11 +403,6 @@
             alert("名前を入力してください。");
             return;
         }
-        var phone = $('#phone').val();
-        if (phone == "") {
-            alert("電話番号を入力してください。");
-            return;
-        }
         var email = $('#email').val();
         if (!reg.test(email)) {
             alert("患者のメールアドレスを正しく入力してください。");
@@ -425,7 +418,6 @@
         var data = {
             api_token: "{{ \Auth::user()->api_token }}",
             name: name,
-            phone: phone,
             email: email,
             second_email: second_email,
             password: cutDomain(email),
@@ -447,7 +439,6 @@
             $("#modalForCreate").modal("hide");
             // フォームの初期化
             $('#name').val("");
-            $('#phone').val("");
             $('#email').val("");
             $('#second_email').val("");
         }).fail(function (e) {

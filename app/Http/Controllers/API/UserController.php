@@ -15,7 +15,6 @@ class UserController extends Controller
     {
         $user = User::firstOrNew([User::EMAIL => $request->email]);
         $user->name = $request->name;
-        $user->phone = $request->phone;
         $user->password = $user->password ?? Hash::make($request->password);
         $user->email_verified_at = $user->email_verified_at ?? now();
         $user->second_email = $request->second_email ?? '';
