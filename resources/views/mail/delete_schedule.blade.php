@@ -18,8 +18,7 @@
     <hr>
 
     <div>
-        <p>【病院名】{{ $patient_name }}</p>
-        <p>【担当医】{{ $doctor_name }}</p>
+        <p>【病院名】{{ $clinic_name }}</p>
         <p>【日　時】{{ $start->format('Y年m月d日 H時:i分') }}開始</p>
     </div>
 

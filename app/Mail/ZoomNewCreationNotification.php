@@ -22,7 +22,6 @@ class ZoomNewCreationNotification extends ZoomNotification
     {
         $patient_name = User::find($this->event->guest_id)->name;
         $clinic_name = Clinic::find(Auth::user()->clinic_id)->name;
-        $doctor_name = User::find($this->event->host_id)->name;
         $start = $this->event[Event::START];
         $end = $this->event[Event::END];
         $remedy_url = $this->getRemedyURL();
@@ -33,7 +32,6 @@ class ZoomNewCreationNotification extends ZoomNotification
             ->view('mail.new_creation', compact([
                 'patient_name',
                 'clinic_name',
-                'doctor_name',
                 'start', 'end',
                 'remedy_url',
                 'zoom_url'

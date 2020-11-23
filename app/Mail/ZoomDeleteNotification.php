@@ -32,7 +32,6 @@ class ZoomDeleteNotification extends ZoomNotification
             ->view('mail.delete_schedule', compact([
                 'patient_name',
                 'clinic_name',
-                'doctor_name',
                 'start', 'end',
                 'remedy_url',
                 'zoom_url'
