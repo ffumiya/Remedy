@@ -29,7 +29,7 @@
             診療までにビデオ通話サービスZOOMをダウンロードし、時間になりましたら、以下のURLをクリックしてお待ちください。
         </p>
         <p>▼当日はこちらのURLをクリックしてお待ちください。</p>
-        <a href="{{ $remedy_url }}" target="_blank">{{ $zoom_url }}</a>
+        <a href="{{ $zoom_url }}" target="_blank">{{ $zoom_url }}</a>
     </div>
 
     <div>
