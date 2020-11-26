@@ -20,11 +20,10 @@ class ZoomNotification extends Mailable
      *
      * @return void
      */
-    public function __construct($event, $role)
+    public function __construct($event)
     {
         $this->event = $event;
-        $this->fromEmail = 'noreply@re-medy.jp';
-        $this->role = $role;
+        $this->fromEmail = config('mail.from.address');
     }
 
     /**
@@ -35,14 +34,5 @@ class ZoomNotification extends Mailable
     public function build()
     {
         return null;
-    }
-
-    public function getRemedyURL()
-    {
-        $base_url = env('APP_URL', 'http://localhost:8000');
-        $id = $this->event[Event::EVENT_ID];
-        $token = $this->event[Event::SURVEY_TOKEN];
-        $role = $this->role;
-        return "${base_url}/survey/create?id=${id}&token=${token}&role=${role}";
     }
 }

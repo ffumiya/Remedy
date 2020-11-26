@@ -372,6 +372,22 @@
                             } else {
                                 // 今日以後のイベントは診察対象
                                 $("#video-link").attr("href", `${info.event.extendedProps.zoom_start_url}`);
+                                // Zoom用にクリックイベントを仕込む
+                                event_id = info.event.extendedProps.event_id;
+                                $("#video-button").on('click', function () {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: `api/events/sendSurvey/${event_id}`,
+                                        datatype: "json",
+                                        data: {
+                                            api_token: "{{ \Auth::user()->api_token }}",
+                                        }
+                                    }).done(function(e) {
+                                        console.log(e);
+                                    }).fail(function(e) {
+                                        console.log(e);
+                                    });
+                                });
                                 $("#video-button").prop("hidden", false);
                                 $("#video-dummy-button").prop("hidden", true);
                                 $("#mail-button").prop("hidden", false);

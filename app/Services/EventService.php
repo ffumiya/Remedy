@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\SendSurveyMail;
 use App\Mail\EventApply;
 use App\Models\Clinic;
 use App\Models\Event;
@@ -9,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 use DateTimeImmutable;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -136,7 +138,6 @@ class EventService extends BaseService
         Log::channel('trace')->info("Completed store event");
 
         return $additionalEvent;
-
     }
 
     /**
@@ -184,6 +185,31 @@ class EventService extends BaseService
             return false;
         }
         return true;
+    }
+
+    public static function sendSurvey($event_id)
+    {
+        $event = Event::where(Event::EVENT_ID, $event_id)->first();
+        if ($event != null) {
+            if ($event->survey_token == null) {
+                $event->survey_token = Hash::make($event->zoom_join_password);
+                $event->save();
+
+                $userId = $event[Event::GUEST_ID];
+                $user = User::find($userId);
+
+                $timeSendSurvey = new Carbon($event[Event::START]);
+                $timeSendSurvey->addHours(1);
+
+                SendSurveyMail::dispatch($user, $event, config('role.patient.value'))->delay($timeSendSurvey);
+                if ($user[User::SECOND_EMAIL]) {
+                    SendSurveyMail::dispatch($user, $event, config('role.family.value'))->delay($timeSendSurvey);
+                }
+                return "send mail";
+            }
+            return "No events";
+        }
+        return "nothing";
     }
 
     private static function parseEventTimeToDateTime($time)

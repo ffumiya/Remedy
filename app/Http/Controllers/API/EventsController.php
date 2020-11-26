@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendSurveyMail;
 use App\Mail\ZoomChangeTimeNotification;
 use App\Mail\ZoomDeleteNotification;
 use App\Mail\ZoomNewCreationNotification;
@@ -10,6 +11,7 @@ use App\Models\Event;
 use App\Models\User;
 use App\Models\Zoom;
 use App\Services\EventService;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -58,7 +60,6 @@ class EventsController extends Controller
             $event->zoom_join_url = $meeting["join_url"];
             $event->zoom_start_password = $meeting["password"];
             $event->zoom_join_password = $meeting["encrypted_password"];
-            $event->survey_token = Hash::make($meeting["encrypted_password"]);
             $event->save();
         }
 
@@ -66,6 +67,7 @@ class EventsController extends Controller
         if ($event != null) {
             $userId = $event[Event::GUEST_ID];
             $user = User::find($userId);
+
             Mail::to($user[User::EMAIL])
                 ->send(new ZoomNewCreationNotification($event, config('role.patient.value')));
             if ($user[User::SECOND_EMAIL]) {
@@ -127,10 +129,10 @@ class EventsController extends Controller
             $userId = $event[Event::GUEST_ID];
             $user = User::find($userId);
             Mail::to($user[User::EMAIL])
-                ->send(new ZoomDeleteNotification($event, config('role.patient.value')));
+                ->send(new ZoomDeleteNotification($event));
             if ($user[User::SECOND_EMAIL]) {
                 Mail::to($user[User::SECOND_EMAIL])
-                    ->send(new ZoomDeleteNotification($event, config('role.family.value')));
+                    ->send(new ZoomDeleteNotification($event));
             }
         }
     }

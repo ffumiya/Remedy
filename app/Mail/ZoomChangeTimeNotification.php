@@ -24,7 +24,6 @@ class ZoomChangeTimeNotification extends ZoomNotification
         $clinic_name = Clinic::find(Auth::user()->clinic_id)->name;
         $start = $this->event[Event::START];
         $end = $this->event[Event::END];
-        $remedy_url = $this->getRemedyURL();
         $zoom_url = $this->event[Event::ZOOM_JOIN_URL];
 
         return $this->from($this->fromEmail)
@@ -33,7 +32,6 @@ class ZoomChangeTimeNotification extends ZoomNotification
                 'patient_name',
                 'clinic_name',
                 'start', 'end',
-                'remedy_url',
                 'zoom_url'
             ]));
     }
