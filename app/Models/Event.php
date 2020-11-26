@@ -4,14 +4,10 @@ namespace App\Models;
 
 class Event extends BaseModel
 {
-    /**
-     * テーブル関連
-     */
+    // テーブル関連
     const TABLE_NAME = "events";
 
-    /**
-     * カラム名
-     */
+    // カラム名
     const EVENT_ID = "event_id";
     const ID = "id";
     const HOST_ID = "host_id";
@@ -31,9 +27,7 @@ class Event extends BaseModel
     const SURVEY_COMMENT_2 = "survey_comment_2";
 
 
-    /*
-     * FullCalendar 指定のカラム
-     */
+    // FullCalendar 指定のカラム
     const GROUP_ID = "groupId";
     const ALL_DAY = "allDay";
     const START = "start";

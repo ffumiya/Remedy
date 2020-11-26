@@ -84,14 +84,6 @@ return [
             'days' => 30,
         ],
 
-        'stripe' => [
-            'driver' => 'custom',
-            'via' => StripeLogger::class,
-            'path' => storage_path('logs/stripe/stripe.log'),
-            'level' => 'info',
-            'days' => 365,
-        ],
-
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

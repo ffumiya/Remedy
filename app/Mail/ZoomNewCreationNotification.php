@@ -13,11 +13,6 @@ class ZoomNewCreationNotification extends ZoomNotification
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
         $patient_name = User::find($this->event->guest_id)->name;

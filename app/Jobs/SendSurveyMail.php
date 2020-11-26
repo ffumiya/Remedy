@@ -20,24 +20,13 @@ class SendSurveyMail implements ShouldQueue
     protected $event;
     protected $role;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
     public function __construct($user, $event, $role)
     {
         $this->user = $user;
         $this->event = $event;
         $this->role = $role;
-        Log::channel('debug')->alert("SendSurveyMail.__construct ${role}");
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         Mail::to($this->user[User::EMAIL])

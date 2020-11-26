@@ -8,12 +8,13 @@ use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
 class SurveyController extends Controller
 {
+    /**
+     * アンケート一覧を表示
+     */
     public function index(Request $request)
     {
         $name = $request->name ?? '';
@@ -44,6 +45,9 @@ class SurveyController extends Controller
         return view('survey.index', compact(['surveys', 'name']));
     }
 
+    /**
+     * アンケートの投稿
+     */
     public function create(Request $request)
     {
         $event_id = $request->id;
@@ -75,6 +79,9 @@ class SurveyController extends Controller
         return abort(404);
     }
 
+    /**
+     * アンケートの登録
+     */
     public function store(Request $request)
     {
         $survey_token = $request->survey_token;
@@ -93,6 +100,9 @@ class SurveyController extends Controller
         return view('survey.store');
     }
 
+    /**
+     * アンケート詳細画面を表示
+     */
     public function show($event_id)
     {
         $surveys = Survey::where(Survey::EVENT_ID, $event_id)
@@ -108,17 +118,5 @@ class SurveyController extends Controller
         }
         $event = Event::find($event_id);
         return view('survey.show', compact(['surveys', 'event']));
-    }
-
-    public function edit($id)
-    {
-    }
-
-    public function update(Request $request, $id)
-    {
-    }
-
-    public function destroy($id)
-    {
     }
 }

@@ -2,9 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Event;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -15,8 +13,6 @@ class PatientService extends BaseService
         $patient = User::find($id);
         Log::channel("debug")->debug($patient);
         return $patient;
-        // \Log::channel('trace')->info("Return patient : id = ${id}");
-        // return json_encode($patient);
     }
 
     public static function searchPatient($request)

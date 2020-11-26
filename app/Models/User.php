@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
@@ -12,14 +11,10 @@ class User extends Authenticatable
     use Notifiable;
     use Billable;
 
-    #########################
-    #  テーブル名                                      #
-    #########################
+    // テーブル名
     const TABLE_NAME = "users";
 
-    #########################
-    #  カラム名                                        #
-    #########################
+    // カラム名
     const ID = "id";
     const NAME = "name";
     const EMAIL = "email";
@@ -32,11 +27,6 @@ class User extends Authenticatable
     const CLINIC_ID = "clinic_id";
     const FIRST_EVENT = "first_event";
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         User::NAME,
         User::EMAIL,
@@ -48,21 +38,11 @@ class User extends Authenticatable
         User::FIRST_EVENT
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         User::PASSWORD,
         User::REMEMBER_TOKEN
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $dates = [
         User::EMAIL_VERIFIED_AT
     ];

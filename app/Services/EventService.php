@@ -3,16 +3,13 @@
 namespace App\Services;
 
 use App\Jobs\SendSurveyMail;
-use App\Mail\EventApply;
 use App\Models\Clinic;
 use App\Models\Event;
 use App\Models\User;
 use Carbon\Carbon;
-use DateTime;
 use DateTimeImmutable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class EventService extends BaseService
 {
@@ -78,7 +75,6 @@ class EventService extends BaseService
         $count = $query->count();
         $events = $query->get();
 
-        Log::channel('trace')->info("Return {$count} events to user {$id}.");
         return $events;
     }
 
@@ -106,8 +102,6 @@ class EventService extends BaseService
             ->orWhere(Event::START, null);
         $eventCount = $query->count();
         $events = $query->get();
-        Log::channel('debug')->info($events);
-        Log::channel('trace')->info("Return {$eventCount} events.");
         return $events;
     }
 
@@ -134,8 +128,6 @@ class EventService extends BaseService
         User::where(User::ID, $guestId)->update(
             [User::FIRST_EVENT => $eventId]
         );
-
-        Log::channel('trace')->info("Completed store event");
 
         return $additionalEvent;
     }

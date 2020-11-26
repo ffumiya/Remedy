@@ -10,12 +10,6 @@ class DebugLogger
 {
     const dateFormat = 'Y/m/d H:i:s';
 
-    /**
-     * カスタムMonologインスタンスの生成
-     *
-     * @param  array  $config
-     * @return \Monolog\Logger
-     */
     public function __invoke(array $config)
     {
         // monologが理解できるlevel表記に変更

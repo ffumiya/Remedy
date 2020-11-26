@@ -6,14 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Survey extends Model
 {
-    /**
-     * テーブル名
-     */
+    // テーブル名
     const TABLE_NAME = "surveys";
 
-    /**
-     * カラム名
-     */
+    // カラム名
     const ID = 'id';
     const EVENT_ID = 'event_id';
     const NAME = 'name';

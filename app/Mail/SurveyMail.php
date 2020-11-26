@@ -6,7 +6,6 @@ use App\Models\Clinic;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
@@ -24,11 +23,6 @@ class SurveyMail extends Mailable
     protected $survey_url;
     protected $role;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct($event, $role)
     {
         $this->event = $event;
@@ -38,14 +32,8 @@ class SurveyMail extends Mailable
         $this->from_email = config('mail.from.address');
         $this->clinic_name = Clinic::find($this->user->clinic_id)->name;
         $this->role = $role;
-        Log::channel('debug')->alert("SurveyMail.__construct ${role}");
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
         $patient_name = $this->user->name;
@@ -66,7 +54,6 @@ class SurveyMail extends Mailable
         $id = $this->event[Event::EVENT_ID];
         $token = $this->event[Event::SURVEY_TOKEN];
         $role = $this->role;
-        Log::channel('debug')->alert("SurveyMail.getRemedyURL ${role}");
         return "${base_url}/survey/create?id=${id}&token=${token}&role=${role}";
     }
 }
