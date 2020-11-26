@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Log;
 
 class EventService extends BaseService
 {
-
     public static function getEvent($id)
     {
         $event = Event::where(Event::EVENT_ID, $id)->first();

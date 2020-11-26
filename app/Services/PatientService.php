@@ -11,7 +11,7 @@ class PatientService extends BaseService
     public static function getPatientInfo($id)
     {
         $patient = User::find($id);
-        Log::channel("debug")->debug($patient);
+        // Log::channel("debug")->debug($patient);
         return $patient;
     }
 
@@ -40,7 +40,7 @@ class PatientService extends BaseService
             ->where(User::ROLE, config('role.patient.value'))
             ->where(User::CLINIC_ID, Auth::user()->clinic_id)
             ->get();
-        Log::channel("debug")->debug($users);
+        // Log::channel("debug")->debug($users);
         return $users;
     }
 }

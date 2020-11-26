@@ -17,8 +17,8 @@ class RequestLogger
 
         $canWriteBody = $this->canWriteBody($request);
         if ($canWriteBody) {
-            Log::channel('debug')->info("Request {$request->method()} url={$request->fullurl()}");
-            Log::channel('debug')->info($request);
+            // Log::channel('debug')->info("Request {$request->method()} url={$request->fullurl()}");
+            // Log::channel('debug')->info($request);
         }
         return $next($request);
     }
