@@ -38,23 +38,27 @@ class BasicLogger
 
     public function sql($query)
     {
-        if (is_string($query)) {
-            $sql = $query;
-        } else {
-            $sql = $this->getBindedSql($query);
+        if (count($this->method_names) > 0) {
+            if (is_string($query)) {
+                $sql = $query;
+            } else {
+                $sql = $this->getBindedSql($query);
+            }
+            Log::channel('sql')->info($this->buildMessage($sql));
+            $this->debug($sql);
         }
-        Log::channel('sql')->info($this->buildMessage($sql));
-        $this->debug($sql);
     }
 
     public function sqlSelectStatement($query)
     {
-        if (is_string($query)) {
-            $sql = $query;
-        } else {
-            $sql = $this->getBindedSql($query);
+        if (count($this->method_names) > 0) {
+            if (is_string($query)) {
+                $sql = $query;
+            } else {
+                $sql = $this->getBindedSql($query);
+            }
+            $this->debug($sql);
         }
-        $this->debug($sql);
     }
 
     public function trace($message)

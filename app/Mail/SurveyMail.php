@@ -37,7 +37,7 @@ class SurveyMail extends Mailable
 
     public function build()
     {
-        DefaultLogger::beofer(__METHOD__);
+        DefaultLogger::before(__METHOD__);
         $patient_name = $this->user->name;
         $clinic_name = $this->clinic_name;
         $survey_url = $this->getSurveyURL();
