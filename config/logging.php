@@ -47,6 +47,14 @@ return [
             'days' => 60,
         ],
 
+        'alert' => [
+            'driver' => 'custom',
+            'via' => ErrorLogger::class,
+            'path' => storage_path('logs/alert/alert.log'),
+            'level' => 'alert',
+            'days' => 60,
+        ],
+
         'sql' => [
             'driver' => 'custom',
             'via' => SqlLogger::class,
