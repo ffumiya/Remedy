@@ -7,9 +7,7 @@ use App\Models\Event;
 use App\Models\Survey;
 use App\Models\User;
 use App\Services\SurveyService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class SurveyController extends Controller
 {
