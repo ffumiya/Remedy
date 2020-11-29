@@ -24,21 +24,21 @@ class SurveyService extends BaseService
         $patient_role = config('role.patient.value');
         $other_role = config('role.family.value');
 
-        $surveys  = Survey::join('Events', 'Events.id', '=', 'Surveys.event_id')
-            ->join('Users', 'Users.id', '=', 'Events.guest_id')
+        $surveys  = Survey::join('events', 'events.id', '=', 'surveys.event_id')
+            ->join('users', 'users.id', '=', 'events.guest_id')
             ->select(DB::raw(
-                "Surveys.event_id,
-                Users.name,
-                COUNT(Surveys.role=${patient_role} OR NULL) AS count,
-                COUNT(Surveys.role=${other_role} OR NULL) AS other_count,
-                CASE WHEN COUNT(CASE WHEN Surveys.checked_at IS NULL THEN 1 END) = 0 THEN MAX(Surveys.checked_at) END AS checked_at,
-                Events.start,
-                MAX(Surveys.updated_at) as updated_at"
+                "surveys.event_id,
+                users.name,
+                COUNT(surveys.role=${patient_role} OR NULL) AS count,
+                COUNT(surveys.role=${other_role} OR NULL) AS other_count,
+                CASE WHEN COUNT(CASE WHEN surveys.checked_at IS NULL THEN 1 END) = 0 THEN MAX(surveys.checked_at) END AS checked_at,
+                events.start,
+                MAX(surveys.updated_at) as updated_at"
             ))->groupBy([
-                "Surveys.event_id",
+                "surveys.event_id",
             ])
-            ->where('Users.name', 'LIKE', $name . '%')
-            ->orderBy('Events.updated_at', 'ASC')
+            ->where('users.name', 'LIKE', $name . '%')
+            ->orderBy('events.updated_at', 'ASC')
             ->paginate(20);
 
         DefaultLogger::after();
