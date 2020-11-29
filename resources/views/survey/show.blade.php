@@ -13,6 +13,9 @@
                 @if ($survey->role == config('role.patient.value'))
                 (ご本人)
                 @endif
+                @if($survey->checked_at == null)
+                <span class="badge badge-success">New</span>
+                @endif
             </p>
         </div>
         <div class="list-group-item">

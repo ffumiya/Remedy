@@ -56,6 +56,9 @@
             @foreach ($surveys as $survey)
             <tr onclick="location.href='/survey/{{$survey->event_id}}'">
                 <td>
+                    @if ($survey->checked_at == null)
+                    未読
+                    @endif
                 </td>
                 <td>{{ $survey->event_id }}</td>
                 <td>{{ $survey->name }}</td>
@@ -67,8 +70,8 @@
                     @endif
                 </td>
                 <td>
-                    @if ($survey->otder_count > 0)
-                    回答あり({{ $survey->otder_count }})
+                    @if ($survey->other_count > 0)
+                    回答あり({{ $survey->other_count }})
                     @else
                     未回答
                     @endif

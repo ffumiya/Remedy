@@ -24,21 +24,21 @@ class SurveyService extends BaseService
         $patient_role = config('role.patient.value');
         $other_role = config('role.family.value');
 
-        $surveys  = Survey::join('events', 'events.id', '=', 'surveys.event_id')
-            ->join('users', 'users.id', '=', 'events.guest_id')
+        $surveys  = Survey::join('Events', 'Events.id', '=', 'Surveys.event_id')
+            ->join('Users', 'Users.id', '=', 'Events.guest_id')
             ->select(DB::raw(
-                "surveys.event_id,
-                users.name,
-                count(surveys.role=${patient_role} or null) as count,
-                count(surveys.role=${other_role} or null) as other_count,
-                max(checked_at or null) as checked_at,
-                events.start,
-                max(surveys.updated_at) as updated_at"
+                "Surveys.event_id,
+                Users.name,
+                COUNT(Surveys.role=${patient_role} OR NULL) AS count,
+                COUNT(Surveys.role=${other_role} OR NULL) AS other_count,
+                CASE WHEN COUNT(CASE WHEN Surveys.checked_at IS NULL THEN 1 END) = 0 THEN MAX(Surveys.checked_at) END AS checked_at,
+                Events.start,
+                MAX(Surveys.updated_at) as updated_at"
             ))->groupBy([
-                "surveys.event_id",
+                "Surveys.event_id",
             ])
-            ->where('users.name', 'LIKE', $name . '%')
-            ->orderBy('events.start', 'asc')
+            ->where('Users.name', 'LIKE', $name . '%')
+            ->orderBy('Events.updated_at', 'ASC')
             ->paginate(20);
 
         DefaultLogger::after();
@@ -84,8 +84,8 @@ class SurveyService extends BaseService
         DefaultLogger::before(__METHOD__);
 
         $surveys = Survey::where(Survey::EVENT_ID, $event_id)
-            ->orderBy(Survey::ROLE, 'asc')
-            ->orderBy(Survey::UPDATED_AT, 'asc')
+            ->orderBy(Survey::ROLE, 'ASC')
+            ->orderBy(Survey::UPDATED_AT, 'DESC')
             ->get();
 
         DefaultLogger::after();
