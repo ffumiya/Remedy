@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Logging\DefaultLogger;
 use App\Models\Clinic;
 use App\Models\Event;
 use App\Models\User;
@@ -36,21 +37,26 @@ class SurveyMail extends Mailable
 
     public function build()
     {
+        DefaultLogger::beofer(__METHOD__);
         $patient_name = $this->user->name;
         $clinic_name = $this->clinic_name;
-        $survey_url = $this->getRemedyURL();
-        return $this->from($this->from_email)
+        $survey_url = $this->getSurveyURL();
+
+        $mail = $this->from($this->from_email)
             ->subject("${clinic_name}からアンケートのお願い　Remedyご案内事務局")
             ->view('mail.survey', compact([
                 'patient_name',
                 'clinic_name',
                 'survey_url'
             ]));
+
+        DefaultLogger::after();
+        return $mail;
     }
 
-    public function getRemedyURL()
+    private function getSurveyURL()
     {
-        $base_url = env('APP_URL', 'http://localhost:8000');
+        $base_url = config('app.url', 'http://localhost:8000');
         $id = $this->event[Event::EVENT_ID];
         $token = $this->event[Event::SURVEY_TOKEN];
         $role = $this->role;

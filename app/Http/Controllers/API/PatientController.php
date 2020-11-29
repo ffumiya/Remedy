@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Logging\DefaultLogger;
 use App\Services\PatientService;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,11 @@ class PatientController extends Controller
      */
     public function index(Request $request)
     {
-        return PatientService::searchPatient($request);
+        DefaultLogger::before(__METHOD__);
+        $patients = PatientService::searchPatient($request);
+        DefaultLogger::debug($patients);
+        DefaultLogger::after(__METHOD__);
+        return $patients;
     }
 
     /**
@@ -21,6 +26,10 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        return PatientService::getPatientInfo($id);
+        DefaultLogger::before(__METHOD__);
+        $patient = PatientService::getPatientInfo($id);
+        DefaultLogger::debug($patient);
+        DefaultLogger::after();
+        return $patient;
     }
 }

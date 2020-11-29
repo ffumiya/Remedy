@@ -22,6 +22,5 @@ class ZoomNotification extends Mailable
 
     public function build()
     {
-        return null;
     }
 }

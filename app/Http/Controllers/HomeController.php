@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clinic;
+use App\Logging\DefaultLogger;
 use App\Services\EventService;
 use App\Services\PatientService;
 use Illuminate\Support\Facades\Auth;
@@ -16,16 +16,23 @@ class HomeController extends Controller
 
     public function index()
     {
+        DefaultLogger::before(__METHOD__);
+
         $id = Auth::id();
         $role = Auth::user()->role;
-        $currentEvent = EventService::getCurrentPatientEvent($id);
-        $events = EventService::getDoctorEvents($id);
-        $patientList = PatientService::getNoEventUsers();
+        $events = EventService::getReservedEventsForDoctor($id);
+        DefaultLogger::debug($events);
+        $patientList = PatientService::getUsersHasnotEventYet();
+        DefaultLogger::debug($patientList);
 
         if ($role >= config('role.doctor.value')) {
-            return view('doctorhome', compact(['patientList', 'events']));
+            $view = view('home', compact(['patientList', 'events']));
         } else {
-            return abort(404);
+            DefaultLogger::after();
+            abort(404);
         }
+
+        DefaultLogger::after();
+        return $view;
     }
 }

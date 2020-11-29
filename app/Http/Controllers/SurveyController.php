@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Logging\DefaultLogger;
 use App\Models\Event;
 use App\Models\Survey;
 use App\Models\User;
+use App\Services\SurveyService;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,46 +18,31 @@ class SurveyController extends Controller
      */
     public function index(Request $request)
     {
+        DefaultLogger::before(__METHOD__);
+
         $name = $request->name ?? '';
-        /*
-            select surveys.event_id, users.name, count(surveys.role=10 or null) as count, count(surveys.role=20 or null) as other_count, max(checked_at or null) as checked_at, events.start, max(surveys.updated_at) as updated_at from `surveys` inner join `events` on `events`.`id` = `surveys`.`event_id` inner join `users` on `users`.`id` = `events`.`guest_id` group by `surveys`.`event_id` order by `events`.`start` asc;
-        */
+        $surveys = SurveyService::getSurveys($name);
+        DefaultLogger::debug($surveys);
 
-        $patient_role = config('role.patient.value');
-        $other_role = config('role.family.value');
-
-        $surveys  = Survey::join('events', 'events.id', '=', 'surveys.event_id')
-            ->join('users', 'users.id', '=', 'events.guest_id')
-            ->select(DB::raw(
-                "surveys.event_id,
-                users.name,
-                count(surveys.role=${patient_role} or null) as count,
-                count(surveys.role=${other_role} or null) as other_count,
-                max(checked_at or null) as checked_at,
-                events.start,
-                max(surveys.updated_at) as updated_at"
-            ))->groupBy([
-                "surveys.event_id",
-            ])
-            ->where('users.name', 'LIKE', $name . '%')
-            ->orderBy('events.start', 'asc')
-            ->paginate(20);
-
+        DefaultLogger::after();
         return view('survey.index', compact(['surveys', 'name']));
     }
 
     /**
-     * アンケートの投稿
+     * アンケートの投稿画面
      */
     public function create(Request $request)
     {
+        DefaultLogger::before(__METHOD__);
+
         $event_id = $request->id;
         $event = Event::where(Event::EVENT_ID, $event_id)->first();
 
+        // トークンチェック
         $receive_token = $request->token;
         $survey_token = $event->survey_token;
-
         if (strcmp($survey_token, $receive_token) != 0) {
+            DefaultLogger::after();
             return abort(404);
         }
 
@@ -68,15 +54,16 @@ class SurveyController extends Controller
                 ->count();
             $name = User::find($event->guest_id)->name;
             if ($survey == 0) {
-                return view('survey.create', compact(['name', 'survey_token', 'role']));
+                $view =  view('survey.create', compact(['name', 'survey_token', 'role']));
             }
         } elseif ($role == config('role.family.value')) {
             // 家族(患者以外の場合)
             $name = '';
-            return view('survey.create', compact(['name', 'survey_token', 'role']));
+            $view = view('survey.create', compact(['name', 'survey_token', 'role']));
         }
 
-        return abort(404);
+        DefaultLogger::after();
+        return $view;
     }
 
     /**
@@ -84,19 +71,10 @@ class SurveyController extends Controller
      */
     public function store(Request $request)
     {
-        $survey_token = $request->survey_token;
-        $role = $request->role;
-        $event = Event::where(Event::SURVEY_TOKEN, $survey_token)->first();
-        $event_id = $event->id;
-
-        Survey::create([
-            Survey::EVENT_ID => $event_id,
-            Survey::NAME => $request->name,
-            Survey::ROLE => $role,
-            Survey::SATISFACTION_LEVEL => $request->satisfaction_level,
-            Survey::COMMENT => $request->comment
-        ]);
-
+        DefaultLogger::before(__METHOD__);
+        $survey = SurveyService::storeSurvey($request);
+        DefaultLogger::debug($survey);
+        DefaultLogger::after();
         return view('survey.store');
     }
 
@@ -105,18 +83,25 @@ class SurveyController extends Controller
      */
     public function show($event_id)
     {
-        $surveys = Survey::where(Survey::EVENT_ID, $event_id)
-            ->orderBy(Survey::ROLE, 'asc')
-            ->orderBy(Survey::UPDATED_AT, 'asc')
-            ->get();
-        foreach ($surveys as $item) {
-            $survey = Survey::find($item->id);
-            if ($survey->checked_at == null) {
-                $survey->checked_at = new Carbon();
-                $survey->save();
-            }
-        }
+        DefaultLogger::before(__METHOD__);
+
+        $surveys = SurveyService::showSurvey($event_id);
+        SurveyService::checkSurveys($surveys);
+        DefaultLogger::debug($surveys);
         $event = Event::find($event_id);
+
+        DefaultLogger::after();
         return view('survey.show', compact(['surveys', 'event']));
+    }
+
+    /**
+     * 患者にアンケートを送信する
+     */
+    public function sendSurvey($event_id)
+    {
+        DefaultLogger::before(__METHOD__);
+        $result = SurveyService::sendSurvey($event_id);
+        DefaultLogger::after();
+        return $result;
     }
 }

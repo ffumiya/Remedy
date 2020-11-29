@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        factory(User::class, 20)->create();
+        // factory(User::class, 20)->create();
 
         $now = new DateTIme();
         $password = 'password';

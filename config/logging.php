@@ -4,51 +4,22 @@ use App\Logging\DebugLogger;
 use App\Logging\TraceLogger;
 use App\Logging\ErrorLogger;
 use App\Logging\SqlLogger;
-use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
-use Monolog\Handler\SyslogUdpHandler;
 
 return [
 
     'enable_request_log' => env('ENABLE_REQUEST_LOG', false),
     'enable_requestbody_log' => env('ENABLE_REQUESTBODY_LOG', false),
+    'enable_debuglog' => env('LOG_DEBUG', false),
+    'format' => env('LOG_FORMAT', 'text'),
 
     'default' => env('LOG_CHANNEL', 'stack'),
 
-    /**
-     *
-     * チャネル一覧
-     *
-     * クリティカルログ
-     * 内容：致命的なエラーを出力する
-     * レベル：critical
-     *
-     * エラーログ
-     * 内容：続行可能だが、修正が必要になるエラーを出力
-     * レベル：error
-     *
-     * ★SQLログ
-     * 内容：DBへの変更が生じる際に出力
-     * レベル：notice
-     *
-     * ★トレースログ
-     * 内容：ユーザーの行動を出力する
-     * レベル：info
-     *
-     * ★入出力ログ
-     * 内容：入出力をできるだけ出力する
-     * レベル：debug
-     * 備考：本番環境は出力しない
-     *
-     *
-     *
-     */
-
     'channels' => [
 
-        'default' => [
+        'remedy' => [
             'driver' => 'stack',
-            'channels' => ['critical', 'error',],
+            'channels' => ['critical', 'error', 'debug'],
             'ignore_exceptions' => false,
         ],
 
@@ -68,6 +39,14 @@ return [
             'days' => 60,
         ],
 
+        'warning' => [
+            'driver' => 'custom',
+            'via' => ErrorLogger::class,
+            'path' => storage_path('logs/warning/warning.log'),
+            'level' => 'warning',
+            'days' => 60,
+        ],
+
         'sql' => [
             'driver' => 'custom',
             'via' => SqlLogger::class,
@@ -76,20 +55,20 @@ return [
             'days' => 60,
         ],
 
-        'inout' => [
-            'driver' => 'custom',
-            'via' => DebugLogger::class,
-            'path' => storage_path('logs/debug/inout.log'),
-            'level' => 'debug',
-            'days' => 7,
-        ],
-
         'trace' => [
             'driver' => 'custom',
             'via' => TraceLogger::class,
             'path' => storage_path('logs/trace/trace.log'),
             'level' => 'info',
             'days' => 14,
+        ],
+
+        'debug' => [
+            'driver' => 'custom',
+            'via' => DebugLogger::class,
+            'path' => storage_path('logs/debug/debug.log'),
+            'level' => 'debug',
+            'days' => 7
         ],
 
         'slack' => [
@@ -108,6 +87,10 @@ return [
             'with' => [
                 'stream' => 'php://stderr',
             ],
+        ],
+
+        'emergency' => [
+            'path' => storage_path('logs/laravel.log'),
         ],
 
     ],

@@ -1,10 +1,8 @@
 <?php
 
-use App\Models\Event;
-use App\Services\EventService;
-use Carbon\Carbon;
+use App\Logging\DefaultLogger;
+use App\Services\SurveyService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,11 +25,13 @@ Route::middleware('auth:api')->namespace('API')->group(function () {
     Route::get('/role/{id}', function (Request $request) {
         return $request->user()->role;
     });
-    Route::resource('/zoom', 'ZoomController')->only(['store']);
     Route::resource('/patient', 'PatientController')->only(['show', 'index']);
     Route::resource('/events', 'EventsController')->only(['index', 'store', 'show', 'update', 'destroy']);
-    Route::post('/events/sendSurvey/{event_id}', function ($event_id) {
-        Log::channel('debug')->debug($event_id);
-        return EventService::sendSurvey($event_id);
-    });
+    // Route::post('/events/sendSurvey/{event_id}', function ($event_id) {
+    //     DefaultLogger::before(__METHOD__);
+    //     $result = SurveyService::sendSurvey($event_id);
+    //     DefaultLogger::after();
+    //     return $result;
+    // });
+    Route::post('/events/sendSurvey/{event_id}', 'SurveyController@sendSurvey')->name('sendSurvey');
 });

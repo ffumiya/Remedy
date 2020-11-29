@@ -66,9 +66,4 @@ class User extends Authenticatable
     {
         return User::TABLE_NAME . '.' . User::ID;
     }
-
-    public static function getCLINIC_KEY()
-    {
-        return User::TABLE_NAME . '.' . User::CLINIC_ID;
-    }
 }

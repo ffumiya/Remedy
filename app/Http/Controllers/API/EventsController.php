@@ -3,18 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Mail\ZoomChangeTimeNotification;
-use App\Mail\ZoomDeleteNotification;
-use App\Mail\ZoomNewCreationNotification;
+use App\Logging\DefaultLogger;
 use App\Models\Event;
 use App\Models\User;
 use App\Models\Zoom;
 use App\Services\EventService;
 use DateTime;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 
 class EventsController extends Controller
 {
@@ -23,16 +19,21 @@ class EventsController extends Controller
      */
     public function index(Request $request)
     {
+        DefaultLogger::before(__METHOD__);
+
         $id = Auth::id();
         $role = User::find($id)->role;
         $events = null;
 
         if ($role >= config('role.doctor.value')) {
-            $events = EventService::getDoctorEvents($id);
+            $events = EventService::getReservedEventsForDoctor($id);
+            DefaultLogger::debug($events);
         } else {
+            DefaultLogger::warning("医師権限未満の方による閲覧試行がありました。404エラーページへ遷移。");
             return abort(404);
         }
 
+        DefaultLogger::after();
         return $events;
     }
 
@@ -41,34 +42,30 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $event = EventService::storeEvent($request->event);
-            $zoom = new Zoom();
-            $meeting = $zoom->createMeeting($event[Event::START], 30);
+        DefaultLogger::before(__METHOD__);
 
-            if ($meeting != null) {
-                $event->zoom_start_url = $meeting["start_url"];
-                $event->zoom_join_url = $meeting["join_url"];
-                $event->zoom_start_password = $meeting["password"];
-                $event->zoom_join_password = $meeting["encrypted_password"];
-                $event->save();
-            }
+        $event = EventService::storeEvent($request->event);
+        DefaultLogger::debug($event);
 
-            if ($event != null) {
-                $userId = $event[Event::GUEST_ID];
-                $user = User::find($userId);
+        // Zoomミーティングの作成
+        $zoom = new Zoom();
+        $meeting = $zoom->createMeeting($event[Event::START], config('zoom.default_meeting_time'));
+        DefaultLogger::debug($meeting);
 
-                // 患者に通知メールを送信
-                Mail::to($user[User::EMAIL])
-                    ->send(new ZoomNewCreationNotification($event, config('role.patient.value')));
-                if ($user[User::SECOND_EMAIL]) {
-                    Mail::to($user[User::SECOND_EMAIL])
-                        ->send(new ZoomNewCreationNotification($event, config('role.family.value')));
-                }
-            }
-            return $event;
-        } catch (Exception $e) {
+        if ($meeting != null) {
+            $event = EventService::addZoomToEvent($event, $meeting);
         }
+
+        if ($event != null) {
+            $user_id = $event[Event::GUEST_ID];
+            $user = User::find($user_id);
+
+            // 患者に通知メールを送信
+            EventService::sendEmailCreateReservationNotification($user, $event);
+        }
+
+        DefaultLogger::after();
+        return $event;
     }
 
     /**
@@ -76,7 +73,9 @@ class EventsController extends Controller
      */
     public function show(Request $request, $id)
     {
+        DefaultLogger::before(__METHOD__);
         $event = EventService::getEvent($id);
+        DefaultLogger::after(__METHOD__);
         return $event;
     }
 
@@ -85,19 +84,17 @@ class EventsController extends Controller
      */
     public function update(Request $request)
     {
-        EventService::updateEvent($request);
-        $event = EventService::getEvent($request->event[Event::EXTENDED_PROPS][Event::EVENT_ID]);
+        DefaultLogger::before(__METHOD__);
+
+        $event = EventService::updateEvent($request);
+        DefaultLogger::debug($event);
         $userId = $event[Event::GUEST_ID];
         $user = User::find($userId);
 
         // 患者に通知メールを送信
-        Mail::to($user[User::EMAIL])
-            ->send(new ZoomChangeTimeNotification($event, config('role.patient.value')));
-        if ($user[User::SECOND_EMAIL]) {
-            Mail::to($user[User::SECOND_EMAIL])
-                ->send(new ZoomChangeTimeNotification($event, config('role.family.value')));
-        }
-        return null;
+        EventService::sendEmailUpdateReservationNotification($user, $event);
+
+        DefaultLogger::after();
     }
 
     /**
@@ -105,8 +102,12 @@ class EventsController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        DefaultLogger::before(__METHOD__);
+
         $event = EventService::getEvent($id);
+        DefaultLogger::debug($event);
         EventService::deleteEvent($request, $id);
+
         $date = new DateTime();
         $event_date = new DateTime($event[Event::START]);
         if ($date < $event_date) {
@@ -114,12 +115,9 @@ class EventsController extends Controller
             $user = User::find($userId);
 
             // 患者に通知メールを送信
-            Mail::to($user[User::EMAIL])
-                ->send(new ZoomDeleteNotification($event));
-            if ($user[User::SECOND_EMAIL]) {
-                Mail::to($user[User::SECOND_EMAIL])
-                    ->send(new ZoomDeleteNotification($event));
-            }
+            EventService::sendEmailDeleteReservationNotification($user, $event);
         }
+
+        DefaultLogger::after();
     }
 }

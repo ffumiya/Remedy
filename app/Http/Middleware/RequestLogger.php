@@ -2,24 +2,28 @@
 
 namespace App\Http\Middleware;
 
+use App\Logging\DefaultLogger;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class RequestLogger
 {
+
     public function handle(Request $request, Closure $next)
     {
+        DefaultLogger::before(__METHOD__);
         $canWriteTrace = $this->canWriteTrace($request);
+        // リクエストURLを出力
         if ($canWriteTrace) {
-            Log::channel('trace')->info("Request {$request->method()} url={$request->fullurl()}");
+            DefaultLogger::trace("Request {$request->method()} URL={$request->fullurl()}");
         }
 
+        // リクエストボディを出力
         $canWriteBody = $this->canWriteBody($request);
         if ($canWriteBody) {
-            // Log::channel('debug')->info("Request {$request->method()} url={$request->fullurl()}");
-            // Log::channel('debug')->info($request);
+            DefaultLogger::debug($request);
         }
+        DefaultLogger::after();
         return $next($request);
     }
 

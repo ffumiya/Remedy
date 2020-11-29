@@ -75,9 +75,4 @@ class Event extends BaseModel
     {
         return Event::TABLE_NAME . "." . Event::GUEST_ID;
     }
-
-    public static function getHOST_KEY()
-    {
-        return Event::TABLE_NAME . "." . Event::HOST_ID;
-    }
 }

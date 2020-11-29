@@ -30,9 +30,4 @@ class Clinic extends BaseModel
     {
         return $this->hasMany(User::class);
     }
-
-    public static function getUSER_KEY()
-    {
-        return Clinic::TABLE_NAME . '.' . Clinic::ID;
-    }
 }

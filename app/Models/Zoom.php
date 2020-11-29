@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Logging\DefaultLogger;
 use GuzzleHttp\Client;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Key;
@@ -40,6 +41,7 @@ class Zoom
 
     function createMeeting($start_time, $duration)
     {
+        DefaultLogger::before(__METHOD__);
         $user_id = $this->getUserId();
         $params = [
             'topic' => 'オンライン診療',
@@ -67,7 +69,11 @@ class Zoom
             'base_uri' => Zoom::BASE_URI,
             'json' => $params
         ];
+        DefaultLogger::debug($client_params);
         $result = $this->sendRequest($method, $path, $client_params);
+        DefaultLogger::debug($result);
+
+        DefaultLogger::after();
         return $result;
     }
 

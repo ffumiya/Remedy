@@ -2,205 +2,218 @@
 
 namespace App\Services;
 
-use App\Jobs\SendSurveyMail;
-use App\Models\Clinic;
+
+use App\Logging\DefaultLogger;
+use App\Mail\ZoomChangeTimeNotification;
+use App\Mail\ZoomDeleteNotification;
+use App\Mail\ZoomNewCreationNotification;
 use App\Models\Event;
 use App\Models\User;
 use Carbon\Carbon;
-use DateTimeImmutable;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class EventService extends BaseService
 {
+    /**
+     * 予約情報の詳細を取得
+     */
     public static function getEvent($id)
     {
+        DefaultLogger::before(__METHOD__);
         $event = Event::where(Event::EVENT_ID, $id)->first();
-        return $event;
-    }
-
-    public static function getCurrentPatientEvent($id)
-    {
-        $dateTime = new DateTimeImmutable();
-
-        /**
-         * SELECT EVENTS.event_id AS EVENT,
-         * EVENTS.id AS ID,
-         * EVENTS.host_id AS HOST_ID,
-         * EVENTS.`start` AS START,
-         * users.name AS DOCTOR_NAME,
-         * users.email AS DOCTOR_EMAIL,
-         * clinics.name AS CLINIC_NAME
-         * FROM EVENTS
-         * LEFT JOIN users
-         * ON EVENTS.host_id = users.id
-         * LEFT JOIN clinics
-         * ON users.clinic_id = clinics.id
-         * WHERE start > NOW() AND guest_id = 21
-         * ORDER BY START ASC
-         * LIMIT 1;
-         */
-        $addColumns = ['users.name AS doctor_name', 'clinics.name AS clinic_name'];
-        $event = Event::select()
-            ->addSelect($addColumns)
-            ->leftJoin(User::TABLE_NAME, Event::getHOST_KEY(), '=', User::getEVENT_KEY())
-            ->leftJoin(Clinic::TABLE_NAME, User::getCLINIC_KEY(), '=', Clinic::getUSER_KEY())
-            ->where(Event::GUEST_ID, $id)
-            ->where(Event::START, '>', $dateTime)
-            ->orderBy(Event::START)
-            ->first();
+        DefaultLogger::after();
         return $event;
     }
 
     /**
-     * 患者ホーム画面で表示する予約を取得
-     * @param int 患者のユーザID
+     * 医師の担当する患者の登録された予約を取得する
      */
-    public static function getPatientEvents($id)
+    public static function getReservedEventsForDoctor($id)
     {
-        $dateTime = new DateTimeImmutable();
-        /**
-         * SELECT *
-         * FROM `EVENTS`
-         * WHERE (`START` IS NULL OR `START` > NOW() OR `DESIRED_TIME` > NOW())
-         * AND `GUEST_ID` = ?;
-         */
-        $query = Event::where(Event::GUEST_ID, $id)
-            ->where(function ($query) use ($dateTime) {
-                $query->whereNull(Event::START)
-                    ->orWhere(Event::START, '>', $dateTime)
-                    ->orwhere(Event::DESIRED_TIME, '>', $dateTime);
-            });
-        $count = $query->count();
-        $events = $query->get();
-
-        return $events;
-    }
-
-    /**
-     * 医師ホーム画面で表示する予定を取得
-     */
-    public static function getDoctorEvents($id)
-    {
-        /**
-         * SELECT *
-         * FROM `EVENTS`
-         * INNER JOIN `USERS`
-         * ON `EVENTS`.`guest_id` = `users`.`id`
-         * WHERE `host_id` = ?
-         * AND `start` > ?
-         * OR `start` IS NULL;
-         */
-        $eventCount = 0;
-
+        DefaultLogger::before(__METHOD__);
         // 6か月前の月初まで表示
         $startOfMonth = Carbon::now()->subMonth(6)->firstOfMonth()->toDateString();
-        $query = Event::where(Event::HOST_ID, $id)
+
+        $events = Event::where(Event::HOST_ID, $id)
             ->join(User::TABLE_NAME, Event::getGUEST_KEY(), '=', User::getEVENT_KEY())
             ->where(Event::START, '>', $startOfMonth)
-            ->orWhere(Event::START, null);
-        $eventCount = $query->count();
-        $events = $query->get();
+            ->orWhere(Event::START, null)
+            ->get();
+
+        DefaultLogger::after();
         return $events;
     }
 
     /**
-     * イベントの新規作成
+     * 診療予約の新規追加
      */
     public static function storeEvent($event)
     {
-        $eventId = $event[Event::EXTENDED_PROPS][Event::EVENT_ID];
-        $hostId = $event[Event::EXTENDED_PROPS][Event::HOST_ID];
-        $guestId = $event[Event::EXTENDED_PROPS][Event::GUEST_ID];
+        DefaultLogger::before(__METHOD__);
+
+        $event_id = $event[Event::EXTENDED_PROPS][Event::EVENT_ID];
+        $host_id = $event[Event::EXTENDED_PROPS][Event::HOST_ID];
+        $guest_id = $event[Event::EXTENDED_PROPS][Event::GUEST_ID];
         $start = EventService::parseEventTimeToDateTime($event[Event::START]);
         $end = EventService::parseEventTimeToDateTime($event[Event::END]);
         $title = $event[Event::TITLE];
-        $additionalEvent = Event::create([
-            Event::EVENT_ID => $eventId,
-            Event::HOST_ID => $hostId,
-            Event::GUEST_ID => $guestId,
-            Event::START => $start,
-            Event::END => $end,
-            Event::TITLE => $title,
-        ]);
 
-        User::where(User::ID, $guestId)->update(
-            [User::FIRST_EVENT => $eventId]
-        );
+        try {
+            DB::beginTransaction();
+            $additionalEvent = new Event();
+            $additionalEvent->event_id = $event_id;
+            $additionalEvent->host_id = $host_id;
+            $additionalEvent->guest_id = $guest_id;
+            $additionalEvent->start = $start;
+            $additionalEvent->end = $end;
+            $additionalEvent->title = $title;
+            $additionalEvent->save();
 
+            $query = User::find($guest_id);
+            $query->first_event = $event_id;
+            $query->save();
+
+            DB::commit();
+        } catch (Exception $e) {
+            DefaultLogger::alert("診療予約の追加に失敗しました。");
+            DefaultLogger::error($e);
+            DB::rollBack();
+        }
+
+        DefaultLogger::after();
         return $additionalEvent;
     }
 
     /**
-     * イベントの更新
+     * Zoom情報をイベントレコードに格納する
+     */
+    public static function addZoomToEvent($event, $meeting)
+    {
+        DefaultLogger::before(__METHOD__);
+
+        DB::transaction(function () use ($event, $meeting) {
+            $event->zoom_start_url = $meeting["start_url"];
+            $event->zoom_join_url = $meeting["join_url"];
+            $event->zoom_start_password = $meeting["password"];
+            $event->zoom_join_password = $meeting["encrypted_password"];
+            $event->save();
+        });
+
+        DefaultLogger::after();
+        return $event;
+    }
+
+    /**
+     * 予約情報の更新
      */
     public static function updateEvent($request)
     {
+        DefaultLogger::before(__METHOD__);
+
         $EVENT = "event";
-        $eventId = $request[$EVENT][Event::EXTENDED_PROPS][Event::EVENT_ID];
+        $event_id = $request[$EVENT][Event::EXTENDED_PROPS][Event::EVENT_ID];
         $start = EventService::parseEventTimeToDateTime($request[$EVENT][Event::START]);
         $end = EventService::parseEventTimeToDateTime($request[$EVENT][Event::END]);
-        Event::updateOrCreate(
-            [Event::EVENT_ID => $eventId],
-            [
-                Event::START => $start,
-                Event::END => $end
-            ]
-        );
+
+        try {
+            DB::beginTransaction();
+
+            Event::updateOrCreate(
+                [Event::EVENT_ID => $event_id],
+                [
+                    Event::START => $start,
+                    Event::END => $end
+                ]
+            );
+
+            $event = EventService::getEvent($event_id);
+        } catch (Exception $e) {
+            DB::rollBack();
+            DefaultLogger::alert("診療予約の更新に失敗しました。");
+            DefaultLogger::error($e);
+        } finally {
+            DefaultLogger::after();
+        }
+        return $event;
     }
 
+    /**
+     * 診療予約の削除
+     */
     public static function deleteEvent($request, $id)
     {
-        Event::where(Event::EVENT_ID, $id)->delete();
-    }
-
-    // 予定に参加する医師を取得する
-    public static function getHost($id)
-    {
-        $event = Event::where(Event::EVENT_ID, $id)->first();
-        return User::find($event->host_id);
-    }
-
-    // 予定に参加する患者を取得する
-    public static function getGuest($id)
-    {
-        $event = Event::where(Event::EVENT_ID, $id)->first();
-        return User::find($event->guest_id);
-    }
-
-    public static function existsEvent($id)
-    {
-        $count = Event::where(Event::EVENT_ID, $id)
-            ->count();
-        if ($count == 0) {
-            return false;
+        DefaultLogger::before(__METHOD__);
+        try {
+            Event::where(Event::EVENT_ID, $id)->delete();
+        } catch (Exception $e) {
+            DefaultLogger::error($e);
         }
-        return true;
+        DefaultLogger::after();
     }
 
-    public static function sendSurvey($event_id)
+    /**
+     * 患者に診療予約通知メールを送信する
+     */
+    public static function sendEmailCreateReservationNotification($user, $event): bool
     {
-        $event = Event::where(Event::EVENT_ID, $event_id)->first();
-        if ($event != null) {
-            if ($event->survey_token == null) {
-                $event->survey_token = Hash::make($event->zoom_join_password);
-                $event->save();
-
-                $userId = $event[Event::GUEST_ID];
-                $user = User::find($userId);
-
-                $timeSendSurvey = new Carbon($event[Event::START]);
-                $timeSendSurvey->addHours(1);
-
-                SendSurveyMail::dispatch($user, $event, config('role.patient.value'))->delay($timeSendSurvey);
-                if ($user[User::SECOND_EMAIL]) {
-                    SendSurveyMail::dispatch($user, $event, config('role.family.value'))->delay($timeSendSurvey);
-                }
-                return "send mail";
+        DefaultLogger::before(__METHOD__);
+        try {
+            Mail::to($user[User::EMAIL])
+                ->send(new ZoomNewCreationNotification($event, config('role.patient.value')));
+            if ($user[User::SECOND_EMAIL]) {
+                Mail::to($user[User::SECOND_EMAIL])
+                    ->send(new ZoomNewCreationNotification($event, config('role.family.value')));
             }
-            return "No events";
+            $result = true;
+        } catch (Exception $e) {
+            DefaultLogger::alert("診療予約通知メールの送信に失敗しました。event_id={$event[EVENT::EVENT_ID]}");
+            DefaultLogger::error($e);
+            $result = false;
         }
-        return "nothing";
+        DefaultLogger::after();
+        return $result;
+    }
+
+    /**
+     * 患者に診療予約更新通知メールを送信する
+     */
+    public static function sendEmailUpdateReservationNotification($user, $event)
+    {
+        DefaultLogger::before(__METHOD__);
+        try {
+            Mail::to($user[User::EMAIL])
+                ->send(new ZoomChangeTimeNotification($event, config('role.patient.value')));
+            if ($user[User::SECOND_EMAIL]) {
+                Mail::to($user[User::SECOND_EMAIL])
+                    ->send(new ZoomChangeTimeNotification($event, config('role.family.value')));
+            }
+        } catch (Exception $e) {
+            DefaultLogger::alert("診療予約更新通知メールの送信に失敗しました。event_id={$event[EVENT::EVENT_ID]}");
+            DefaultLogger::error($e);
+        }
+        DefaultLogger::after();
+    }
+
+    /**
+     * 患者に診療予約削除通知メールを送信する
+     */
+    public static function sendEmailDeleteReservationNotification($user, $event)
+    {
+        DefaultLogger::before(__METHOD__);
+        try {
+            Mail::to($user[User::EMAIL])
+                ->send(new ZoomDeleteNotification($event));
+            if ($user[User::SECOND_EMAIL]) {
+                Mail::to($user[User::SECOND_EMAIL])
+                    ->send(new ZoomDeleteNotification($event));
+            }
+        } catch (Exception $e) {
+            DefaultLogger::alert("診療予約削除通知メールの送信に失敗しました。event_id={$event[EVENT::EVENT_ID]}");
+            DefaultLogger::error($e);
+        }
+        DefaultLogger::after();
     }
 
     private static function parseEventTimeToDateTime($time)
