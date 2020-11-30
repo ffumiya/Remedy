@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateSurveyRequest;
 use App\Logging\DefaultLogger;
 use App\Models\Event;
 use App\Models\Survey;
@@ -67,7 +68,7 @@ class SurveyController extends Controller
     /**
      * アンケートの登録
      */
-    public function store(Request $request)
+    public function store(CreateSurveyRequest $request)
     {
         DefaultLogger::before(__METHOD__);
         $survey = SurveyService::storeSurvey($request);

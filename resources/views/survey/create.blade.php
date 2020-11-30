@@ -23,6 +23,11 @@
                     <label for="name">お名前を入力してください</label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="例：山田花子"
                         value="{{ old('name', $name) }}">
+                    @if($errors->has('name'))
+                    <p class="mt-2 alert text-danger">
+                        {{ $errors->first('name') }}
+                    </p>
+                    @endif
                 </div>
                 <div class="form-group mt-5 mb-5">
                     <label for="satisfaction_level">問１：本日の診療はどの程度ご理解できましたか？</label>
@@ -46,10 +51,15 @@
                 <div class="form-group mt-5 mb-5">
                     <label for="comment">問２：質問したいことはありますか？(300文字以内)</label>
                     <textarea class="form-control" name="comment" id="comment" cols="30" rows="10" maxlength="300"
-                        placeholder="質問したいことを入力してください" onkeydown="showLength(value)"></textarea>
+                        placeholder="質問したいことを入力してください" onkeydown="showLength(value)">{{ old('comment') }}</textarea>
                     <div class="text-right">
                         <p id="comment-length">0文字</p>
                     </div>
+                    @if($errors->has('comment'))
+                    <p class="mt-2 alert text-danger">
+                        {{ $errors->first('comment') }}
+                    </p>
+                    @endif
                 </div>
                 <div class="text-center">
                     <input type="submit" class="btn btn-primary btn-lg" value="送信">

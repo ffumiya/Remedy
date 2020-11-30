@@ -25,7 +25,9 @@ const DESTROY = 'destroy';
 Route::get('/', function () {
     return view('welcome');
 });
-Route::resource('survey', 'SurveyController')->only([CREATE, STORE]);
+Route::group(['middleware' => ['web']], function () {
+    Route::resource('survey', 'SurveyController')->only([CREATE, STORE]);
+});
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
