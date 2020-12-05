@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 class SurveyMail extends Mailable
 {
@@ -42,8 +41,7 @@ class SurveyMail extends Mailable
         $clinic_name = $this->clinic_name;
         $survey_url = $this->getSurveyURL();
 
-        $mail = $this->from($this->from_email)
-            ->subject("${clinic_name}からアンケートのお願い　Remedyご案内事務局")
+        $mail = $this->subject("${clinic_name}からアンケートのお願い　Remedyご案内事務局")
             ->view('mail.survey', compact([
                 'patient_name',
                 'clinic_name',

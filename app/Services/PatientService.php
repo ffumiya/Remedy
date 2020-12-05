@@ -29,6 +29,7 @@ class PatientService extends BaseService
     {
         DefaultLogger::before(__METHOD__);
         $name = $request->name;
+        $patients = null;
         if ($name != "") {
             $patients = User::select([
                 User::ID,

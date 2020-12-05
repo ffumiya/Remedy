@@ -162,9 +162,11 @@ class EventService extends BaseService
         try {
             Mail::to($user[User::EMAIL])
                 ->send(new ZoomNewCreationNotification($event, config('role.patient.value')));
+            DefaultLogger::debug("Send Email to {$user[User::EMAIL]} for create reservation events.event_id = {$event[Event::EVENT_ID]}");
             if ($user[User::SECOND_EMAIL]) {
                 Mail::to($user[User::SECOND_EMAIL])
                     ->send(new ZoomNewCreationNotification($event, config('role.family.value')));
+                DefaultLogger::debug("Send Email to {$user[User::SECOND_EMAIL]} for create reservation events.event_id = {$event[Event::EVENT_ID]}");
             }
             $result = true;
         } catch (Exception $e) {
@@ -185,9 +187,11 @@ class EventService extends BaseService
         try {
             Mail::to($user[User::EMAIL])
                 ->send(new ZoomChangeTimeNotification($event, config('role.patient.value')));
+            DefaultLogger::debug("Send Email to {$user[User::EMAIL]} for update reservation events.event_id = {$event->event_id}");
             if ($user[User::SECOND_EMAIL]) {
                 Mail::to($user[User::SECOND_EMAIL])
                     ->send(new ZoomChangeTimeNotification($event, config('role.family.value')));
+                DefaultLogger::debug("Send Email to {$user[User::SECOND_EMAIL]} for update reservation events.event_id = {$event->event_id}");
             }
         } catch (Exception $e) {
             DefaultLogger::alert("診療予約更新通知メールの送信に失敗しました。event_id={$event[EVENT::EVENT_ID]}");
@@ -205,9 +209,11 @@ class EventService extends BaseService
         try {
             Mail::to($user[User::EMAIL])
                 ->send(new ZoomDeleteNotification($event));
+            DefaultLogger::debug("Send Email to {$user[User::EMAIL]} for delete reservation events.event_id = {$event->event_id}");
             if ($user[User::SECOND_EMAIL]) {
                 Mail::to($user[User::SECOND_EMAIL])
                     ->send(new ZoomDeleteNotification($event));
+                DefaultLogger::debug("Send Email to {$user[User::SECOND_EMAIL]} for delete reservation events.event_id = {$event->event_id}");
             }
         } catch (Exception $e) {
             DefaultLogger::alert("診療予約削除通知メールの送信に失敗しました。event_id={$event[EVENT::EVENT_ID]}");

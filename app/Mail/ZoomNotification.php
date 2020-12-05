@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -12,12 +13,13 @@ class ZoomNotification extends Mailable
 
     public $fromEmail;
     public $event;
+    public $user;
     public $role;
 
     public function __construct($event)
     {
         $this->event = $event;
-        $this->fromEmail = config('mail.from.address');
+        $this->user = User::find($this->event->guest_id);
     }
 
     public function build()

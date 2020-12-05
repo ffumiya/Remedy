@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Logging\DefaultLogger;
 use App\Mail\SurveyMail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -31,5 +32,6 @@ class SendSurveyMail implements ShouldQueue
     {
         Mail::to($this->user[User::EMAIL])
             ->send(new SurveyMail($this->event, $this->role));
+        DefaultLogger::debug("Send Email to {$this->user->email} for survey events.event_id = {$this->event->event_id}");
     }
 }
