@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Clinic extends Model
+class Clinic extends BaseModel
 {
     /**
      * テーブル名
@@ -28,8 +26,8 @@ class Clinic extends Model
         CliniC::ID
     ];
 
-    public static function getUSER_KEY()
+    public function users()
     {
-        return Clinic::TABLE_NAME . '.' . Clinic::ID;
+        return $this->hasMany(User::class);
     }
 }

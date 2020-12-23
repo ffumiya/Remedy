@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@include('header')
 @section('content')
 <div class="container">
     <div class="row">
@@ -7,10 +6,10 @@
             <h2 class="title mt-3 font-size-14vw">日程未調整患者リスト</h2>
             <div class="mt-3 font-size-10vw">
                 <p>
-                    下記リストは「病状説明日程調整」の未対応案件です。
+                    「病状説明日程調整」の未対応案件のリストです。
                 </p>
                 <p>
-                    対応可能な日程のスケジューラーに依頼案件をドロップしてください。
+                    対応する患者さんの名前を右のカレンダーにドラッグ＆ドロップしてください。
                 </p>
             </div>
             <div class="text-right m-3 mb-5">
@@ -23,15 +22,15 @@
             <div id="external-events">
                 @foreach ($patientList as $patient)
                 <div class="fc-ex-event fc-event mb-3" id="user{{$patient->id}}" guest_id="{{ $patient->id }}"
-                    title="{{ $patient->name }}さん" onclick="showPatient({{$patient}})">
+                    title="{{ $patient->name }}さん">
                     <div class="row p-4 text-center d-flex align-items-center">
                         <div class="col-lg-1 col-md-4 patient-number">
                             {{ $patient->id }}
                         </div>
-                        <div class="col-lg-4 col-md-8 patient-name">
+                        <div class="col-lg-8 col-md-8 patient-name text-left ml-4">
                             {{ $patient->name }}
                         </div>
-                        <div class="col-lg-2 patient-city"></div>
+                        {{-- <div class="col-lg-2 patient-city"></div> --}}
                     </div>
                 </div>
                 @endforeach
@@ -85,10 +84,10 @@
                         </div> --}}
                         <input id="name" type="text" name="name" class="form-control mb-3"
                             placeholder="(必須) 名前を入力してください。">
-                        <input id="phone" type="text" name="phone" class="form-control mb-3"
-                            placeholder="(必須) 電話番号を入力してください。">
                         <input id="email" type="email" name="email" class="form-control mb-3"
-                            placeholder="(必須) メールアドレスを入力してください。">
+                            placeholder="(必須) 患者のメールアドレスを入力してください。">
+                        <input id="second_email" type="email" name="second_email" class="form-control mb-3"
+                            placeholder="(任意) ご家族のメールアドレスを入力してください。">
                         {{-- <input id="memo" type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。"> --}}
                     </div>
                     <div class="m-3">
@@ -130,11 +129,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="row m-5">
+                <div class="row m-3">
                     <div class="col">
-                        <a href="mailto:" id="mail-to">
-                            <button class="btn btn-success btn-block mb-3" id="mail-button">メール送信する</button>
-                        </a>
+                        <div class="card p-3 mb-3">
+                            <p class="mb-2">◆Zoom参加パスワード</p>
+                            <p class="mb-2 pl-4" id="zoom-password"></p>
+                        </div>
                         <a id="video-link">
                             <button class="btn btn-primary btn-block" id="video-button">診察を開始する</button>
                             <button class="btn btn-secondary btn-block" id="video-dummy-button"
@@ -184,7 +184,7 @@
                                 <div class="col">
                                     <input type="hidden" name="id" id="search-patient-id">
                                     <input id="search-patient-name" type="text" name="name" class="form-control mb-3"
-                                        placeholder="患者の名前を入力してください。" onkeyup="search(this)">
+                                        placeholder="患者の名前を入力してください。" onkeyup="searchPatient(this)">
 
                                     <div style="z-index: 1060; positon: relative;">
                                         <table class="table table-hover table-sm">
@@ -213,223 +213,13 @@
 </div>
 <!-- End modal window -->
 @endsection
-@include('footer')
-
 
 @section('style')
 <link href="https://unpkg.com/@fullcalendar/core@4.3.1/main.min.css" rel="stylesheet" />
 <link href="https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.css" rel="stylesheet" />
 <link href="https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.css" rel="stylesheet" />
 <link href="https://unpkg.com/@fullcalendar/list@4.3.0/main.min.css" rel="stylesheet" />
-<style>
-    @media(min-width: 1200px) {
-        .container {
-            max-width: 1600px;
-        }
-    }
-
-    p {
-        /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
-        font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
-
-    }
-
-    #external-events {
-        z-index: 2;
-        top: 20px;
-        left: 20px;
-    }
-
-    #external-events .fc-event {
-        cursor: grab;
-        margin: 3px 0;
-    }
-
-    #calendar-container {
-        position: relative;
-        z-index: 1;
-    }
-
-    #calendar {
-        max-width: 1100px;
-        margin: 20px auto;
-    }
-
-    .primary {
-        color: #006092;
-    }
-
-    .card {
-        box-shadow: 5px 5px 10px -5px gray;
-        border-radius: 12px;
-    }
-
-    .fc-toolbar h2 {
-        /* font-size: 3.2rem; */
-        font-size: 2.2vw;
-        font-weight: 900;
-        /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
-        font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
-        color: #006092;
-    }
-
-    .fc-event {
-        margin-left: -3px;
-        /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
-        font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
-        color: black;
-        background-color: whitesmoke;
-        border-radius: 3px;
-        border-color: whitesmoke;
-        border-left-color: #006092;
-        border-radius: 0;
-        border-left-width: 3px;
-        box-shadow: 5px 5px 10px -5px gray;
-    }
-
-    .fc-ex-event {
-        border-radius: 10px;
-        border-width: 0;
-        border: none;
-        background-color: white;
-        /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
-        font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
-    }
-
-    .fc-time {
-        color: #006092;
-        font-size: 1.5rem;
-        font-weight: 800;
-        /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
-        font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
-    }
-
-    .fc-title {
-        font-size: 1.6rem;
-    }
-
-    .fc table {
-        border-width: 0;
-    }
-
-    .fc th {
-        border-width: 0;
-    }
-
-    .fc td {
-        border-width: 0;
-        padding: 2px;
-    }
-
-    .fc-day-header {
-        color: darkgray;
-        /* font-size: 2.5rem; */
-        font-size: 1.5vw;
-        /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
-        font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
-    }
-
-    .fc-today {
-        color: #006092;
-        font-weight: 900;
-    }
-
-    .patient-number {
-        color: #006092;
-        font-size: 2.6rem;
-        font-weight: 900;
-        padding: 0px 6px;
-    }
-
-    .patient-name {
-        color: #006092;
-        font-size: 1.8rem;
-        font-weight: bold;
-        padding: 0px 6px;
-    }
-
-    .patient-city {
-        color: #006092;
-        font-size: 1.4rem;
-        font-weight: bold;
-        padding: 0px 6px;
-    }
-
-    .patient-memo {
-        color: #006092;
-        font-size: 1.6rem;
-        font-weight: bold;
-        padding: 0px 6px;
-    }
-
-    .modal-header {
-        background-color: #006092;
-    }
-
-    .modal-title {
-        font-size: 1.6rem;
-        color: white;
-    }
-
-    .btn {
-        box-shadow: 5px 5px 10px -5px gray;
-        border-radius: 30px;
-    }
-
-    .btn-primary {
-        background-color: #006092;
-    }
-
-    .btn-main {
-        font-size: 1.8rem;
-        border-radius: 10px;
-        padding: 6px 32px;
-    }
-
-    .btn-delete {
-        background-color: #b4b4b4;
-        font-weight: bold;
-    }
-
-    .close {
-        font-size: 2.6rem;
-        color: white;
-    }
-
-    .logo {
-        font-size: 3.4rem;
-        font-weight: 500;
-        color: #006092;
-    }
-
-    .title {
-        font-size: 2.0rem;
-        font-weight: bold;
-    }
-
-    /* スクロールの幅の設定 */
-    .fc-scroller::-webkit-scrollbar {
-        width: 12px;
-        height: 10px;
-    }
-
-    /* スクロールの背景の設定 */
-    .fc-scroller::-webkit-scrollbar-track {
-        border: none;
-        border-radius: 16px;
-        box-shadow: 0 0 4px #aaa inset;
-    }
-
-    /* スクロールのつまみ部分の設定 */
-    .fc-scroller::-webkit-scrollbar-thumb {
-        border-radius: 5px;
-        background: #006092;
-    }
-
-    .search-list {
-        cursor: pointer;
-    }
-</style>
+<link rel="stylesheet" href="css/doctor_home.css">
 @endsection
 
 @section('script')
@@ -444,9 +234,9 @@
     var calendarHeight = 0;
     var calendar = null;
 
-    document.addEventListener("resize", function() {
-        calendarHeight = `${innerHeight}px`;
-    });
+    // document.addEventListener("resize", function() {
+        // calendarHeight = `${innerHeight}px`;
+    // });
 
     document.addEventListener("DOMContentLoaded", function() {
         var Calendar = FullCalendar.Calendar;
@@ -461,27 +251,11 @@
         var first_scroll_time = current_hours + ":00" + ":00"
         console.log(first_scroll_time);
 
-        // 外部イベントの初期化
+        // 外部イベントの初期化(ドラッグ時の処理)
         new Draggable(containerEl, {
             itemSelector: ".fc-event",
             eventData: function(eventEl) {
-                console.log("ドラッグ開始");
-                console.log(eventEl);
-                var title = eventEl.attributes.title.value;
-                console.log(title);
-                var eventId = createEventId(title);
-                console.log(eventId);
-                var data =  {
-                    title: title,
-                    // id: eventEl.attributes.id.value,
-                    // event_id: Math.round((new Date()).getTime() / 1000),
-                    event_id: eventId,
-                    host_id: parseInt("{{ \Auth::id() }}"),
-                    // host_id: eventEl.attributes.guest_id.value,
-                    guest_id: eventEl.attributes.guest_id.value,
-                };
-                console.log(data);
-                return data;
+                return buildExternalEvent(eventEl);
             }
         });
 
@@ -504,7 +278,7 @@
                 year: "numeric",
                 month: "numeric",
             },
-            height: calendarHeight,
+            // height: calendarHeight,
             allDaySlot: false,
             weekends: true,
             weekMode: 'liquid',
@@ -514,58 +288,60 @@
             slotDuration: "00:10:00",
             minTime: "8:00",
             maxTime: "20:00",
-            contentHeight: 900,
-            // scrollTime: first_scroll_time,
+            calendarHeight: 630,
+            height: 630,
+            contentHeight: 630,
+            scrollTime: first_scroll_time,
             firstDay: 1,
             // locale: "jaLocale",
+            nowIndicator: true,
             editable: true,
             selectable: true,
             droppable: true, // this allows things to be dropped onto the calendar
             events: events,
 
+            // カレンダーセルクリック、範囲指定された時のコールバック
             select: function(info) {
-                // カレンダーセルクリック、範囲指定された時のコールバック
-                var start = formatDate(new Date(info.start), "yyyy-MM-ddThh:mm");
-                var end = formatDate(new Date(info.end), "yyyy-MM-ddThh:mm");
-                document.getElementById('search-start-time').value = start;
-                document.getElementById('search-end-time').value = end;
+                document.getElementById('search-start-time').value = formatDate(new Date(info.start), "yyyy-MM-ddThh:mm");
+                document.getElementById('search-end-time').value = formatDate(new Date(info.end), "yyyy-MM-ddThh:mm");
                 $("#modalForSelect").modal('show');
             },
+            // 外部イベントがドロップされた時のコールバック
             eventReceive: function(info) {
-                // 外部イベントがドロップされた時のコールバック
-                console.log(info.event);
-                $.ajax({
-                    type: "POST",
-                    url: "api/events",
-                    datatype: "json",
-                    data: {
-                        api_token: "{{ \Auth::user()->api_token }}",
-                        event: buildEvent(info.event)
-                    }
-                }).done(function (r) {
-                    console.log("cteated event.");
-                    $(`#user${info.event.extendedProps.guest_id}`).remove();
-                }).fail(function(e) {
-                    // 予定の削除
+                if (confirm('予定を作成すると患者さんへメールが送信されます')) {
+                    $.ajax({
+                        type: "POST",
+                        url: "api/events",
+                        datatype: "json",
+                        data: {
+                            api_token: "{{ \Auth::user()->api_token }}",
+                            event: buildEvent(info.event)
+                        }
+                    }).done(function (r) {
+                        console.log("cteated event.");
+                        calendar.getEventById(info.event.id).remove();
+                        calendar.addEvent(r);
+                        $(`#user${info.event.extendedProps.guest_id}`).remove();
+                    }).fail(function(e) {
+                        // 予定の削除
+                        calendar.getEventById(info.event.id).remove();
+                        console.error("予定の追加に失敗しました。");
+                    });
+                } else {
                     calendar.getEventById(info.event.id).remove();
-                    console.error("予定の追加に失敗しました。");
-                });
+                }
             },
-
+            // イベントがドロップされた時のコールバック
             eventDrop: function(info) {
-                // イベントがドロップされた時のコールバック
-                console.log(info);
                 updateEvent(info);
             },
-
+            // イベントがリサイズ（引っ張ったり縮めたり）された時のコールバック
             eventResize: function(info) {
-                // イベントがリサイズ（引っ張ったり縮めたり）された時のコールバック
-                console.log("eventResize");
                 updateEvent(info);
             },
 
+            // イベントがクリックされた時の処理
             eventRender: function(info) {
-                // イベントがクリックされた時の処理
                 var clickCnt = 0;
                 info.el.addEventListener("click", function() {
                     clickCnt++;
@@ -573,7 +349,6 @@
                         oneClickTimer = setTimeout(function() {
                             clickCnt = 0;
                             // シングルクリックされた時の処理
-                            console.log("single click");
                             console.log(info.event);
                             var date = new Date(info.event.start);
                             var month = date.getMonth() + 1;
@@ -582,12 +357,11 @@
                             var to = formatDate(new Date(info.event.end), "H:mm");
                             $(".select-event-time").html(`${month}月${day}日 ${from}～${to}`);
                             $("#patient-name").html(`${info.event.title}`);
+                            $("#zoom-password").html(`${info.event.extendedProps.zoom_start_password}`);
                             const isSmallerThanToday = (date) => {
                                 var today = new Date();
-                                if (date.getFullYear() < today.getFullYear())  return true;
-                                if (date.getMonth() < today.getMonth()) return true;
-                                if (date.getDate() < today.getDate()) return true;
-                                return false;
+                                today.setDate(today.getDate() -1);
+                                return today > date;
                             }
                             if (isSmallerThanToday(info.event.start)) {
                                 // 昨日以前のイベントは診察対象外
@@ -597,29 +371,26 @@
                                 $("#mail-button").prop("hidden", true);
                             } else {
                                 // 今日以後のイベントは診察対象
-                                $("#video-link").attr("href", `video/${info.event.extendedProps.event_id}`);
+                                $("#video-link").attr("href", `${info.event.extendedProps.zoom_start_url}`);
+                                // Zoom用にクリックイベントを仕込む
+                                event_id = info.event.extendedProps.event_id;
+                                $("#video-button").on('click', function () {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: `api/events/sendSurvey/${event_id}`,
+                                        datatype: "json",
+                                        data: {
+                                            api_token: "{{ \Auth::user()->api_token }}",
+                                        }
+                                    }).done(function(e) {
+                                        console.log(e);
+                                    }).fail(function(e) {
+                                        console.log(e);
+                                    });
+                                });
                                 $("#video-button").prop("hidden", false);
                                 $("#video-dummy-button").prop("hidden", true);
                                 $("#mail-button").prop("hidden", false);
-                                // メール作成
-                                var email = "";
-                                $.ajax({
-                                    type: "GET",
-                                    url: `api/patient/${info.event.extendedProps.guest_id}`,
-                                    datatype: "json",
-                                    data: {
-                                        api_token: "{{ \Auth::user()->api_token }}"
-                                    }
-                                }).done(function(user) {
-                                    email = user.email;
-                                    console.log(`${info.event.title}さんのeamil: ${email}`);
-                                    var mailto = `${email}`;
-                                    var subject = `{{ $clinicName }}よりお知らせ`;
-                                    var body = `${info.event.title}%0D%0A%0D%0Aオンライン診療の時間が設定されました。下記詳細をご確認ください。%0D%0A%0D%0A診療時間：${formatDate(info.event.start, 'yyyy-MM-ddThh:mm')} - ${formatDate(info.event.end, 'yyyy-MM-ddThh:mm')}%0D%0AURL：https://re-medy.jp/video/${info.event.extendedProps.event_id}`;
-                                    $("#mail-to").attr("href", `mailto:${mailto}?subject=${subject}&body=${body}`);
-                                }).fail(function (e) {
-                                    alert("新規予定の作成に失敗しました。");
-                                });
                             }
                             // イベント削除用にIDを仕込み
                             $("#modalForClick").attr("event-id", `${info.event.id}`);
@@ -636,35 +407,35 @@
 
         });
 
+        // calendar.updateEvent;
         calendar.render();
     });
 
     // 患者情報の新規登録
     function createNewPatient() {
         const reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
-        // var eventId = Math.round((new Date()).getTime() / 1000);
-        // console.log(eventId);
         var name = $('#name').val();
         if (name == "") {
             alert("名前を入力してください。");
             return;
         }
-        var phone = $('#phone').val();
-        if (phone == "") {
-            alert("電話番号を入力してください。");
-            return;
-        }
         var email = $('#email').val();
         if (!reg.test(email)) {
-            alert("正しいメールアドレスを入力してください。");
+            alert("患者のメールアドレスを正しく入力してください。");
             return;
         }
-        // var memo = $('#memo').val();
+        var second_email = $('#second_email').val();
+        if (second_email) {
+            if (!reg.test(second_email)) {
+                alert("ご家族のメールアドレスを正しく入力してください。");
+            return;
+            }
+        }
         var data = {
             api_token: "{{ \Auth::user()->api_token }}",
             name: name,
-            phone: phone,
             email: email,
+            second_email: second_email,
             password: cutDomain(email),
         }
         $.ajax({
@@ -680,14 +451,12 @@
             newElement.prop('hidden', false);
             newElement.find(".patient-number").text(`${r.id}`);
             newElement.find(".patient-name").text(`${name}`);
-            // newElement.on("click", showPatient(r));
-            // newElement.find(".patient-memo").text(`${memo}`);
             newElement.appendTo('#external-events');
             $("#modalForCreate").modal("hide");
             // フォームの初期化
             $('#name').val("");
-            $('#phone').val("");
             $('#email').val("");
+            $('#second_email').val("");
         }).fail(function (e) {
             console.error("ajax failed");
             alert("患者の登録に失敗しました。");
@@ -701,7 +470,6 @@
             alert("入力された患者は登録されていません。候補から選択してください。");
             return false;
         }
-        // var eventId = Math.round((new Date()).getTime() / 1000);
         var name = $('#search-patient-name').val();
         if (name == "") return;
         var start = $('#search-start-time').val();
@@ -737,7 +505,7 @@
         });
     }
 
-    // サーバ用のデータに変換する
+    //サーバ用のデータに変換する
     function buildEvent(event) {
         return {
             allDay: event.allDay,
@@ -749,22 +517,42 @@
         };
     }
 
+    // クライアント用のイベントデータを作成
+    function buildExternalEvent(event) {
+        console.log(event);
+        var title = event.attributes.title.value;
+        var eventId = createEventId(title);
+        var data =  {
+            title: title,
+            event_id: eventId,
+            host_id: parseInt("{{ \Auth::id() }}"),
+            guest_id: event.attributes.guest_id.value,
+        };
+        console.log(data);
+        return data;
+    }
+
     // イベントの更新
     function updateEvent(info) {
-        $.ajax({
-            type: "PUT",
-            url: `api/events/${info.event.extendedProps.event_id}`,
-            datatype: "json",
-            data: {
-                api_token: "{{ \Auth::user()->api_token }}",
-                event: buildEvent(info.event)
-            }
-        }).done(function (r) {
-            console.log(r);
-        }).fail(function(e) {
+        if (confirm('予定を更新すると患者さんへメールが送信されます')) {
+            $.ajax({
+                type: "PUT",
+                url: `api/events/${info.event.extendedProps.event_id}`,
+                datatype: "json",
+                data: {
+                    api_token: "{{ \Auth::user()->api_token }}",
+                    event: buildEvent(info.event)
+                }
+            }).done(function (r) {
+                console.log(r);
+            }).fail(function(e) {
+                console.error(e);
+                info.revert();
+                alert("予定の更新に失敗しました。");
+            });
+        } else {
             info.revert();
-            alert("予定の更新に失敗しました。");
-        });
+        }
     }
 
     // イベントの削除
@@ -792,7 +580,7 @@
     }
 
     // 患者の検索
-    function search(e) {
+    function searchPatient(e) {
         document.getElementById('search-patient-id').value = "";
         $.ajax({
             type: "GET",
@@ -831,21 +619,6 @@
         });
     }
 
-    // 今日の日付と比較し、過去の日付ならfalseを返す
-    function lowerThanToday(date) {
-        var today = new Date();
-        if (date.getFullYear() < today.getFullYear()) {
-            return false;
-        }
-        if (date.getMonth() < today.getMonth()) {
-            return false;
-        }
-        if (date.getDate() < today.getDate()) {
-            return false;
-        }
-        return true;
-    }
-
     function formatDate (date, format) {
         format = format.replace(/yyyy/g, date.getFullYear());
         format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2));
@@ -870,10 +643,6 @@
     function createEventId(title) {
         return btoa(encodeURIComponent(title) + Math.round((new Date()).getTime() / 1000));
     }
-
-    // function showPatient(patient) {
-    //     console.log(patient);
-    // }
 
 </script>
 @endsection

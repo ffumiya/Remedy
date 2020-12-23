@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,22 +14,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+const INDEX = 'index';
+const CREATE = 'create';
+const STORE = 'store';
+const SHOW = 'show';
+const UPDATE = 'update';
+const DESTROY = 'destroy';
+
 // 公開ページ
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::group(['middleware' => ['web']], function () {
+    Route::resource('survey', 'SurveyController')->only([CREATE, STORE]);
+});
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
     // 一般ユーザー
-    Route::get('home', 'HomeController@index')->name('home.index');
-    Route::resource('payment', 'PaymentController')->only(["show", "update"]);
-    Route::post('payment', 'PaymentController@charge')->name('payment.charge');
-    Route::resource('video', 'VideoController')->only(['show']);
+    Route::resource('home', 'HomeController')->only(INDEX);
 
     // 医師ユーザー
     Route::middleware('can:doctor')->group(function () {
-        Route::resource('/user', 'UserController');
+        Route::resource('survey', 'SurveyController')->only([INDEX, SHOW, UPDATE,]);
     });
 });

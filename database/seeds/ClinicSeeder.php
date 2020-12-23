@@ -18,27 +18,12 @@ class ClinicSeeder extends Seeder
 
         Clinic::insert([
             [
-                Clinic::NAME => "日本第一病院",
+                Clinic::NAME => "Remedyテスト病院",
                 Clinic::TEL => $tel,
                 Clinic::ADDRESS => $address,
                 CLINIC::CREATED_AT => $now,
                 CLINIC::UPDATED_AT => $now
-            ],
-            [
-                Clinic::NAME => "日本第二病院",
-                Clinic::TEL => $tel,
-                Clinic::ADDRESS => $address,
-                CLINIC::CREATED_AT => $now,
-                CLINIC::UPDATED_AT => $now
-            ],
-            [
-                Clinic::NAME => "日本第三病院",
-                Clinic::TEL => $tel,
-                Clinic::ADDRESS => $address,
-                CLINIC::CREATED_AT => $now,
-                CLINIC::UPDATED_AT => $now
-            ],
-
+            ]
         ]);
     }
 }

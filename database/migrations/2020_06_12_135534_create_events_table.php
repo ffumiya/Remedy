@@ -43,6 +43,16 @@ class CreateEventsTable extends Migration
             $table->string(Event::SOURCE)->nullable();
             $table->bigInteger(Event::PRICE)->default(0);
             $table->string(Event::PAYMENT_METHOD_ID)->nullable();
+            $table->string(Event::ZOOM_START_URL)->nullable();
+            $table->string(Event::ZOOM_JOIN_URL)->nullable();
+            $table->string(Event::ZOOM_START_PASSWORD)->nullable();
+            $table->string(Event::ZOOM_JOIN_PASSWORD)->nullable();
+            $table->string(Event::SURVEY_TOKEN)->nullable();
+            $table->timestamp(Event::SURVEY_RECEIVED_AT)->nullable();
+            $table->timestamp(Event::SURVEY_CHECKED_AT)->nullable();
+            $table->integer(Event::SURVEY_SATISFACTION_LEVEL)->nullable();
+            $table->text(Event::SURVEY_COMMENT_1)->nullable();
+            $table->text(Event::SURVEY_COMMENT_2)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

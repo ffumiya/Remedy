@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@include('header')
-
 @section('content')
 <div class="login-form">
     <form method="POST" action="{{ route('login') }}"><br><br>

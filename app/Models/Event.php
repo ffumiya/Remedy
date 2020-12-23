@@ -4,14 +4,10 @@ namespace App\Models;
 
 class Event extends BaseModel
 {
-    /**
-     * テーブル関連
-     */
+    // テーブル関連
     const TABLE_NAME = "events";
 
-    /**
-     * カラム名
-     */
+    // カラム名
     const EVENT_ID = "event_id";
     const ID = "id";
     const HOST_ID = "host_id";
@@ -19,10 +15,19 @@ class Event extends BaseModel
     const DESIRED_TIME = "desired_id";
     const PRICE = "price";
     const STRIPE_METHOD_ID = "payment_method_id";
+    const ZOOM_START_URL = "zoom_start_url";
+    const ZOOM_JOIN_URL = "zoom_join_url";
+    const ZOOM_START_PASSWORD = "zoom_start_password";
+    const ZOOM_JOIN_PASSWORD = "zoom_join_password";
+    const SURVEY_TOKEN = "survey_token";
+    const SURVEY_RECEIVED_AT = "survey_received_at";
+    const SURVEY_CHECKED_AT = "survey_checked_at";
+    const SURVEY_SATISFACTION_LEVEL = "survey_satisfaction_level";
+    const SURVEY_COMMENT_1 = "survey_comment_1";
+    const SURVEY_COMMENT_2 = "survey_comment_2";
 
-    /*
-     * FullCalendar 指定のカラム
-     */
+
+    // FullCalendar 指定のカラム
     const GROUP_ID = "groupId";
     const ALL_DAY = "allDay";
     const START = "start";
@@ -51,16 +56,23 @@ class Event extends BaseModel
 
     protected $dates = [
         Event::START,
-        Event::END
+        Event::END,
+        Event::SURVEY_RECEIVED_AT,
+        Event::SURVEY_CHECKED_AT,
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, User::ID, Event::GUEST_ID);
+    }
+
+    public function Surveys()
+    {
+        return $this->hasMany(Survey::class);
+    }
 
     public static function getGUEST_KEY()
     {
         return Event::TABLE_NAME . "." . Event::GUEST_ID;
-    }
-
-    public static function getHOST_KEY()
-    {
-        return Event::TABLE_NAME . "." . Event::HOST_ID;
     }
 }

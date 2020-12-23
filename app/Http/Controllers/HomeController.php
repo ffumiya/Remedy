@@ -2,43 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clinic;
+use App\Logging\DefaultLogger;
 use App\Services\EventService;
 use App\Services\PatientService;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        $id = \Auth::id();
-        $role = \Auth::user()->role;
-        $currentEvent = EventService::getCurrentPatientEvent($id);
-        $events = EventService::getDoctorEvents($id);
-        $patientList = PatientService::getNoEventUsers();
-        $clinicName = Clinic::find(\Auth::user()->clinic_id)->name;
-        switch ($role) {
-            case config('role.patient.value'):
-                return view('patienthome', compact(['currentEvent']));
-            case config('role.doctor.value'):
-                return view('doctorhome', compact(['patientList', 'events', 'clinicName']));
-            case config('role.admin.value'):
-                // return view('patienthome', compact(['currentEvent']));
-                return view('doctorhome', compact(['patientList', 'events', 'clinicName']));
+        DefaultLogger::before(__METHOD__);
+
+        $id = Auth::id();
+        $role = Auth::user()->role;
+        $events = EventService::getReservedEventsForDoctor($id);
+        DefaultLogger::debug($events);
+        $patientList = PatientService::getUsersHasnotEventYet();
+        DefaultLogger::debug($patientList);
+
+        if ($role >= config('role.doctor.value')) {
+            $view = view('home', compact(['patientList', 'events']));
+        } else {
+            DefaultLogger::after();
+            abort(404);
         }
+
+        DefaultLogger::after();
+        return $view;
     }
 }

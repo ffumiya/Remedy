@@ -3,23 +3,21 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Logging\DefaultLogger;
+use App\Services\PatientService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    /**
+     * 患者の新規登録
+     */
     public function store(Request $request)
     {
-        $user = User::create([
-            User::NAME => $request->name,
-            User::PHONE => $request->phone,
-            User::EMAIL => $request->email,
-            User::PASSWORD => Hash::make($request->password),
-            User::CLINIC_ID => \Auth::user()->clinic_id,
-            User::API_TOKEN => str_random(80),
-        ]);
-        return $user;
-        \Log::channel('debug')->debug($request);
+        DefaultLogger::before(__METHOD__);
+        $patient = PatientService::cretaePatient($request);
+        DefaultLogger::debug($patient);
+        DefaultLogger::after();
+        return $patient;
     }
 }

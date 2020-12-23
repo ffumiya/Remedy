@@ -1,5 +1,4 @@
 @section('footer')
-<!-- <footer> -->
 <div id="copyrights">
     <div class="container">
       <div class="row">
@@ -15,6 +14,5 @@
       </div>
       </div>
     </div>
-    </div>
-<!-- </footer> -->
+</div>
 @endsection

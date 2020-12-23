@@ -4,6 +4,7 @@
 
 use App\Models\User;
 use Faker\Generator as Faker;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /*
@@ -18,18 +19,14 @@ use Illuminate\Support\Str;
 */
 
 $factory->define(User::class, function (Faker $faker) {
-    $height = rand(145, 180);
-    $weight = $height * $height / 10000 * rand(18, 25);
     return [
         User::NAME => $faker->name,
-        User::SEX => rand(1, 2),
-        User::HEIGHT => $height,
-        User::WEIGHT => $weight,
+        User::ROLE => config('role.patient.value'),
         User::EMAIL => $faker->unique()->safeEmail,
         User::EMAIL_VERIFIED_AT => now(),
         User::PASSWORD => Hash::make('password'),
-        USer::REMEMBER_TOKEN => Str::random(10),
+        User::REMEMBER_TOKEN => Str::random(10),
         User::API_TOKEN => str_random(60),
-        User::CLINIC_ID => rand(1, 3),
+        User::CLINIC_ID => 1,
     ];
 });

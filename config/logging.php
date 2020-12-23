@@ -4,68 +4,31 @@ use App\Logging\DebugLogger;
 use App\Logging\TraceLogger;
 use App\Logging\ErrorLogger;
 use App\Logging\SqlLogger;
-use App\Logging\StripeLogger;
-use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
-use Monolog\Handler\SyslogUdpHandler;
-
-use function PHPSTORM_META\map;
 
 return [
 
     'enable_request_log' => env('ENABLE_REQUEST_LOG', false),
     'enable_requestbody_log' => env('ENABLE_REQUESTBODY_LOG', false),
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Default Log Channel
-    |--------------------------------------------------------------------------
-    |
-    | This option defines the default log channel that gets used when writing
-    | messages to the logs. The name specified in this option should match
-    | one of the channels defined in the "channels" configuration array.
-    |
-    */
+    'enable_debuglog' => env('LOG_DEBUG', false),
+    'format' => env('LOG_FORMAT', 'text'),
 
     'default' => env('LOG_CHANNEL', 'stack'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Log Channels
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure the log channels for your application. Out of
-    | the box, Laravel uses the Monolog PHP logging library. This gives
-    | you a variety of powerful log handlers / formatters to utilize.
-    |
-    | Available Drivers: "single", "daily", "slack", "syslog",
-    |                    "errorlog", "monolog",
-    |                    "custom", "stack"
-    |
-    */
-
     'channels' => [
-        'stack' => [
+
+        'remedy' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['critical', 'error', 'debug'],
             'ignore_exceptions' => false,
         ],
 
-        'debug' => [
+        'critical' => [
             'driver' => 'custom',
-            'via' => DebugLogger::class,
-            'path' => storage_path('logs/debug/debug.log'),
-            'level' => 'debug',
-            'days' => 7,
-        ],
-
-        'trace' => [
-            'driver' => 'custom',
-            'via' => TraceLogger::class,
-            'path' => storage_path('logs/trace/trace.log'),
-            'level' => 'info',
-            'days' => 14,
+            'via' => ErrorLogger::class,
+            'path' => storage_path('logs/critical/critical.log'),
+            'level' => 'critical',
+            'days' => 60,
         ],
 
         'error' => [
@@ -76,33 +39,44 @@ return [
             'days' => 60,
         ],
 
+        'warning' => [
+            'driver' => 'custom',
+            'via' => ErrorLogger::class,
+            'path' => storage_path('logs/warning/warning.log'),
+            'level' => 'warning',
+            'days' => 60,
+        ],
+
+        'alert' => [
+            'driver' => 'custom',
+            'via' => ErrorLogger::class,
+            'path' => storage_path('logs/alert/alert.log'),
+            'level' => 'alert',
+            'days' => 60,
+        ],
+
         'sql' => [
             'driver' => 'custom',
             'via' => SqlLogger::class,
             'path' => storage_path('logs/sql/sql.log'),
             'level' => 'info',
-            'days' => 30,
+            'days' => 60,
         ],
 
-        'stripe' => [
+        'trace' => [
             'driver' => 'custom',
-            'via' => StripeLogger::class,
-            'path' => storage_path('logs/stripe/stripe.log'),
+            'via' => TraceLogger::class,
+            'path' => storage_path('logs/trace/trace.log'),
             'level' => 'info',
-            'days' => 365,
-        ],
-
-        'single' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
-            'level' => 'debug',
-        ],
-
-        'daily' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/laravel.log'),
-            'level' => 'debug',
             'days' => 14,
+        ],
+
+        'debug' => [
+            'driver' => 'custom',
+            'via' => DebugLogger::class,
+            'path' => storage_path('logs/debug/debug.log'),
+            'level' => 'debug',
+            'days' => 7
         ],
 
         'slack' => [
@@ -113,43 +87,20 @@ return [
             'level' => 'critical',
         ],
 
-        'papertrail' => [
-            'driver' => 'monolog',
-            'level' => 'debug',
-            'handler' => SyslogUdpHandler::class,
-            'handler_with' => [
-                'host' => env('PAPERTRAIL_URL'),
-                'port' => env('PAPERTRAIL_PORT'),
-            ],
-        ],
-
         'stderr' => [
             'driver' => 'monolog',
             'handler' => StreamHandler::class,
+            'path' => storage_path('logs/stderr/stderr.log'),
             'formatter' => env('LOG_STDERR_FORMATTER'),
             'with' => [
                 'stream' => 'php://stderr',
             ],
         ],
 
-        'syslog' => [
-            'driver' => 'syslog',
-            'level' => 'debug',
-        ],
-
-        'errorlog' => [
-            'driver' => 'errorlog',
-            'level' => 'debug',
-        ],
-
-        'null' => [
-            'driver' => 'monolog',
-            'handler' => NullHandler::class,
-        ],
-
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
     ],
 
 ];

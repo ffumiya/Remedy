@@ -2,29 +2,21 @@
 
 namespace App\Providers;
 
+use App\Logging\BasicLogger;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
     public function register()
     {
-        //
+        app()->bind('BasicLogger', BasicLogger::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
     public function boot()
     {
-        if (request()->isSecure()) {
-            \URL::forceScheme('https');
+        if (config('app.env') == 'production') {
+            URL::forceScheme('https');
         }
     }
 }

@@ -3,78 +3,121 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Logging\DefaultLogger;
+use App\Models\Event;
 use App\Models\User;
+use App\Models\Zoom;
 use App\Services\EventService;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EventsController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 診療予約一覧を取得
      */
     public function index(Request $request)
     {
-        $id = \Auth::id();
+        DefaultLogger::before(__METHOD__);
+
+        $id = Auth::id();
         $role = User::find($id)->role;
         $events = null;
 
         if ($role >= config('role.doctor.value')) {
-            $events = EventService::getDoctorEvents($id);
-        }
-        if ($role < config('role.doctor.value')) {
-            $events = EventService::getPatientEvents($id);
+            $events = EventService::getReservedEventsForDoctor($id);
+            DefaultLogger::debug($events);
+        } else {
+            DefaultLogger::warning("医師権限未満の方による閲覧試行がありました。404エラーページへ遷移。");
+            return abort(404);
         }
 
-        \Log::channel('debug')->info($events);
+        DefaultLogger::after();
         return $events;
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 診療予約の新規追加
      */
     public function store(Request $request)
     {
-        return EventService::storeEvent($request->event);
-    }
+        DefaultLogger::before(__METHOD__);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, $id)
-    {
-        $event = EventService::getEvent($id);
+        $event = EventService::storeEvent($request->event);
+        DefaultLogger::debug($event);
+
+        // Zoomミーティングの作成
+        $zoom = new Zoom();
+        $meeting = $zoom->createMeeting($event[Event::START], config('zoom.default_meeting_time'));
+        DefaultLogger::debug($meeting);
+
+        if ($meeting != null) {
+            $event = EventService::addZoomToEvent($event, $meeting);
+        }
+
+        if ($event != null) {
+            $user_id = $event[Event::GUEST_ID];
+            $user = User::find($user_id);
+
+            // 患者に通知メールを送信
+            EventService::sendEmailCreateReservationNotification($user, $event);
+        }
+
+        DefaultLogger::after();
         return $event;
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 予約情報の詳細を取得
      */
-    public function update(Request $request)
+    public function show(Request $request, $id)
     {
-        return EventService::updateEvent($request);
+        DefaultLogger::before(__METHOD__);
+        $event = EventService::getEvent($id);
+        DefaultLogger::after(__METHOD__);
+        return $event;
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 予約情報の更新
+     */
+    public function update(Request $request)
+    {
+        DefaultLogger::before(__METHOD__);
+
+        $event = EventService::updateEvent($request);
+        DefaultLogger::debug($event);
+        $userId = $event[Event::GUEST_ID];
+        $user = User::find($userId);
+
+        // 患者に通知メールを送信
+        EventService::sendEmailUpdateReservationNotification($user, $event);
+
+        DefaultLogger::after();
+    }
+
+    /**
+     * イベントを削除する
      */
     public function destroy(Request $request, $id)
     {
-        // イベントを削除する
-        return EventService::deleteEvent($request, $id);
+        DefaultLogger::before(__METHOD__);
+
+        $event = EventService::getEvent($id);
+        DefaultLogger::debug($event);
+        EventService::deleteEvent($request, $id);
+
+        $date = new DateTime();
+        $event_date = new DateTime($event[Event::START]);
+        if ($date < $event_date) {
+            $userId = $event[Event::GUEST_ID];
+            $user = User::find($userId);
+
+            // 患者に通知メールを送信
+            EventService::sendEmailDeleteReservationNotification($user, $event);
+        }
+
+        DefaultLogger::after();
     }
 }
