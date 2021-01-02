@@ -1445,16 +1445,49 @@ https://www.w3schools.com/howto/howto_css_responsive_header.asp */
     }
 }
 
-.font-size-14vw {
-    font-size: 1.4vw !important;
+.font-size-12vw {
+    font-size: 1.2vw !important;
 }
 
 .font-size-24vw {
     font-size: 2.4vw !important;
 }
 
-.font-size-10vw {
-    font-size: 1.3vw !important;
+.font-size-8vw {
+    font-size: 1.1vw !important;
+}
+
+.home-container{
+    padding: 2% 2%;
+}
+
+.label-font{
+    font-size: 1.0vw;
+    color:y#555555;
+
+}
+.btn-circle-flat {
+  display: inline-block;
+  text-decoration: none;
+  /* background: #D3D3D3; */
+  background:darkgray;
+  color: #FFF;
+  width: 35px;
+  height: 35px;
+  line-height: 10%;
+  border: none;
+  outline: none; 
+  border-radius: 50%;
+  box-shadow: 4px 4px 8px;
+  text-align: center;
+  overflow: hidden;
+  transition: .4s;
+}
+
+.btn-circle-flat:hover {
+  background: #808080;
+
+  /* background: #808080; */
 }
 
 /* 引用終了 */
