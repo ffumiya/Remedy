@@ -1,22 +1,22 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
+<div class="home-container">
     <div class="row">
-        <div class="col-4">
-            <h2 class="title mt-3 font-size-14vw">日程未調整患者リスト</h2>
-            <div class="mt-3 font-size-10vw">
+        <div class="col-2" style="padding-right: 2%;">
+            <div class="text-right m-3 mb-5">
+                <button class="btn btn-primary btn-main font-size-8vw" data-toggle="modal"
+                    data-target="#modalForCreate" style="width: 100% !important;">
+                    新規患者登録
+                </button>
+            </div>
+            <h2 class="title mt-3 font-size-12vw">日程未調整患者リスト</h2>
+            <div class="mt-3 font-size-8vw">
                 <p>
                     「病状説明日程調整」の未対応案件のリストです。
                 </p>
                 <p>
                     対応する患者さんの名前を右のカレンダーにドラッグ＆ドロップしてください。
                 </p>
-            </div>
-            <div class="text-right m-3 mb-5">
-                <button class="btn btn-primary btn-main font-size-10vw" data-toggle="modal"
-                    data-target="#modalForCreate">
-                    新規患者登録
-                </button>
             </div>
 
             <div id="external-events">
@@ -37,17 +37,17 @@
 
                 {{-- 要素追加時テンプレート --}}
                 <div id="template" class="fc-event fc-ex-event mb-3" hidden>
-                    <div class="row p-4 text-center d-flex align-items-center">
-                        <div class="col-lg-1 col-md-4 patient-number"></div>
-                        <div class="col-lg-4 col-md-8 patient-name"></div>
-                        <div class="col-lg-2 patient-city"></div>
+                    <div class="row p-4 text-center d-flex align-items-center" style="font-size:0.5px;">
+                        <div class="col-lg-2 col-md-2 patient-number"></div>
+                        <div class="col-lg-10 col-md-10 patient-name"></div>
+                        {{-- <div class="col-lg-2 patient-city"></div> --}}
                         {{-- <div class="col-lg-5 patient-memo"></div> --}}
                     </div>
                 </div>
 
             </div>
         </div>
-        <div class="col-8">
+        <div class="col-10">
             <div id="calendar-container">
                 <div id="calendar" />
             </div>
@@ -57,7 +57,7 @@
 
 <!-- Begin modal window for click event -->
 <div id="modalForCreate" class="modal p-5" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" style="margin: 10vh auto!important;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">新規患者登録</h5>
@@ -68,30 +68,51 @@
             <form>
                 <div class="modal-body">
                     <div class="m-3">
-                        {{-- <div class="row mb-3">
-                            <div class="col-2" style="font-size: 15px; padding: 8px 0px 0px 18px !important;">
+                        <label class="label-font">名前　<span style="color:red;">※必須</span></label>
+                        <input id="name" type="text" name="name" class="form-control mb-3">
+                        <label class="label-font">患者メールアドレス　<span style="color:red;">※必須</span></label>
+                        <input id="email" type="email" name="email" class="form-control mb-3">
+                        <label class="label-font">家族メールアドレス</label>
+                        <input id="second_email" type="email" name="second_email" class="form-control mb-3">
+                        <input id="second_second_email" type="email" name="second_second_email" class="form-control mb-3">
+                        <input id="second_third_email" type="email" name="second_third_email" class="form-control mb-3">
+                        <!-- <input id="second_second_email" type="email" name="second_second_email" class="form-control mb-3" style="display:none;">
+                        <input id="second_third_email" type="email" name="second_third_email" class="form-control mb-3" style="display:none;"> -->
+                        
+                        {{-- <input id="memo"  type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。"> --}}
+                    <!-- </div> -->
+
+
+                    <!-- <div class="text-center" id="plus_button">
+                        <input type="button" class="btn-circle-flat" onclick="clickPlus()" value="＋">
+                    </div> -->
+
+
+                    <!-- <div class="row mb-3"> -->
+                        <div class="row">
+                            <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
+                            <!-- <div class="col-2" style="font-size: 1vw;;"> -->
+                            
                                 <label for="start-time">開始時間</label>
                             </div>
-                            <div class="col-4">
-                                <input type="datetime-local" class="form-control">
+                            <div class="col-4" style="padding:0px 0px 0px 5px !important;">
+                            <!-- <div class="col-4"> -->
+                                <input type="datetime-local" name="start-time" id="search-start-time"
+                                class="form-control" style="padding:0px 1px 0px 1px !important">
                             </div>
-                            <div class="col-2" style="font-size: 15px; padding: 8px 0px 0px 18px !important;">
+                            <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
+                            <!-- <div class="col-2" style="font-size: 1vw;"> -->
                                 <label for="end-time">終了時間</label>
                             </div>
-                            <div class="col-4">
-                                <input type="datetime-local" class="form-control">
+                            <div class="col-4" style="padding:0 !important;">
+                            <!-- <div class="col-4"> -->
+                                <input type="datetime-local" name="end-time" id="search-end-time"
+                                    class="form-control"style="padding:0px 1px 0px 1px !important;">
                             </div>
-                        </div> --}}
-                        <input id="name" type="text" name="name" class="form-control mb-3"
-                            placeholder="(必須) 名前を入力してください。">
-                        <input id="email" type="email" name="email" class="form-control mb-3"
-                            placeholder="(必須) 患者のメールアドレスを入力してください。">
-                        <input id="second_email" type="email" name="second_email" class="form-control mb-3"
-                            placeholder="(任意) ご家族のメールアドレスを入力してください。">
-                        {{-- <input id="memo" type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。"> --}}
+                        </div>
                     </div>
-                    <div class="m-3">
-                        <button type="button" class="btn btn-primary btn-block" onclick="createNewPatient()">
+                    <div class="m-3" >
+                        <button type="button"  class="btn btn-primary btn-block" style="margin-top: 20px; font-size:1vw !important;" onclick="createNewPatient()">
                             新規登録
                         </button>
                     </div>
@@ -151,7 +172,7 @@
 
 <!-- Begin modal window for select calendar -->
 <div id="modalForSelect" class="modal p-5" tabindex="-1" role="dialog">
-    <div class="modal-dialog" style="max-width: 800px;">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">診察スケジュール / 新規追加</h5>
@@ -165,26 +186,29 @@
                         <div class="container">
                             <p class="h2 font-weight-bold mb-3">◆診察日程</p>
                             <div class="row mb-3">
-                                <div class="col-2">
+                                <!-- <div class="col-2" style="padding-right:0px !important;"> -->
+                                <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
+                                
                                     <label for="start-time">開始時間</label>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-4" style="padding:0px 0px 0px 5px !important;">
                                     <input type="datetime-local" name="start-time" id="search-start-time"
-                                        class="form-control">
+                                    class="form-control" style="padding:0px 1px 0px 1px !important">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
                                     <label for="end-time">終了時間</label>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-4" style="padding:0 !important;">
                                     <input type="datetime-local" name="end-time" id="search-end-time"
-                                        class="form-control">
+                                        class="form-control"style="padding:0px 1px 0px 1px !important;">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col">
+                                <div class="col" style="padding-right:0px !important;">
                                     <input type="hidden" name="id" id="search-patient-id">
+                                    <label style="font-size: 1.1vw;">患者名</label>
                                     <input id="search-patient-name" type="text" name="name" class="form-control mb-3"
-                                        placeholder="患者の名前を入力してください。" onkeyup="searchPatient(this)">
+                                         onkeyup="searchPatient(this)">
 
                                     <div style="z-index: 1060; positon: relative;">
                                         <table class="table table-hover table-sm">
@@ -195,7 +219,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col">
+                                <div class="col" style="padding:0px !important;">
                                     <div class="m-5">
                                         <button type="button" class="btn btn-primary btn-block"
                                             onclick="createNewEvent()">
@@ -644,5 +668,37 @@
         return btoa(encodeURIComponent(title) + Math.round((new Date()).getTime() / 1000));
     }
 
+    //　家族メールアドレスの追加表示処理
+
+    function clickPlus(){
+        const second = document.getElementById("second_second_email");
+        const third = document.getElementById("second_third_email");
+        const plus = document.getElementById("plus_button");
+
+
+        if(second.style.display=="block"){
+            // noneで非表示
+            second.style.display ="none";
+            third.style.display ="none";
+            plus.style.display="block"
+        }else{
+            // blockで表示
+            second.style.display ="block";
+            third.style.display ="block";
+            plus.style.display="none"
+        }
+    }
+
+    // HTML読み込み後に年と月を日本語表記に変更
+    window.onload = function () {
+        var today = new Date();
+        document.getElementsByTagName("h2")[1].innerHTML=today.getFullYear()+"年"+(today.getMonth()+1)+"月";
+        // console.log(document.getElementsByClassName("fc-wed")[0].textContent);
+        // document.getElementsByClassName("fc-wed")[0].textContent='13 \n\n\n Sun';
+    };
+
+
 </script>
+
+
 @endsection

@@ -9,7 +9,7 @@ use Laravel\Cashier\Billable;
 class User extends Authenticatable
 {
     use Notifiable;
-    use Billable;
+    // use Billable;
 
     // テーブル名
     const TABLE_NAME = "users";
