@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-    <div class="container">
+    <!-- <div class="container"> -->
         <a class="navbar-brand" href="{{ route('home.index') }}">
             <img class="header-logo" src="{{ asset('img/remedy-pc/logo.png') }}" align="">
         </a>
@@ -59,5 +59,5 @@
                 @endguest
             </ul>
         </div>
-    </div>
+    <!-- </div> -->
 </nav>
