@@ -37,10 +37,10 @@
 
                 {{-- 要素追加時テンプレート --}}
                 <div id="template" class="fc-event fc-ex-event mb-3" hidden>
-                    <div class="row p-4 text-center d-flex align-items-center">
-                        <div class="col-lg-1 col-md-4 patient-number"></div>
-                        <div class="col-lg-4 col-md-8 patient-name"></div>
-                        <div class="col-lg-2 patient-city"></div>
+                    <div class="row p-4 text-center d-flex align-items-center" style="font-size:0.5px;">
+                        <div class="col-lg-2 col-md-2 patient-number"></div>
+                        <div class="col-lg-10 col-md-10 patient-name"></div>
+                        {{-- <div class="col-lg-2 patient-city"></div> --}}
                         {{-- <div class="col-lg-5 patient-memo"></div> --}}
                     </div>
                 </div>
@@ -80,25 +80,35 @@
                         <input id="second_third_email" type="email" name="second_third_email" class="form-control mb-3" style="display:none;"> -->
                         
                         {{-- <input id="memo"  type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。"> --}}
-                    </div>
+                    <!-- </div> -->
+
+
                     <!-- <div class="text-center" id="plus_button">
                         <input type="button" class="btn-circle-flat" onclick="clickPlus()" value="＋">
                     </div> -->
-                    <div class="row mb-3">
-                        <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 25px !important;">
-                        
-                            <label for="start-time">開始時間</label>
-                        </div>
-                        <div class="col-4" style="padding:0px 0px 0px 5px !important;">
-                            <input type="datetime-local" name="start-time" id="search-start-time"
-                            class="form-control" style="padding:0px 1px 0px 1px !important">
-                        </div>
-                        <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
-                            <label for="end-time">終了時間</label>
-                        </div>
-                        <div class="col-4" style="padding:0 !important;">
-                            <input type="datetime-local" name="end-time" id="search-end-time"
-                                class="form-control"style="padding:0px 1px 0px 1px !important;">
+
+
+                    <!-- <div class="row mb-3"> -->
+                        <div class="row">
+                            <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
+                            <!-- <div class="col-2" style="font-size: 1vw;;"> -->
+                            
+                                <label for="start-time">開始時間</label>
+                            </div>
+                            <div class="col-4" style="padding:0px 0px 0px 5px !important;">
+                            <!-- <div class="col-4"> -->
+                                <input type="datetime-local" name="start-time" id="search-start-time"
+                                class="form-control" style="padding:0px 1px 0px 1px !important">
+                            </div>
+                            <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
+                            <!-- <div class="col-2" style="font-size: 1vw;"> -->
+                                <label for="end-time">終了時間</label>
+                            </div>
+                            <div class="col-4" style="padding:0 !important;">
+                            <!-- <div class="col-4"> -->
+                                <input type="datetime-local" name="end-time" id="search-end-time"
+                                    class="form-control"style="padding:0px 1px 0px 1px !important;">
+                            </div>
                         </div>
                     </div>
                     <div class="m-3" >
