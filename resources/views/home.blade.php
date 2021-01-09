@@ -4,8 +4,8 @@
     <div class="row">
         <div class="col-2" style="padding-right: 2%;">
             <div class="text-right m-3 mb-5">
-                <button class="btn btn-primary btn-main font-size-8vw" data-toggle="modal"
-                    data-target="#modalForCreate" style="width: 100% !important;">
+                <button class="btn btn-primary btn-main font-size-8vw" data-toggle="modal" data-target="#modalForCreate"
+                    style="width: 100% !important;">
                     新規患者登録
                 </button>
             </div>
@@ -74,45 +74,47 @@
                         <input id="email" type="email" name="email" class="form-control mb-3">
                         <label class="label-font">家族メールアドレス</label>
                         <input id="second_email" type="email" name="second_email" class="form-control mb-3">
-                        <input id="second_second_email" type="email" name="second_second_email" class="form-control mb-3">
+                        <input id="second_second_email" type="email" name="second_second_email"
+                            class="form-control mb-3">
                         <input id="second_third_email" type="email" name="second_third_email" class="form-control mb-3">
                         <!-- <input id="second_second_email" type="email" name="second_second_email" class="form-control mb-3" style="display:none;">
                         <input id="second_third_email" type="email" name="second_third_email" class="form-control mb-3" style="display:none;"> -->
-                        
+
                         {{-- <input id="memo"  type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。"> --}}
-                    <!-- </div> -->
+                        <!-- </div> -->
 
 
-                    <!-- <div class="text-center" id="plus_button">
+                        <!-- <div class="text-center" id="plus_button">
                         <input type="button" class="btn-circle-flat" onclick="clickPlus()" value="＋">
                     </div> -->
 
 
-                    <!-- <div class="row mb-3"> -->
+                        <!-- <div class="row mb-3"> -->
                         <div class="row">
                             <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
-                            <!-- <div class="col-2" style="font-size: 1vw;;"> -->
-                            
+                                <!-- <div class="col-2" style="font-size: 1vw;;"> -->
+
                                 <label for="start-time">開始時間</label>
                             </div>
                             <div class="col-4" style="padding:0px 0px 0px 5px !important;">
-                            <!-- <div class="col-4"> -->
+                                <!-- <div class="col-4"> -->
                                 <input type="datetime-local" name="start-time" id="search-start-time"
-                                class="form-control" style="padding:0px 1px 0px 1px !important">
+                                    class="form-control" style="padding:0px 1px 0px 1px !important">
                             </div>
                             <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
-                            <!-- <div class="col-2" style="font-size: 1vw;"> -->
+                                <!-- <div class="col-2" style="font-size: 1vw;"> -->
                                 <label for="end-time">終了時間</label>
                             </div>
                             <div class="col-4" style="padding:0 !important;">
-                            <!-- <div class="col-4"> -->
-                                <input type="datetime-local" name="end-time" id="search-end-time"
-                                    class="form-control"style="padding:0px 1px 0px 1px !important;">
+                                <!-- <div class="col-4"> -->
+                                <input type="datetime-local" name="end-time" id="search-end-time" class="form-control"
+                                    style="padding:0px 1px 0px 1px !important;">
                             </div>
                         </div>
                     </div>
-                    <div class="m-3" >
-                        <button type="button"  class="btn btn-primary btn-block" style="margin-top: 20px; font-size:1vw !important;" onclick="createNewPatient()">
+                    <div class="m-3">
+                        <button type="button" class="btn btn-primary btn-block"
+                            style="margin-top: 20px; font-size:1vw !important;" onclick="createNewPatient()">
                             新規登録
                         </button>
                     </div>
@@ -139,7 +141,6 @@
                         <div class="card p-3">
                             <p class="h4 font-weight-bold primary">◆診察日程</p>
                             <p class="select-event-time"></p>
-
                         </div>
                     </div>
                     <div class="col">
@@ -188,19 +189,19 @@
                             <div class="row mb-3">
                                 <!-- <div class="col-2" style="padding-right:0px !important;"> -->
                                 <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
-                                
+
                                     <label for="start-time">開始時間</label>
                                 </div>
                                 <div class="col-4" style="padding:0px 0px 0px 5px !important;">
                                     <input type="datetime-local" name="start-time" id="search-start-time"
-                                    class="form-control" style="padding:0px 1px 0px 1px !important">
+                                        class="form-control" style="padding:0px 1px 0px 1px !important">
                                 </div>
                                 <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
                                     <label for="end-time">終了時間</label>
                                 </div>
                                 <div class="col-4" style="padding:0 !important;">
                                     <input type="datetime-local" name="end-time" id="search-end-time"
-                                        class="form-control"style="padding:0px 1px 0px 1px !important;">
+                                        class="form-control" style="padding:0px 1px 0px 1px !important;">
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -208,7 +209,7 @@
                                     <input type="hidden" name="id" id="search-patient-id">
                                     <label style="font-size: 1.1vw;">患者名</label>
                                     <input id="search-patient-name" type="text" name="name" class="form-control mb-3"
-                                         onkeyup="searchPatient(this)">
+                                        onkeyup="searchPatient(this)">
 
                                     <div style="z-index: 1060; positon: relative;">
                                         <table class="table table-hover table-sm">
@@ -379,9 +380,11 @@
                             var day = date.getDate();
                             var from = formatDate(date, "H:mm");
                             var to = formatDate(new Date(info.event.end), "H:mm");
+                            var zoom_password = info.event.extendedProps.zoom_start_password ?
+                                info.event.extendedProps.zoom_start_password : "取得中";
                             $(".select-event-time").html(`${month}月${day}日 ${from}～${to}`);
                             $("#patient-name").html(`${info.event.title}`);
-                            $("#zoom-password").html(`${info.event.extendedProps.zoom_start_password}`);
+                            $("#zoom-password").html(zoom_password);
                             const isSmallerThanToday = (date) => {
                                 var today = new Date();
                                 today.setDate(today.getDate() -1);
