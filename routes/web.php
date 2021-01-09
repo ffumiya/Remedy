@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,5 +38,14 @@ Route::group(['middleware' => 'auth'], function () {
     // 医師ユーザー
     Route::middleware('can:doctor')->group(function () {
         Route::resource('survey', 'SurveyController')->only([INDEX, SHOW, UPDATE,]);
+        Route::get('manual', function () {
+            $storage = Storage::disk('local');
+            $fileName = 'manual.pdf';
+            $path = 'public/' . $fileName;
+            $file = $storage->get($path);
+            return response($file, 200)
+                ->header('Content-Type', 'application/pdf')
+                ->header('Content-Disposition', 'inline; filename="' . $fileName . '"');
+        })->name('manual.index');
     });
 });

@@ -44,6 +44,9 @@
                         <a href="{{ route('survey.index') }}" class="dropdown-item nav-link">
                             患者アンケート一覧
                         </a>
+                        <a href="{{ route('manual.index') }}" class="dropdown-item nav-link">
+                            ご利用マニュアル
+                        </a>
                         <a class="dropdown-item nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
