@@ -7,7 +7,6 @@
 p {
     /* font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif; */
     font-family: 'メイリオ', 'Meiryo', "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "ヒラギノ角ゴ Pro W3", sans-serif;
-
 }
 
 #external-events {
@@ -78,7 +77,7 @@ p {
     border-left-color: #006092;
     border-radius: 0;
     border-left-width: 3px;
-    box-shadow: 5px 5px 10px -5px gray;
+    box-shadow: 5px 5px 10px gray;
 }
 
 .fc-ex-event {
