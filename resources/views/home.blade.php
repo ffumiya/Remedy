@@ -55,7 +55,7 @@
     </div>
 </div>
 
-<!-- Begin modal window for click event -->
+<!-- Begin modal window for register patient -->
 <div id="modalForCreate" class="modal p-5" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document" style="margin: 10vh auto!important;">
         <div class="modal-content">
@@ -78,21 +78,12 @@
                                 class="family-email form-control mb-3" hidden>
                             <input type="email" name="family_email[]" class="family-email form-control mb-3">
                         </div>
-                        {{-- <input id="second_email" type="email" name="second_email" class="form-control mb-3"> --}}
-                        {{-- <input id="second_second_email" type="email" name="second_second_email"
-                            class="form-control mb-3">
-                        <input id="second_third_email" type="email" name="second_third_email" class="form-control mb-3"> --}}
-                        <!-- <input id="second_second_email" type="email" name="second_second_email" class="form-control mb-3" style="display:none;">
-                        <input id="second_third_email" type="email" name="second_third_email" class="form-control mb-3" style="display:none;"> -->
-
                         {{-- <input id="memo"  type="textbox" class="form-control mb-3" placeholder="メモがあれば入力してください。"> --}}
                         <!-- </div> -->
 
-
-                        <div class="text-center" id="plus_button">
+                        <div class="text-center mb-3" id="plus_button">
                             <input type="button" class="btn-circle-flat" onclick="clickPlus()" value="＋">
                         </div>
-
 
                         <!-- <div class="row mb-3"> -->
                         <div class="row">
@@ -103,8 +94,8 @@
                             </div>
                             <div class="col-4" style="padding:0px 0px 0px 5px !important;">
                                 <!-- <div class="col-4"> -->
-                                <input type="datetime-local" name="start-time" id="search-start-time"
-                                    class="form-control" style="padding:0px 1px 0px 1px !important">
+                                <input type="datetime-local" name="start-time" id="start-time" class="form-control"
+                                    style="padding:0px 1px 0px 1px !important">
                             </div>
                             <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
                                 <!-- <div class="col-2" style="font-size: 1vw;"> -->
@@ -112,7 +103,7 @@
                             </div>
                             <div class="col-4" style="padding:0 !important;">
                                 <!-- <div class="col-4"> -->
-                                <input type="datetime-local" name="end-time" id="search-end-time" class="form-control"
+                                <input type="datetime-local" name="end-time" id="end-time" class="form-control"
                                     style="padding:0px 1px 0px 1px !important;">
                             </div>
                         </div>
@@ -199,14 +190,14 @@
                                 </div>
                                 <div class="col-4" style="padding:0px 0px 0px 5px !important;">
                                     <input type="datetime-local" name="start-time" id="search-start-time"
-                                        class="form-control" style="padding:0px 1px 0px 1px !important">
+                                        class="form-control" style="padding:0px 1px 0px 1px !important" />
                                 </div>
                                 <div class="col-2" style="font-size: 1vw; padding: 10px 0px 0px 15px !important;">
                                     <label for="end-time">終了時間</label>
                                 </div>
                                 <div class="col-4" style="padding:0 !important;">
                                     <input type="datetime-local" name="end-time" id="search-end-time"
-                                        class="form-control" style="padding:0px 1px 0px 1px !important;">
+                                        class="form-control" style="padding:0px 1px 0px 1px !important;" />
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -332,8 +323,8 @@
 
             // カレンダーセルクリック、範囲指定された時のコールバック
             select: function(info) {
-                document.getElementById('search-start-time').value = formatDate(new Date(info.start), "yyyy-MM-ddThh:mm");
-                document.getElementById('search-end-time').value = formatDate(new Date(info.end), "yyyy-MM-ddThh:mm");
+                $('#search-start-time').val(formatDate(new Date(info.start), "yyyy-MM-ddThh:mm"));
+                $('#search-end-time').val(formatDate(new Date(info.end), "yyyy-MM-ddThh:mm"));
                 $("#modalForSelect").modal('show');
             },
             // 外部イベントがドロップされた時のコールバック
@@ -415,9 +406,9 @@
                                             api_token: "{{ \Auth::user()->api_token }}",
                                         }
                                     }).done(function(e) {
-                                        console.log(e);
+                                        console.error(e);
                                     }).fail(function(e) {
-                                        console.log(e);
+                                        console.error(e);
                                     });
                                 });
                                 $("#video-button").prop("hidden", false);
@@ -477,13 +468,6 @@
             alert(family_email_error);
             return;
         }
-        // var second_email = $('#second_email').val();
-        // if (second_email) {
-        //     if (!reg.test(second_email)) {
-        //         alert("ご家族のメールアドレスを正しく入力してください。");
-        //     return;
-        //     }
-        // }
         var data = {
             api_token: "{{ \Auth::user()->api_token }}",
             name: name,
@@ -506,14 +490,27 @@
             newElement.find(".patient-name").text(`${name}`);
             newElement.appendTo('#external-events');
             $("#modalForCreate").modal("hide");
-            // フォームの初期化
-            $('#name').val("");
-            $('#email').val("");
-            $('.family-email').each(function(i, e) {
-                $(e).val("");
-            });
+
+            var start_time = $("#start-time").val();
+            if (start_time != "") {
+                start_time = new Date(start_time);
+                console.log(start_time);
+                var end_time = $("#end-time").val();
+                if (end_time != "") {
+                    end_time = new Date(end_time);
+                } else {
+                    end_time = new Date(start_time.valueOf());
+                    end_time.setMinutes(end_time.getMinutes() + {{ config('zoom.default_meeting_time') }});
+                }
+                console.log(end_time);
+                alert(`${start_time}〜の予定を作成します。\n作成すると患者さんへメールが送信されます`);
+                var result = createEvent(`${name}さん`, r.id, start_time, end_time);
+                if (result) {
+                    $(`#user${r.id}`).remove();
+                }
+            }
         }).fail(function (e) {
-            console.error("ajax failed");
+            console.error(e);
             alert("患者の登録に失敗しました。");
         });
     }
@@ -527,37 +524,13 @@
         }
         var name = $('#search-patient-name').val();
         if (name == "") return;
+        var title = `${name}さん`;
         var start = $('#search-start-time').val();
         var end = $('#search-end-time').val();
-        var title = `${name}さん`;
-        var data = {
-            api_token: "{{ \Auth::user()->api_token }}",
-            event: {
-                title: title,
-                extendedProps: {
-                    event_id: createEventId(title),
-                    guest_id: id,
-                    host_id: {{\Auth::id()}},
-                },
-                start: new Date(start),
-                end: new Date(end)
-            }
-        };
-        $.ajax({
-            type: "POST",
-            url: `api/events`,
-            datatype: "json",
-            data: data
-        }).done(function(r) {
-            calendar.addEvent(r);
-            $('#search-patient-id').val("");
-            $('#search-patient-name').val("");
-            $('#search-start-time').val("");
-            $('#search-end-time').val("");
+        var result = createEvent(title, id, new Date(start), new Date(end));
+        if (result) {
             $("#modalForSelect").modal("hide");
-        }).fail(function (e) {
-            alert("新規予定の作成に失敗しました。");
-        });
+        }
     }
 
     //サーバ用のデータに変換する
@@ -585,6 +558,37 @@
         };
         console.log(data);
         return data;
+    }
+
+    // イベントの作成
+    function createEvent(title, guest_id, start, end) {
+        var data = {
+            api_token: "{{ \Auth::user()->api_token }}",
+            event: {
+                title: title,
+                extendedProps: {
+                    event_id: createEventId(title),
+                    guest_id: guest_id,
+                    host_id: {{\Auth::id()}},
+                },
+                start: start,
+                end: end
+            }
+        };
+        $.ajax({
+            type: "POST",
+            url: `api/events`,
+            datatype: "json",
+            data: data
+        }).done(function(r) {
+            calendar.addEvent(r);
+            formInitialize();
+            return true;
+        }).fail(function (e) {
+            alert("新規予定の作成に失敗しました。");
+            console.error(e);
+            return false;
+        });
     }
 
     // イベントの更新
@@ -674,6 +678,7 @@
         });
     }
 
+    // 日付をinputが要求する形式にフォーマットする
     function formatDate (date, format) {
         format = format.replace(/yyyy/g, date.getFullYear());
         format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2));
@@ -686,6 +691,7 @@
         return format;
     };
 
+    // メールアドレスの@マーク移行を削除
     function cutDomain(email) {
         var index =  String(email).indexOf("@");
         var str = String(email).substring(0, index);
@@ -714,6 +720,13 @@
         // if (count > 5) {
         //     $("#plus_button").prop("hidden", true);
         // }
+    }
+
+    // 入力項目の初期化
+    function formInitialize() {
+        $(".form-control").each(function (i, e) {
+            $(e).val("");
+        })
     }
 
 </script>
