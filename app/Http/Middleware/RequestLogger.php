@@ -21,7 +21,7 @@ class RequestLogger
         // リクエストボディを出力
         $canWriteBody = $this->canWriteBody($request);
         if ($canWriteBody) {
-            DefaultLogger::debug($request);
+            DefaultLogger::debug($request->all());
         }
         DefaultLogger::after();
         return $next($request);

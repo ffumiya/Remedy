@@ -19,7 +19,11 @@ class CreateUsersTable extends Migration
             $table->string(User::NAME);
             $table->string(User::EMAIL)->unique();
             $table->timestamp(User::EMAIL_VERIFIED_AT)->nullable();
-            $table->string(User::SECOND_EMAIL)->nullable();
+            $table->string(User::FAMILY_EMAIL_1)->nullable();
+            $table->string(User::FAMILY_EMAIL_2)->nullable();
+            $table->string(User::FAMILY_EMAIL_3)->nullable();
+            $table->string(User::FAMILY_EMAIL_4)->nullable();
+            $table->string(User::FAMILY_EMAIL_5)->nullable();
             $table->string(User::PASSWORD)->nullable();
             $table->string(User::API_TOKEN, 80)->unique();
             $table->integer(User::ROLE)->default(config('role.doctor.value'));

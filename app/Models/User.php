@@ -19,7 +19,11 @@ class User extends Authenticatable
     const NAME = "name";
     const EMAIL = "email";
     const EMAIL_VERIFIED_AT = "email_verified_at";
-    const SECOND_EMAIL = "second_email";
+    const FAMILY_EMAIL_1 = "family_email_1";
+    const FAMILY_EMAIL_2 = "family_email_2";
+    const FAMILY_EMAIL_3 = "family_email_3";
+    const FAMILY_EMAIL_4 = "family_email_4";
+    const FAMILY_EMAIL_5 = "family_email_5";
     const PASSWORD = "password";
     const REMEMBER_TOKEN = "remember_token";
     const API_TOKEN = "api_token";
@@ -30,7 +34,11 @@ class User extends Authenticatable
     protected $fillable = [
         User::NAME,
         User::EMAIL,
-        User::SECOND_EMAIL,
+        User::FAMILY_EMAIL_1,
+        User::FAMILY_EMAIL_2,
+        User::FAMILY_EMAIL_3,
+        User::FAMILY_EMAIL_4,
+        User::FAMILY_EMAIL_5,
         User::PASSWORD,
         User::ROLE,
         User::CLINIC_ID,
