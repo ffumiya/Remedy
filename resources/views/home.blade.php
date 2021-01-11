@@ -19,7 +19,7 @@
                 </p>
             </div>
 
-            <div id="external-events">
+            <div id="external-events" class="pt-2 pb-2">
                 @foreach ($patientList as $patient)
                 <div class="fc-ex-event fc-event mb-3" id="user{{$patient->id}}" guest_id="{{ $patient->id }}"
                     title="{{ $patient->name }}さん">
@@ -68,15 +68,20 @@
             <form>
                 <div class="modal-body">
                     <div class="m-3">
-                        <label class="label-font">名前　<span style="color:red;">※必須</span></label>
+                        <label class="label-font">名前<span style="color:red;">※必須</span></label>
                         <input id="name" type="text" name="name" class="form-control mb-3">
-                        <label class="label-font">患者メールアドレス　<span style="color:red;">※必須</span></label>
+                        <label class="label-font">患者メールアドレス<span style="color:red;">※必須</span></label>
                         <input id="email" type="email" name="email" class="form-control mb-3">
-                        <label class="label-font">家族メールアドレス</label>
-                        <input id="second_email" type="email" name="second_email" class="form-control mb-3">
-                        <input id="second_second_email" type="email" name="second_second_email"
+                        <div id="fg-family-email" class="form-group">
+                            <label class="label-font">家族メールアドレス</label>
+                            <input id="family-email" type="email" name="family_email[]"
+                                class="family-email form-control mb-3" hidden>
+                            <input type="email" name="family_email[]" class="family-email form-control mb-3">
+                        </div>
+                        {{-- <input id="second_email" type="email" name="second_email" class="form-control mb-3"> --}}
+                        {{-- <input id="second_second_email" type="email" name="second_second_email"
                             class="form-control mb-3">
-                        <input id="second_third_email" type="email" name="second_third_email" class="form-control mb-3">
+                        <input id="second_third_email" type="email" name="second_third_email" class="form-control mb-3"> --}}
                         <!-- <input id="second_second_email" type="email" name="second_second_email" class="form-control mb-3" style="display:none;">
                         <input id="second_third_email" type="email" name="second_third_email" class="form-control mb-3" style="display:none;"> -->
 
@@ -84,9 +89,9 @@
                         <!-- </div> -->
 
 
-                        <!-- <div class="text-center" id="plus_button">
-                        <input type="button" class="btn-circle-flat" onclick="clickPlus()" value="＋">
-                    </div> -->
+                        <div class="text-center" id="plus_button">
+                            <input type="button" class="btn-circle-flat" onclick="clickPlus()" value="＋">
+                        </div>
 
 
                         <!-- <div class="row mb-3"> -->
@@ -451,18 +456,39 @@
             alert("患者のメールアドレスを正しく入力してください。");
             return;
         }
-        var second_email = $('#second_email').val();
-        if (second_email) {
-            if (!reg.test(second_email)) {
-                alert("ご家族のメールアドレスを正しく入力してください。");
-            return;
+        var family_email = [];
+        var family_email_error = "";
+        $(".family-email").each(function (i, element) {
+            console.log(element);
+            if ($(element).prop("hidden")) {
+            } else {
+                if ($(element).val() == "") {
+                    return;
+                } else if (!reg.test($(element).val())) {
+                    family_email_error = "ご家族のメールアドレスを正しく入力してください。\n"
+                    + $(element).val();
+                    return;
+                } else {
+                    family_email.push($(element).val());
+                }
             }
+        });
+        if (family_email_error != "") {
+            alert(family_email_error);
+            return;
         }
+        // var second_email = $('#second_email').val();
+        // if (second_email) {
+        //     if (!reg.test(second_email)) {
+        //         alert("ご家族のメールアドレスを正しく入力してください。");
+        //     return;
+        //     }
+        // }
         var data = {
             api_token: "{{ \Auth::user()->api_token }}",
             name: name,
             email: email,
-            second_email: second_email,
+            family_email: family_email,
             password: cutDomain(email),
         }
         $.ajax({
@@ -483,7 +509,9 @@
             // フォームの初期化
             $('#name').val("");
             $('#email').val("");
-            $('#second_email').val("");
+            $('.family-email').each(function(i, e) {
+                $(e).val("");
+            });
         }).fail(function (e) {
             console.error("ajax failed");
             alert("患者の登録に失敗しました。");
@@ -659,11 +687,8 @@
     };
 
     function cutDomain(email) {
-        console.log(email);
         var index =  String(email).indexOf("@");
-        console.log(index);
         var str = String(email).substring(0, index);
-        console.log(str);
         return str;
     }
 
@@ -671,28 +696,25 @@
         return btoa(encodeURIComponent(title) + Math.round((new Date()).getTime() / 1000));
     }
 
-    //　家族メールアドレスの追加表示処理
-
+    // 家族メールアドレスの追加表示処理
     function clickPlus(){
-        const second = document.getElementById("second_second_email");
-        const third = document.getElementById("second_third_email");
-        const plus = document.getElementById("plus_button");
-
-
-        if(second.style.display=="block"){
-            // noneで非表示
-            second.style.display ="none";
-            third.style.display ="none";
-            plus.style.display="block"
-        }else{
-            // blockで表示
-            second.style.display ="block";
-            third.style.display ="block";
-            plus.style.display="none"
+        var count = 0;
+        $(".family-email").each(function () {
+            count++;
+        });
+        if (count > 5) {
+            alert("家族用のメールアドレスは5件までしか登録できません。")
+            return;
         }
+        var parent = $("#fg-family-email");
+        var element = $("#family-email").clone(true);
+        element.prop("hidden", false);
+        parent.append(element);
+        // count++;
+        // if (count > 5) {
+        //     $("#plus_button").prop("hidden", true);
+        // }
     }
 
 </script>
-
-
 @endsection

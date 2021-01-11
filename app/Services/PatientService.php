@@ -70,7 +70,11 @@ class PatientService extends BaseService
             $user->name = $request->name;
             $user->password = $user->password ?? Hash::make($request->password);
             $user->email_verified_at = $user->email_verified_at ?? now();
-            $user->second_email = $request->second_email ?? '';
+            $user->family_email_1 = $request->family_email[0] ?? '';
+            $user->family_email_2 = $request->family_email[1] ?? '';
+            $user->family_email_3 = $request->family_email[2] ?? '';
+            $user->family_email_4 = $request->family_email[3] ?? '';
+            $user->family_email_5 = $request->family_email[4] ?? '';
             $user->remember_token = $user->remember_token ?? Str::random(10);
             $user->clinic_id = Auth::user()->clinic_id;
             $user->role = config('role.patient.value');
