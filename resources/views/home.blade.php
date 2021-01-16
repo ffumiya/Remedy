@@ -5,7 +5,7 @@
         <div class="col-2" style="padding-right: 2%;">
             <div class="text-right m-3 mb-5">
                 <button class="btn btn-primary btn-main font-size-8vw" data-toggle="modal" data-target="#modalForCreate"
-                    style="width: 100% !important;">
+                    style="width: 100% !important; box-sizing: border-box;">
                     新規患者登録
                 </button>
             </div>
@@ -314,7 +314,7 @@
             contentHeight: 630,
             scrollTime: first_scroll_time,
             firstDay: 1,
-            // locale: "jaLocale",
+            locale: "jaLocale", //日本語化
             nowIndicator: true,
             editable: true,
             selectable: true,
@@ -728,13 +728,74 @@
             $(e).val("");
         })
     }
+
+    // 「年」と「月」を入れるサブ関数 '2021/1' -> '2021年1月'
+    function dateTranslate(yearMonth){
+        // 月が１桁か２桁かで場合分け
+        var translatedYearMonth = "";
+        if(yearMonth.length==6){
+            translatedYearMonth = yearMonth.substr(0,4) + "年" + yearMonth[5] + "月";
+        }else{
+            translatedYearMonth = yearMonth.substr(0,4) + "年" + yearMonth.substring(5) + "月";
+        }
+        return translatedYearMonth;
+    };
+
+    // 時間の「時」を「:00」にするサブ関数 '8時' -> '8:00'
+    function timeTranslate(time){
+        index = time.indexOf('時');
+        hour = time.substr(0,index);
+        translatedTime = hour + ':00';
+        return translatedTime;
+    }
     
-    // HTML読み込み後に年と月を日本語表記に変更
     window.onload = function () {
-        var today = new Date();
-        document.getElementsByTagName("h2")[1].innerHTML=today.getFullYear()+"年"+(today.getMonth()+1)+"月";
-        // console.log(document.getElementsByClassName("fc-wed")[0].textContent);
-        // document.getElementsByClassName("fc-wed")[0].textContent='13 \n\n\n Sun';
+        // // HTML読み込み後に年と月を日本語表記に変更
+        var yearMonth = document.getElementsByTagName("h2")[1].textContent;
+        // カレンダーが月を跨いでいる場合
+        if( yearMonth.indexOf('–') !== -1) {
+            index = yearMonth.indexOf('–');
+            previousYearMonth = yearMonth.substring(0,index-1);
+            formerYearMonth = yearMonth.substring(index+2);
+            document.getElementsByTagName("h2")[1].textContent = dateTranslate(previousYearMonth) + '〜' + dateTranslate(formerYearMonth);
+        // カレンダーが月を跨いでいない場合
+        }else{
+            document.getElementsByTagName("h2")[1].textContent = dateTranslate(yearMonth);
+        } 
+        time = document.getElementsByClassName("fc-axis")[2].textContent;
+
+        // カレンダーの横軸にある時間の一部変更 8時→8:00
+        for(let i = 2; i < 70; i = i + 6){
+            time = document.getElementsByClassName("fc-axis")[i].textContent;
+            document.getElementsByClassName("fc-axis")[i].textContent = timeTranslate(time)
+        }
+
+
+
+        // // カレンダーの曜日を２行にして、英語を日本語に翻訳する処理 11 Wed -> 11 \n 水
+        // // 各曜日ごと
+        // for(let i = 0; i < 7; i++){
+        // //　文字列の中から日付と曜日を抽出 
+        //     var date = document.getElementsByClassName("fc-day-header")[i].textContent;   // ex)date="1 Wed","13 Mon" etc 
+        //     var english_week_of_day = "";
+        //     // 日にちが１桁か２桁かで場合わけ
+        //     if(date[1]=""){
+        //         day = date[0];
+        //         english_week_of_day = date.substring(2,5);
+        //     }else{
+        //         day = date.substring(0, 2);
+        //         english_week_of_day = date.substring(3,6);
+        //     };
+
+        //     // 曜日を翻訳
+        //     const WEEK_OF_DAY_DICTIONARY= {'Mon':'月', 'Tue':'火', 'Wed':'水', 'Thu':'木', 'Fri':'金', 'Sat':'土', 'Sun':'日'};
+        //     japanese_week_of_day = WEEK_OF_DAY_DICTIONARY[english_week_of_day];
+
+        //     // 日付と曜日を結合
+        //     document.getElementsByClassName("fc-day-header")[i].innerHTML=
+        //     '<span>' + day + '</span></br>' + 
+        //     '<span style="font-size:1.2vw;">' + japanese_week_of_day +'</span>';
+        // }
     };
 
 </script>
