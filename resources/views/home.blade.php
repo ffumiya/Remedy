@@ -3,12 +3,6 @@
 <div class="home-container">
     <div class="row">
         <div class="col-2" style="padding-right: 2%;">
-            <div class="text-right m-3 mb-5">
-                <button class="btn btn-primary btn-main font-size-8vw" data-toggle="modal" data-target="#modalForCreate"
-                    style="width: 100% !important; box-sizing: border-box;">
-                    新規患者登録
-                </button>
-            </div>
             <h2 class="title mt-3 font-size-12vw">日程未調整患者リスト</h2>
             <div class="mt-3 font-size-8vw">
                 <p>
@@ -17,6 +11,12 @@
                 <p>
                     対応する患者さんの名前を右のカレンダーにドラッグ＆ドロップしてください。
                 </p>
+            </div>
+            <div class="text-right m-3 mb-5">
+                <button class="btn btn-primary btn-main font-size-8vw" data-toggle="modal" data-target="#modalForCreate"
+                    style="width: 100% !important; box-sizing: border-box;">
+                    新規患者登録
+                </button>
             </div>
 
             <div id="external-events" class="pt-2 pb-2">
