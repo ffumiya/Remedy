@@ -12,6 +12,7 @@
                     対応する患者さんの名前を右のカレンダーにドラッグ＆ドロップしてください。
                 </p>
             </div>
+
             <div class="text-right m-3 mb-5">
                 <button class="btn btn-primary btn-main font-size-8vw" data-toggle="modal" data-target="#modalForCreate"
                     style="width: 100% !important; box-sizing: border-box;">
