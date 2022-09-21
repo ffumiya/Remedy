@@ -32,7 +32,7 @@
         "vue-router": "^3.3.2",
         "vue-template-compiler": "^2.6.10",
         "vuedraggable": "^2.23.2",
-        "vuetify": "^2.2.34",
+        "vuetify": "^2.6.10",
         "vuetify-loader": "^1.4.4"
     },
     "dependencies": {}
